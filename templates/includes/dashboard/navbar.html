@@ -3,10 +3,10 @@
 <div class="header">
     <div class="header-left">
         <a href="index.html" class="logo">
-            <img src="assets/img/logo.png" alt="Logo">
+            <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
         </a>
         <a href="index.html" class="logo logo-small">
-            <img src="assets/img/logo-small.png" alt="Logo" width="30" height="30">
+            <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
         </a>
     </div>
     <a href="javascript:void(0);" id="toggle_btn">
@@ -38,7 +38,7 @@
                                 <div class="media">
                                     <span class="avatar avatar-sm">
                                     <img class="avatar-img rounded-circle" alt="User Image"
-                                         src="assets/img/profiles/avatar-02.jpg">
+                                         src="{% static 'assets/img/profiles/avatar-02.jpg' %}">
                                     </span>
                                     <div class="media-body">
                                         <p class="noti-details"><span class="noti-title">Carlson Tech</span> has
@@ -53,7 +53,7 @@
                                 <div class="media">
                                     <span class="avatar avatar-sm">
                                     <img class="avatar-img rounded-circle" alt="User Image"
-                                         src="assets/img/profiles/avatar-11.jpg">
+                                         src="{% static 'assets/img/profiles/avatar-11.jpg' %}">
                                     </span>
                                     <div class="media-body">
                                         <p class="noti-details"><span
@@ -103,13 +103,13 @@
         </li>
         <li class="nav-item dropdown has-arrow">
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                <span class="user-img"><img class="rounded-circle" src="assets/img/profiles/avatar-01.jpg" width="31"
+                <span class="user-img"><img class="rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" width="31"
                                             alt="Ryan Taylor"></span>
             </a>
             <div class="dropdown-menu">
                 <div class="user-header">
                     <div class="avatar avatar-sm">
-                        <img src="assets/img/profiles/avatar-01.jpg" alt="User Image" class="avatar-img rounded-circle">
+                        <img src="{% static 'assets/img/profiles/avatar-01.jpg' %}" alt="User Image" class="avatar-img rounded-circle">
                     </div>
                     <div class="user-text">
                         <h6>Ryan Taylor</h6>

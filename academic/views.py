@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from academic.forms import DepartmentForm, SemesterForm
+from academic.forms import DepartmentForm, SemesterForm, AcademicSessionForm, SubjectForm
 from academic.models import Department, Semester, Subject, AcademicSession
 
 
@@ -19,7 +19,7 @@ class CreateSemester(CreateView):
     model = Semester
     form_class = SemesterForm
     template_name = 'semester/semester_form.html'
-    success_url = reverse_lazy('academic:read_semesters')
+    success_url = reverse_lazy('dashboard:academic:read_semesters')
 
     def form_valid(self, form):
         if self.request.user.is_authenticated:
@@ -36,7 +36,7 @@ class UpdateSemester(UpdateView):
 class DeleteSemester(DeleteView):
     model = Semester
     template_name = 'semester/batch_confirm_delete.html'
-    success_url = reverse_lazy('academic:read_semesters')
+    success_url = reverse_lazy('dashboard:academic:read_semesters')
 
 
 # #### SUBJECT #############################################
@@ -48,9 +48,9 @@ class SubjectListView(ListView):
 
 class CreateSubjectView(CreateView):
     model = Subject
-    fields = '__all__'
+    form_class = SubjectForm
     template_name = 'subject/subject_form.html'
-    success_url = reverse_lazy('academic:read_subjects')
+    success_url = reverse_lazy('dashboard:academic:read_subjects')
 
     def form_valid(self, form):
         if self.request.user.is_authenticated:
@@ -60,21 +60,21 @@ class CreateSubjectView(CreateView):
 
 class UpdateSubjectView(UpdateView):
     model = Subject
-    fields = '__all__'
+    form_class = SubjectForm
     template_name = 'subject/subject_form.html'
-    success_url = reverse_lazy('academic:read_subjects')
+    success_url = reverse_lazy('dashboard:academic:read_subjects')
 
 
 class DeleteSubjectView(DeleteView):
     model = Subject
     template_name = 'subject/subject_confirm_delete.html'
-    success_url = reverse_lazy('academic:read_subjects')
+    success_url = reverse_lazy('dashboard:academic:read_subjects')
 
 
 # ########## DEPARTMENT ###################"
 class CreateDepartmentView(CreateView):
     model = Department
-    fields = '__all__'
+    form_class = DepartmentForm
     success_url = reverse_lazy('academic:read_departments')
     template_name = 'department/department_form.html'
 
@@ -88,7 +88,7 @@ class UpdateDepartmentView(UpdateView):
     model = Department
     form_class = DepartmentForm
     template_name = 'academic/department_form.html'
-    success_url = reverse_lazy('academic:read_departments')
+    success_url = reverse_lazy('dashboard:academic:read_departments')
 
 
 class DepartmentListView(ListView):
@@ -100,15 +100,15 @@ class DepartmentListView(ListView):
 class DeleteDepartmentView(DeleteView):
     model = Department
     template_name = 'department/department_confirm_delete.html'
-    success_url = reverse_lazy('academic:read_departments')
+    success_url = reverse_lazy('dashboard:academic:read_departments')
 
 
 # #################################
 
 class CreateAcademicSession(CreateView):
     model = AcademicSession
-    form_class = AcademicSession
-    success_url = reverse_lazy('academic:read_academic_sessions')
+    form_class = AcademicSessionForm
+    success_url = reverse_lazy('dashboard:academic:read_academic_sessions')
     template_name = 'academic/academic_form.html'
 
     def form_valid(self, form):

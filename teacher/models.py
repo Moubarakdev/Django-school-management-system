@@ -16,8 +16,10 @@ class Designation(TimeStampedModel):
 
 class Teacher(TimeStampedModel):
     name = models.CharField(max_length=150)
+    '''
     photo = models.ImageField(upload_to='teachers',
                               default='teacheravatar.jpg')
+    '''
     date_of_birth = models.DateField(blank=True, null=True)
     designation = models.ForeignKey(
         Designation,

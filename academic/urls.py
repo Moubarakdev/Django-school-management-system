@@ -3,12 +3,11 @@ from django.urls import path, include
 
 from academic.views import ReadSemester, CreateSemester, DeleteSemester, UpdateSemester, SubjectListView, \
     CreateSubjectView, UpdateSubjectView, DeleteSubjectView, CreateDepartmentView, UpdateDepartmentView, \
-    DeleteDepartmentView, CreateAcademicSession
+    DeleteDepartmentView, CreateAcademicSession, AccademicSessionListView, DepartmentListView
 
 app_name = 'academic'
 
 urlpatterns = [
-
     # Semester
     path('semester/', ReadSemester.as_view(), name="read_semesters"),
     path('semester/create/', CreateSemester.as_view(), name="create_semester"),
@@ -22,12 +21,12 @@ urlpatterns = [
     path('subject/edit/<int:subject_id>', UpdateSubjectView.as_view(), name="update_subject"),
 
     # Department
-    path('department/', SubjectListView.as_view(), name="read_departments"),
+    path('department/', DepartmentListView.as_view(), name="read_departments"),
     path('department/create/', CreateDepartmentView.as_view(), name="create_department"),
     path('department/delete/<int:department_id>', DeleteDepartmentView.as_view(), name="delete_department"),
     path('department/edit/<int:department_id>', UpdateDepartmentView.as_view(), name="update_department"),
 
     # Academic Session
-    path('academicsession/', AcademicSessionListView.as_view(), name="read_academic_sessions"),
+    path('academicsession/', AccademicSessionListView.as_view(), name="read_ac_sessions"),
     path('academicsession/create/', CreateAcademicSession.as_view(), name="create_ac_session"),
 ]

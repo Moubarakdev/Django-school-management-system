@@ -4,22 +4,22 @@
 
 {% block extra_header %}
 {% endblock %}
-{% block ccontent %}
+{% block content %}
 
 
 <div class="content container-fluid">
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Subjects</h3>
+                <h3 class="page-title">Matières</h3>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Subjects</li>
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Matières</li>
                 </ul>
             </div>
             <div class="col-auto text-right float-right ml-auto">
                 <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
-                <a href="add-student.html" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                <a href="{% url 'dashboard:academic:create_subject' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
             </div>
         </div>
     </div>
@@ -31,32 +31,24 @@
                         <table class="table table-hover table-center mb-0 datatable">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Class</th>
-                                <th>DOB</th>
-                                <th>Parent Name</th>
-                                <th>Mobile Number</th>
-                                <th>Address</th>
+                                <th>Titre cours</th>
+                                <th>Code cours</th>
+                                <th>Instructeur</th>
+                                <th>Note 1</th>
+                                <th>Note 2</th>
+                                <th>Créateur</th>
                                 <th class="text-right">Action</th>
                             </tr>
                             </thead>
                             <tbody>
                             <tr>
-                                <td>PRE2209</td>
-                                <td>
-                                    <h2 class="table-avatar">
-                                        <a href="student-details.html" class="avatar avatar-sm mr-2"><img
-                                                class="avatar-img rounded-circle"
-                                                src="assets/img/profiles/avatar-01.jpg" alt="User Image"></a>
-                                        <a href="student-details.html">Aaliyah</a>
-                                    </h2>
-                                </td>
-                                <td>10 A</td>
-                                <td>2 Feb 2002</td>
-                                <td>Jeffrey Wong</td>
-                                <td>097 3584 5870</td>
-                                <td>911 Deer Ridge Drive,USA</td>
+                                {% for subject in subjects%}
+                                <td>{{subject.name}}</td>
+                                <td>{{subject.subject_code}}</td>
+                                <td>{{subject.instructor}}</td>
+                                <td>{{subject.theory_marks}}</td>
+                                <td>{{subject.practical_marks}}</td>
+                                <td>{{subject.created_by}}</td>
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="edit-student.html" class="btn btn-sm bg-success-light mr-2">
@@ -67,6 +59,7 @@
                                         </a>
                                     </div>
                                 </td>
+                                {% endfor %}
                             </tr>
                             </tbody>
                         </table>

@@ -32,7 +32,9 @@ class AcademicSession(TimeStampedModel):
 
     def __str__(self):
         return '{} - {}'.format(self.year, self.year + 1)
-
+    @property
+    def academic_year(self):
+        return '{} - {}'.format(self.year, self.year + 1)
 
 class Semester(TimeStampedModel):
     number = models.PositiveIntegerField(unique=True, verbose_name='Numéro semestre')
@@ -42,7 +44,7 @@ class Semester(TimeStampedModel):
         default=None, null=True, blank=True
       )
     '''
-    active = models.BooleanField(default=True),
+    is_active = models.BooleanField(default=True, verbose_name='Opérationnel'),
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True
@@ -60,6 +62,10 @@ class Semester(TimeStampedModel):
             return '3rd'
         if self.number and 3 < self.number <= 12:
             return '%sth' % self.number
+
+    @property
+    def active_or_not(self):
+        return "Oui" if self.is_active else "Non"
 
     def create_resource(self):
         return reverse('academic:create_semester')
@@ -101,6 +107,7 @@ class Batch(TimeStampedModel):
         return f'{self.department.name} Batch {self.number} ({self.year})'
 
 
+'''
 class TempSerialID(TimeStampedModel):
     student = models.OneToOneField('student.Student', on_delete=models.CASCADE,
                                    related_name='student_serial', verbose_name="Étudiant")
@@ -127,3 +134,4 @@ class TempSerialID(TimeStampedModel):
 
         # return something like: 21-15-666-15
         return f'{yf}-{bn}-{dc}-{syl}'
+'''

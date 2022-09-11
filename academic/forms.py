@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from .models import Department, Semester, AcademicSession
+from .models import Department, Semester, AcademicSession, Subject
 
 
 class DepartmentForm(ModelForm):
@@ -20,5 +20,12 @@ class SemesterForm(ModelForm):
 class AcademicSessionForm(ModelForm):
     class Meta:
         model = AcademicSession
+        fields = '__all__'
+        exclude = ['created_by', ]
+
+
+class SubjectForm(ModelForm):
+    class Meta:
+        model = Subject
         fields = '__all__'
         exclude = ['created_by', ]

@@ -3,16 +3,18 @@
 {% load crispy_forms_tags %}
 
 {% block extra_header %}
+
 {% endblock %}
-{% block ccontent %}
+{% block content %}
 <div class="content container-fluid">
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Add Departments</h3>
+                <h3 class="page-title">Ajouter départements</h3>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="students.html">Students</a></li>
-                    <li class="breadcrumb-item active">Add Students</li>
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:academic:read_departments'%}">Liste des
+                        départements</a></li>
+                    <li class="breadcrumb-item active">Ajouter départements</li>
                 </ul>
             </div>
         </div>

@@ -1,7 +1,10 @@
-from django.contrib.auth.models import AbstractUser
+from ckeditor_uploader.fields import RichTextUploadingField
+from django.contrib.auth.models import AbstractUser, Group
 from django.shortcuts import render
 from django.db import models
 from django_countries.fields import CountryField
+
+from myschool import settings
 
 
 # Create your views here.
@@ -49,6 +52,29 @@ class User(AbstractUser):
 '''
 
 
+class CustomGroup(Group):
+    group_creator = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE, verbose_name="créateur")
+
+    def display_group(self):
+        return f'{self.name} created by {self.group_creator}'
+
+
+class SocialLink(models.Model):
+    user_profile = models.ForeignKey(
+        'CommonUserProfile',
+        on_delete=models.CASCADE
+    )
+    media_name = models.CharField(
+        max_length=50, verbose_name='Nom du média'
+    )
+    url = models.URLField()
+
+    def __str__(self):
+        return self.media_name
+
+
 class CommonUserProfile(models.Model):
     user = models.OneToOneField(
         User,
@@ -58,13 +84,13 @@ class CommonUserProfile(models.Model):
         verbose_name="Utilisateur"
     )
     profile_picture = models.ImageField(
-        upload_to='profile-pictures',
+        upload_to='users/profile-pictures',
         blank=True,
         null=True,
         verbose_name="Photo de profil"
     )
     cover_picture = models.ImageField(
-        upload_to='cover-pictures',
+        upload_to='users/cover-pictures',
         blank=True,
         null=True,
         verbose_name="Photo de couverture"
@@ -75,8 +101,9 @@ class CommonUserProfile(models.Model):
         null=True,
         verbose_name="Titre"
     )
+
     show_headline_in_bio = models.BooleanField(
-        help_text='I want to use this as my bio',
+        help_text='Je veux utiliser ceci comme ma bio',
         default=False,
         verbose_name="Titre comme bio"
     )
@@ -91,3 +118,15 @@ class CommonUserProfile(models.Model):
         null=True,
         verbose_name="Pays"
     )
+    social_links = models.ManyToManyField(
+        SocialLink,
+        related_name='social_links',
+        blank=True
+    )
+
+    class Meta:
+        verbose_name = 'User Profile'
+        verbose_name_plural = 'User Profiles'
+
+    def __str__(self):
+        return f'{self.user}\'s profile'

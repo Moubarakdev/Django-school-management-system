@@ -1,10 +1,55 @@
 <!DOCTYPE html>
-<html lang="en">
+{% load static %}
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="copyright" content="MACode ID, https://macodeid.com/">
+
+    <title>{% block title %} {% endblock %} | School</title>
+
+    <link rel="stylesheet" href="{% static 'home/assets/css/bootstrap.css' %} ">
+    <link rel="stylesheet" href="{% static 'home/assets/css/maicons.css' %} ">
+    <link rel="stylesheet" href="% static 'home/assets/vendor/animate/animate.css' %}">
+    <link rel="stylesheet" href="{% static 'home/assets/css/theme.css' %} ">
+
+    <!-- Fontawesome css !-->
+    <link href="{% static 'home/assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+
+    <!-- Favicons !-->
+
+
+    <!-- Specific CSS goes HERE -->
+
 </head>
 <body>
+<!-- Back to top button -->
+<div class="back-to-top"></div>
 
+{% include "includes/header.html" %}
+
+{% block extra_header %}
+
+{% endblock %}
+
+{% block content %}
+
+{% endblock %}
+
+{% include "includes/footer.html" %}
+
+<!-- Specific JS goes HERE -->
+{% block customjs %}
+
+{% endblock %}
+<script src="{% static 'home/assets/js/jquery-3.5.1.min.js' %}"></script>
+<script src="{% static 'home/assets/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static  'home/assets/js/google-maps.js' %}"></script>
+<script src="{% static 'home/assets/vendor/wow/wow.min.js' %}"></script>
+<script src="{% static 'home/assets/js/theme.js'%}"></script>
 </body>
 </html>
