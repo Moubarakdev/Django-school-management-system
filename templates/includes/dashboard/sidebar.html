@@ -8,6 +8,30 @@
                 <li>
                     <a href="{% url 'dashboard:index' %}"><i class="fas fa-grid-horizontal"></i> <span>Dashboard</span></a>
                 </li>
+                <li class="menu-title">
+                    <span>Academic</span>
+                </li>
+                <li><a href="{% url 'dashboard:academic:read_ac_sessions' %}"><i class="fas fa-book-reader"></i><span>Sessions Académique</span></a>
+                </li>
+                <li><a href="{% url 'dashboard:academic:read_subjects' %}"> <i class="fas fa-book-reader"></i><span>Matières</span></a>
+                </li>
+                <li><a href="{% url 'dashboard:academic:read_semesters' %}"><i class="fas fa-book-reader"></i><span>Semestres</span></a>
+                </li>
+                <li><a href="{% url 'dashboard:academic:read_departments' %}"><i class="fas fa-book-reader"></i><span>Départements</span> </a>
+                </li>
+
+                <li class="menu-title">
+                    <span>Utilisateur</span>
+                </li>
+                <li><a href="{% url 'dashboard:read_requests' %}"><i class="fas fa-book-reader"></i><span>Demandes</span></a>
+                </li>
+                <li><a href="{% url 'account:read_accounts' %}"> <i class="fas fa-book-reader"></i><span>Utilisateurs</span></a>
+                </li>
+                <li><a href="{% url 'dashboard:academic:read_semesters' %}"><i class="fas fa-book-reader"></i><span>Semestres</span></a>
+                </li>
+                <li><a href="{% url 'dashboard:academic:read_departments' %}"><i class="fas fa-book-reader"></i><span>Départements</span> </a>
+                </li>
+
                 <!--
                 <li class="menu-title">
                     <span>Main Menu</span>
@@ -42,16 +66,7 @@
                     </ul>
                 </li>
                 -->
-                <li class="submenu">
-                    <a href="#"><i class="fas fa-user-graduate"></i> <span> Accademic</span> <span
-                            class="menu-arrow"></span></a>
-                    <ul>
-                        <li><a href="{% url 'dashboard:academic:read_ac_sessions' %}">Sessions Académique</a></li>
-                        <li><a href="{% url 'dashboard:academic:read_subjects' %}">Matières</a></li>
-                        <li><a href="{% url 'dashboard:academic:read_semesters' %}">Semèstres</a></li>
-                        <li><a href="{% url 'dashboard:academic:read_departments' %}">Départements</a></li>
-                    </ul>
-                </li>
+                <!--
                 <li class="submenu">
                     <a href="#"><i class="fas fa-book-reader"></i> <span> Subjects</span> <span
                             class="menu-arrow"></span></a>
@@ -61,6 +76,7 @@
                         <li><a href="edit-subject.html">Subject Edit</a></li>
                     </ul>
                 </li>
+
                 <li class="menu-title">
                     <span>Management</span>
                 </li>
@@ -79,7 +95,7 @@
                 <li>
                     <a href="{% url 'dashboard:academic:read_subjects' %}"><i class="fas fa-book-reader"></i> <span>Matières</span></a>
                 </li>
-                 <li>
+                <li>
                     <a href=""><i class="fas fa-book-reader"></i> <span>Professeurs</span></a>
                 </li>
                 <li>
@@ -173,11 +189,13 @@
                         </li>
                     </ul>
                 </li>
+                -->
             </ul>
         </div>
         <div class="slimScrollBar"
              style="background: rgb(204, 204, 204); width: 7px; position: absolute; top: 0px; opacity: 0.4; display: none; border-radius: 7px; z-index: 99; right: 1px; height: 300.573px;"></div>
         <div class="slimScrollRail"
              style="width: 7px; height: 100%; position: absolute; top: 0px; display: none; border-radius: 7px; background: rgb(51, 51, 51); opacity: 0.2; z-index: 90; right: 1px;"></div>
+
     </div>
 </div>

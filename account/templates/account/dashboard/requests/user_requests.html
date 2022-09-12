@@ -1,0 +1,75 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Demandes</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Demandes</li>
+                </ul>
+            </div>
+            <div class="col-auto text-right float-right ml-auto">
+                <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+                <a href="{% url 'dashboard:academic:create_ac_session' %}" class="btn btn-primary"><i
+                        class="fas fa-plus"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-center mb-0 datatable">
+                            <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Statut de la demande</th>
+                                <th scope="col">Rôle demandé</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                {% for user in users %}
+                                <th scope="col">{{ forloop.counter }}</th>
+                                {% with req_role=user.approval_status %}
+                                <td class="{% if req_role == 'd' %}bg-warning{% endif %}">
+                                    {{ user.get_approval_status_display }}
+                                </td>
+                                {% endwith %}
+                                <td>{{ user.get_requested_role_display }}</td>
+                                <td class="text-right">
+                                    <div class="actions">
+                                        <a href="{% url 'account:user_approval' pk=user.pk approved=1 %}" class="btn btn-sm bg-success mr-2"  data-user-pk="{{ user.pk }}">
+                                            <i class="fa-sharp fa-solid fa-check"></i>
+                                        </a>
+                                        <a href="{% url 'account:approval_with_modification' pk=user.pk %}" class="btn btn-sm bg-danger-light mr-2"  data-user-pk="{{ user.pk }}">
+                                            <i class="fas fa-pen"></i>
+                                        </a>
+                                        <a href="{% url 'account:user_approval' pk=user.pk approved=0 %}" class="btn btn-sm bg-danger"  data-user-pk="{{ user.pk }}">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                                {% endfor %}
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block customjs %}
+
+{% endblock %}

@@ -1,9 +1,11 @@
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
 
 from academic.views import ReadSemester, CreateSemester, DeleteSemester, UpdateSemester, SubjectListView, \
     CreateSubjectView, UpdateSubjectView, DeleteSubjectView, CreateDepartmentView, UpdateDepartmentView, \
     DeleteDepartmentView, CreateAcademicSession, AccademicSessionListView, DepartmentListView
+from myschool import settings
 
 app_name = 'academic'
 
@@ -29,4 +31,4 @@ urlpatterns = [
     # Academic Session
     path('academicsession/', AccademicSessionListView.as_view(), name="read_ac_sessions"),
     path('academicsession/create/', CreateAcademicSession.as_view(), name="create_ac_session"),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

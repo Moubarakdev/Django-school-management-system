@@ -51,6 +51,20 @@ class UserRegistrationForm(forms.UserCreationForm):
             )
         }
     )
+    last_name = djform.CharField(
+        widget=djform.TextInput(
+            attrs={
+                "placeholder": "Nom",
+                "class": "form-control"
+            }
+        ))
+    first_name = djform.CharField(
+        widget=djform.TextInput(
+            attrs={
+                "placeholder": "Prénom",
+                "class": "form-control"
+            }
+        ))
     username = djform.CharField(
         widget=djform.TextInput(
             attrs={
@@ -82,7 +96,7 @@ class UserRegistrationForm(forms.UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'password1', 'password2')
+        fields = ('first_name', 'last_name', 'username', 'email', 'password1', 'password2')
 
     def clean_username(self):
         username = self.cleaned_data["username"]

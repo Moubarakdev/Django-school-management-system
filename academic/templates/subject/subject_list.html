@@ -19,7 +19,8 @@
             </div>
             <div class="col-auto text-right float-right ml-auto">
                 <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
-                <a href="{% url 'dashboard:academic:create_subject' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                <a href="{% url 'dashboard:academic:create_subject' %}" class="btn btn-primary"><i
+                        class="fas fa-plus"></i></a>
             </div>
         </div>
     </div>
@@ -41,8 +42,8 @@
                             </tr>
                             </thead>
                             <tbody>
+                            {% for subject in subjects%}
                             <tr>
-                                {% for subject in subjects%}
                                 <td>{{subject.name}}</td>
                                 <td>{{subject.subject_code}}</td>
                                 <td>{{subject.instructor}}</td>
@@ -51,7 +52,8 @@
                                 <td>{{subject.created_by}}</td>
                                 <td class="text-right">
                                     <div class="actions">
-                                        <a href="edit-student.html" class="btn btn-sm bg-success-light mr-2">
+                                        <a href="{% url 'dashboard:academic:update_semester' semester_id=subject.pk%}"
+                                           class="btn btn-sm bg-success-light mr-2">
                                             <i class="fas fa-pen"></i>
                                         </a>
                                         <a href="#" class="btn btn-sm bg-danger-light">
@@ -59,8 +61,8 @@
                                         </a>
                                     </div>
                                 </td>
-                                {% endfor %}
                             </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>

@@ -11,18 +11,18 @@ from myschool import settings
 
 class User(AbstractUser):
     REQUESTED_ACCOUNT_TYPE_CHOICES = (
-        ('subscriber', 'Subscriber'),
-        ('student', 'Student'),
-        ('teacher', 'Teacher'),
-        ('editor', 'Editor'),
-        ('academic_officer', 'Academic Officer'),
-        ('admin', 'Admin'),
+        ('subscriber', 'Abonné'),
+        ('student', 'Étudiant'),
+        ('teacher', 'Professeur'),
+        ('editor', 'Editeur'),
+        ('academic_officer', 'Direction Académique'),
+        ('admin', 'Administrateur'),
     )
     APPROVAL_CHOICES = (
-        ('n', 'Not Requested For Approval'),
-        ('p', 'Approval Application on Pending'),
-        ('d', 'Approval Request Declined'),
-        ('a', 'Verified')
+        ('n', 'Aucune demande d\'approbation'),
+        ('p', 'Demande d’approbation en attente'),
+        ('d', 'Demande d’approbation refusée'),
+        ('a', 'Vérifié')
     )
     approval_status = models.CharField(
         max_length=2,
@@ -30,16 +30,17 @@ class User(AbstractUser):
         default='n',
     )
     employee_or_student_id = models.CharField(
+        help_text="seulement si vous êtes déjà Étudiant ou Professeur",
         max_length=10,
-        blank=True, null=True
+        blank=True, null=True, verbose_name='Matricule'
     )
     requested_role = models.CharField(
         choices=REQUESTED_ACCOUNT_TYPE_CHOICES,
         max_length=50,
-        default=REQUESTED_ACCOUNT_TYPE_CHOICES[0][0]
+        default=REQUESTED_ACCOUNT_TYPE_CHOICES[0][0], verbose_name='Type de compte'
     )
     approval_extra_note = models.TextField(
-        blank=True, null=True
+        blank=True, null=True, verbose_name='message'
     )
 
 
@@ -67,7 +68,7 @@ class SocialLink(models.Model):
         on_delete=models.CASCADE
     )
     media_name = models.CharField(
-        max_length=50, verbose_name='Nom du média'
+        max_length=50, verbose_name='Nom'
     )
     url = models.URLField()
 
@@ -103,12 +104,12 @@ class CommonUserProfile(models.Model):
     )
 
     show_headline_in_bio = models.BooleanField(
-        help_text='Je veux utiliser ceci comme ma bio',
+        help_text='je veux utilisé ceci comme ma bio',
         default=False,
         verbose_name="Titre comme bio"
     )
     summary = RichTextUploadingField(
-        help_text='Your Profile Summary',
+        help_text='un petit résumé de votre profil',
         blank=True,
         null=True,
         verbose_name='Résumé du profil'
@@ -121,12 +122,12 @@ class CommonUserProfile(models.Model):
     social_links = models.ManyToManyField(
         SocialLink,
         related_name='social_links',
-        blank=True
+        blank=True, verbose_name='Réseau social'
     )
 
     class Meta:
-        verbose_name = 'User Profile'
-        verbose_name_plural = 'User Profiles'
+        verbose_name = 'Profil'
+        verbose_name_plural = 'Profils'
 
     def __str__(self):
         return f'{self.user}\'s profile'

@@ -19,6 +19,12 @@ class CreateSemester(CreateView):
     model = Semester
     form_class = SemesterForm
     template_name = 'semester/semester_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['button'] = "Créer"
+        return context
+
     success_url = reverse_lazy('dashboard:academic:read_semesters')
 
     def form_valid(self, form):
@@ -30,6 +36,12 @@ class CreateSemester(CreateView):
 class UpdateSemester(UpdateView):
     model = Semester
     form_class = SemesterForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['button'] = "Modifier"
+        return context
+
     template_name = 'semester/semester_form.html'
 
 
@@ -50,6 +62,12 @@ class CreateSubjectView(CreateView):
     model = Subject
     form_class = SubjectForm
     template_name = 'subject/subject_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['button'] = "Créer"
+        return context
+
     success_url = reverse_lazy('dashboard:academic:read_subjects')
 
     def form_valid(self, form):
@@ -62,6 +80,12 @@ class UpdateSubjectView(UpdateView):
     model = Subject
     form_class = SubjectForm
     template_name = 'subject/subject_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['button'] = "Modifier"
+        return context
+
     success_url = reverse_lazy('dashboard:academic:read_subjects')
 
 
@@ -75,6 +99,12 @@ class DeleteSubjectView(DeleteView):
 class CreateDepartmentView(CreateView):
     model = Department
     form_class = DepartmentForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['button'] = "Créer"
+        return context
+
     success_url = reverse_lazy('academic:read_departments')
     template_name = 'department/department_form.html'
 
@@ -88,6 +118,12 @@ class UpdateDepartmentView(UpdateView):
     model = Department
     form_class = DepartmentForm
     template_name = 'academic/department_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['button'] = "Modifier"
+        return context
+
     success_url = reverse_lazy('dashboard:academic:read_departments')
 
 
@@ -108,6 +144,12 @@ class DeleteDepartmentView(DeleteView):
 class CreateAcademicSession(CreateView):
     model = AcademicSession
     form_class = AcademicSessionForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['button'] = "Créer"
+        return context
+
     success_url = reverse_lazy('dashboard:academic:read_academic_sessions')
     template_name = 'academic/academic_form.html'
 

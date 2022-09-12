@@ -19,7 +19,6 @@
     <!-- Fontawesome css !-->
     <link href="{% static 'home/assets/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
 
-
     <!-- Favicons !-->
 
 
@@ -36,9 +35,12 @@
 
 {% endblock %}
 
-{% block content %}
+<div class="container body">
+    {% block content %}
 
-{% endblock %}
+    {% endblock %}
+</div>
+
 
 {% include "includes/footer.html" %}
 

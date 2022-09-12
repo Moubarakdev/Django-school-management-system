@@ -10,11 +10,11 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Ajouter départements</h3>
+                <h3 class="page-title">{{button}} départements</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'dashboard:academic:read_departments'%}">Liste des
                         départements</a></li>
-                    <li class="breadcrumb-item active">Ajouter départements</li>
+                    <li class="breadcrumb-item active">{{button}} départements</li>
                 </ul>
             </div>
         </div>
@@ -26,7 +26,7 @@
                     <form method="POST">
                         {% csrf_token %}
                         {{ form|crispy }}
-                        <input type="submit" value="Create" class="btn btn-dark">
+                        <input type="submit" value="{{button}}" class="btn btn-dark">
                     </form>
                 </div>
             </div>

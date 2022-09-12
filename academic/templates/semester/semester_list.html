@@ -18,7 +18,8 @@
             </div>
             <div class="col-auto text-right float-right ml-auto">
                 <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
-                <a href="{% url 'dashboard:academic:create_semester' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                <a href="{% url 'dashboard:academic:create_semester' %}" class="btn btn-primary"><i
+                        class="fas fa-plus"></i></a>
             </div>
         </div>
     </div>
@@ -37,8 +38,8 @@
                             </tr>
                             </thead>
                             <tbody>
+                            {% for semester in semesters%}
                             <tr>
-                                {% for semester in semesters%}
                                 <td>{{semester.number}}</td>
                                 <td>{{semester.active_or_not}}</td>
                                 <td>{{semester.created_by}}</td>
@@ -52,8 +53,9 @@
                                         </a>
                                     </div>
                                 </td>
-                                {% endfor %}
+
                             </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>

@@ -9,10 +9,10 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Ajouter Matière</h3>
+                <h3 class="page-title">{{button}} Matière</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'dashboard:academic:read_semesters' %}">Matières</a></li>
-                    <li class="breadcrumb-item active">Ajouter Matière</li>
+                    <li class="breadcrumb-item active">{{button}} Matière</li>
                 </ul>
             </div>
         </div>
@@ -24,7 +24,7 @@
                     <form method="Post">
                         {% csrf_token %}
                         {{ form|crispy }}
-                        <input type="submit" value="Créer" class="btn btn-dark">
+                        <input type="submit" value="{{button}}" class="btn btn-dark">
                     </form>
                 </div>
             </div>

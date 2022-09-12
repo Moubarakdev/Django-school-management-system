@@ -22,7 +22,7 @@
             >
                 <div class="img-fluid text-center">
                     <img
-                            src="../assets/img/5836.jpg"
+                            src="{% static 'home/assets/img/5836.jpg' %}"
                             alt=""
                             height="100%"
                             width="100%"
@@ -44,12 +44,12 @@
     <div class="container">
         <div class="row">
             <div class="col-lg-4">
-                <div class="card-service wow fadeInUp">
+                <div class="card-service wow fadeInUp" style="background-color: #02ccc0;">
                     <div class="header">
                         <img src="../assets/img/services/service-1.svg" alt=""/>
                     </div>
                     <div class="body">
-                        <h5 class="text-secondary">SEO Consultancy</h5>
+                        <h5 class="text-secondary text-white">LICENCE</h5>
                         <p>
                             We help you define your SEO objective & develop a realistic
                             strategy with you
@@ -59,13 +59,13 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="card-service wow fadeInUp">
+                <div class="card-service wow fadeInUp bg-warning">
                     <div class="header">
                         <img src="../assets/img/services/service-2.svg" alt=""/>
                     </div>
                     <div class="body">
-                        <h5 class="text-secondary">Content Marketing</h5>
-                        <p>
+                        <h5 class="text-white">MASTER</h5>
+                        <p class="text-white">
                             We help you define your SEO objective & develop a realistic
                             strategy with you
                         </p>
@@ -74,12 +74,12 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="card-service wow fadeInUp">
+                <div class="card-service wow fadeInUp" style="background-color: #260589;">
                     <div class="header">
                         <img src="../assets/img/services/service-3.svg" alt=""/>
                     </div>
                     <div class="body">
-                        <h5 class="text-secondary">Keyword Research</h5>
+                        <h5 class="text-secondary text-white">DOCTORAT</h5>
                         <p>
                             We help you define your SEO objective & develop a realistic
                             strategy with you
@@ -207,7 +207,7 @@
 <div class="page-section banner-info">
     <div
             class="wrap bg-image"
-            style="background-image: url(../assets/img/bg_pattern.svg)"
+            style="background-image: url({% static 'home/assets/img/bg_pattern.svg'%})"
     >
         <div class="container">
             <div class="row align-items-center">
