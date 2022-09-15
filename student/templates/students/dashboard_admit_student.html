@@ -1,0 +1,50 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extra_header %}
+{% endblock %}
+
+{% block content %}
+<!-- STUDENT ADMISSION VIA ADMINS -->
+<div class="container content">
+    <div class="alert alert-warning">
+        <strong>VERIFIER si vous validez l'inscription de {{ applicant.last_name }} dans le département suivant : </strong>
+    </div>
+    <div class="row">
+        <div class="col-md-7">
+            <form action="" method="POST">
+                {{ form|crispy }}
+                <div>
+                    <input type="submit" value="VALIDER" class="btn btn-success">
+                </div>
+                {% csrf_token %}
+            </form>
+        </div>
+        <div class="col-md-5">
+            <h4>INFORMATIONS DE L'ÉTUDIANT</h4>
+            <div class="card p-3">
+                <p><i>Nom:</i> {{ applicant.last_name }}</p>
+                <p><i>Prénom:</i> {{ applicant.first_name }}</p>
+                <p><i>le choix de son Département était : </i>{{ applicant.department_choice }}</p>
+                <p><i>demandé le: </i>{{ applicant.created }}</p>
+                <p>
+                    <i>Aujourd'hui: </i><span id="date"></span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block customjs %}
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<script src="{% static 'js/moment.js' %}"></script>
+<script>
+    let today = moment().format("MMM Do YY, h:mm a"); 
+    document.getElementById('date').innerHTML = today;
+
+
+</script>
+{% endblock %}

@@ -19,7 +19,7 @@ class UserResource(resources.ModelResource):
         model = User
 
 
-class UserAdmin(RolePermissionsUserAdminMixin, ImportExportModelAdmin, auth_admin.UserAdmin):
+class UserAdmin(ImportExportModelAdmin, auth_admin.UserAdmin):
 
     form = UserChangeForm
     add_form = UserRegistrationForm

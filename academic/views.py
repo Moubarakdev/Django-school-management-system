@@ -105,7 +105,7 @@ class CreateDepartmentView(CreateView):
         context['button'] = "Créer"
         return context
 
-    success_url = reverse_lazy('academic:read_departments')
+    success_url = reverse_lazy('dashboard:academic:read_departments')
     template_name = 'department/department_form.html'
 
     def form_valid(self, form):
@@ -117,7 +117,7 @@ class CreateDepartmentView(CreateView):
 class UpdateDepartmentView(UpdateView):
     model = Department
     form_class = DepartmentForm
-    template_name = 'academic/department_form.html'
+    template_name = 'department/department_form.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -159,7 +159,26 @@ class CreateAcademicSession(CreateView):
         return super().form_valid(form)
 
 
-class AccademicSessionListView(ListView):
+class AcademicSessionListView(ListView):
     model = AcademicSession
     context_object_name = "ac_sessions"
     template_name = 'academic/academic_list.html'
+
+
+class UpdateAcademicSession(UpdateView):
+    model = AcademicSession
+    form_class = AcademicSessionForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['button'] = "Modifier"
+        return context
+
+    success_url = reverse_lazy('dashboard:academic:read_ac_sessions')
+    template_name = 'academic/academic_form.html'
+
+
+class DeleteAcademicSession(DeleteView):
+    model = AcademicSession
+    template_name = 'academic/academic_confirm_delete.html'
+    success_url = reverse_lazy('dashboard:academic:read_ac_sessions')

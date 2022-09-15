@@ -35,7 +35,6 @@
                                 <th>Nom</th>
                                 <th>Code</th>
                                 <th>Description</th>
-                                <th>Promotion actuelle</th>
                                 <th>Date de création</th>
                                 <th>Créer par</th>
                                 <th class="text-right">Action</th>
@@ -46,16 +45,16 @@
                             <tr>
                                 <td>{{department.name}}</td>
                                 <td>{{department.code}}</td>
-                                <td>{{department.curent_batch}}</td>
+                                <td>{{department.description}}</td>
                                 <td>{{department.establish_date}}</td>
                                 <td>{{department.created_by}}</td>
                                 <td class="text-right">
                                     <div class="actions">
-                                        <a href="{% url 'dashboard:academic:update_department'%}"
+                                        <a href="{% url 'dashboard:academic:update_department' pk=department.pk%}"
                                            class="btn btn-sm bg-success-light mr-2">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <a href="#" class="btn btn-sm bg-danger-light">
+                                        <a href="{% url 'dashboard:academic:delete_department' pk=department.pk%}" class="btn btn-sm bg-danger-light">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>

@@ -13,7 +13,8 @@ class Department(TimeStampedModel):
     code = models.PositiveIntegerField(verbose_name="Code department ")
     description = models.TextField(help_text='Ecriver une simple description a propos du département', blank=True,
                                    null=True, verbose_name='Description')
-    current_batch = models.ForeignKey('Batch', on_delete=models.CASCADE, blank=True, related_name='current_batches',
+    current_batch = models.ForeignKey('Batch', on_delete=models.CASCADE, blank=True, null=True,
+                                      related_name='current_batches',
                                       verbose_name='Promotion actuelle')
     batches = models.ManyToManyField('Batch', related_name='department_batches', blank=True, verbose_name="Promotions")
     establish_date = models.DateField(auto_now_add=True, verbose_name='Date de création')
@@ -32,9 +33,15 @@ class AcademicSession(TimeStampedModel):
 
     def __str__(self):
         return '{} - {}'.format(self.year, self.year + 1)
+
     @property
     def academic_year(self):
         return '{} - {}'.format(self.year, self.year + 1)
+
+
+def create_resource():
+    return reverse('dashboard:academic:create_semester')
+
 
 class Semester(TimeStampedModel):
     number = models.PositiveIntegerField(unique=True, verbose_name='Numéro semestre')
@@ -44,7 +51,7 @@ class Semester(TimeStampedModel):
         default=None, null=True, blank=True
       )
     '''
-    is_active = models.BooleanField(default=True, verbose_name='Opérationnel'),
+    active = models.BooleanField(default=True, verbose_name='Opérationnel'),
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True
@@ -65,21 +72,12 @@ class Semester(TimeStampedModel):
 
     @property
     def active_or_not(self):
-        return "Oui" if self.is_active else "Non"
-
-    def create_resource(self):
-        return reverse('academic:create_semester')
+        return "Oui" if self.active else "Non"
 
 
 class Subject(TimeStampedModel):
     name = models.CharField(max_length=50, verbose_name="Titre du cours")
     subject_code = models.PositiveIntegerField(unique=True, verbose_name="Code cours"),
-    '''
-    book_cover = models.ImageField(
-         upload_to='subjects/',
-         default='subjects/bookcover.png'
-     )
-    '''
     instructor = models.ForeignKey(
         Teacher, on_delete=models.CASCADE,
         blank=True, null=True, verbose_name="Instructeur"
@@ -107,7 +105,6 @@ class Batch(TimeStampedModel):
         return f'{self.department.name} Batch {self.number} ({self.year})'
 
 
-'''
 class TempSerialID(TimeStampedModel):
     student = models.OneToOneField('student.Student', on_delete=models.CASCADE,
                                    related_name='student_serial', verbose_name="Étudiant")
@@ -134,4 +131,3 @@ class TempSerialID(TimeStampedModel):
 
         # return something like: 21-15-666-15
         return f'{yf}-{bn}-{dc}-{syl}'
-'''

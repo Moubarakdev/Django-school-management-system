@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'teacher',
     'academic',
     'dashboard',
+    'student',
 
 
     # APP TIERS
@@ -58,6 +59,8 @@ INSTALLED_APPS = [
     'active_link',  # active link
     'rolepermissions',
     'import_export',
+    'django_filters',
+    'result',
 
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -104,6 +107,10 @@ AUTH_USER_MODEL = 'account.USER'
 LOGIN_URL = 'account:login'
 LOGIN_REDIRECT_URL = ''  # Route defined in dashboard/urls.py
 LOGOUT_REDIRECT_URL = ''  # Route defined in home/urls.py
+
+# for permission management
+ROLEPERMISSIONS_MODULE = 'myschool.roles'
+#ROLEPERMISSIONS_REGISTER_ADMIN = True
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

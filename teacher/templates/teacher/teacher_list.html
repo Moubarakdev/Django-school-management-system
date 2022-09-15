@@ -4,22 +4,21 @@
 
 {% block extra_header %}
 {% endblock %}
+
 {% block content %}
-
-
 <div class="content container-fluid">
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Matières</h3>
+                <h3 class="page-title">Professeurs</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Matières</li>
+                    <li class="breadcrumb-item active">Liste des professeurs</li>
                 </ul>
             </div>
             <div class="col-auto text-right float-right ml-auto">
                 <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
-                <a href="{% url 'dashboard:academic:create_subject' %}" class="btn btn-primary"><i
+                <a href="{% url 'dashboard:teacher:create_teacher' %}" class="btn btn-primary"><i
                         class="fas fa-plus"></i></a>
             </div>
         </div>
@@ -32,31 +31,28 @@
                         <table class="table table-hover table-center mb-0 datatable">
                             <thead>
                             <tr>
-                                <th>Titre cours</th>
-                                <th>Code cours</th>
-                                <th>Instructeur</th>
-                                <th>Note 1</th>
-                                <th>Note 2</th>
-                                <th>Créateur</th>
-                                <th class="text-right">Action</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Prénoms</th>
+                                <th scope="col">Contact</th>
+                                <th class="text-right">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for subject in subjects%}
+                            {% for teacher in teachers %}
                             <tr>
-                                <td>{{subject.name}}</td>
-                                <td>{{subject.subject_code}}</td>
-                                <td>{{subject.instructor}}</td>
-                                <td>{{subject.theory_marks}}</td>
-                                <td>{{subject.practical_marks}}</td>
-                                <td>{{subject.created_by}}</td>
+                                <td><a href="{% url 'dashboard:teacher:teacher_detail' pk=teacher.pk %}">
+                                    {{teacher.first_name}}</a></td>
+                                <td><a href="{% url 'dashboard:teacher:teacher_detail' pk=teacher.pk %}">
+                                    {{teacher.last_name}}</a></td>
+                                <td>{{ teacher.mobile|default_if_none:"" }}</td>
                                 <td class="text-right">
                                     <div class="actions">
-                                        <a href="{% url 'dashboard:academic:update_semester' pk=subject.pk%}"
+                                        <a href="{% url 'dashboard:teacher:update_teacher'  pk=teacher.pk %}"
                                            class="btn btn-sm bg-success-light mr-2">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <a href="{% url 'dashboard:academic:delete_semester' pk=subject.pk%}" class="btn btn-sm bg-danger-light">
+                                        <a href="{% url 'dashboard:teacher:delete_teacher'  pk=teacher.pk %}"
+                                           class="btn btn-sm bg-danger-light">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
@@ -73,6 +69,6 @@
 </div>
 {% endblock %}
 
-{% block extrajs %}
+{% block customjs %}
 
 {% endblock %}

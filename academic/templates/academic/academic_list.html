@@ -13,12 +13,13 @@
                 <h3 class="page-title">Années académique</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Ajouter une année académique</li>
+                    <li class="breadcrumb-item active">Liste des années académique</li>
                 </ul>
             </div>
             <div class="col-auto text-right float-right ml-auto">
                 <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
-                <a href="{% url 'dashboard:academic:create_ac_session' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                <a href="{% url 'dashboard:academic:create_ac_session' %}" class="btn btn-primary"><i
+                        class="fas fa-plus"></i></a>
             </div>
         </div>
     </div>
@@ -35,21 +36,21 @@
                             </tr>
                             </thead>
                             <tbody>
+                            {% for ac_session in ac_sessions%}
                             <tr>
-                               {% for ac_session in ac_sessions%}
                                 <td>{{ac_session.academic_year}}</td>
                                 <td class="text-right">
                                     <div class="actions">
-                                        <a href="" class="btn btn-sm bg-success-light mr-2">
+                                        <a href="{% url 'dashboard:academic:update_ac_session' pk=ac_session.pk%}" class="btn btn-sm bg-success-light mr-2">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <a href="#" class="btn btn-sm bg-danger-light">
+                                        <a href="{% url 'dashboard:academic:delete_ac_session' pk=ac_session.id%}" class="btn btn-sm bg-danger-light">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
                                 </td>
-                                {% endfor %}
                             </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>
@@ -60,6 +61,6 @@
 </div>
 {% endblock %}
 
-{% block extrajs %}
+{% block customjs %}
 
 {% endblock %}

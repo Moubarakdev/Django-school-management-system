@@ -1,0 +1,106 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extra_header %}
+{% endblock %}
+
+{% block content %}
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Demandes d'inscription</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Liste des demandes</li>
+                </ul>
+            </div>
+            <div class="col-auto text-right float-right ml-auto">
+                <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+                <a href="{% url 'dashboard:student:add_student' %}" class="btn btn-primary"><i
+                        class="fas fa-plus"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-center mb-0 datatable">
+                            <thead>
+                            <tr>
+                                <th scope="col">SYL</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Prénoms</th>
+                                <th scope="col">Application Date</th>
+                                <th scope="col">Payment Status</th>
+                                <th scope="col">Admitted</th>
+                                <th scope="col">Contact</th>
+
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for applicant in registrants%}
+                            <tr>
+
+                                <th scope="row">
+                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                        {{ forloop.counter }}
+                                    </a>
+                                </th>
+                                <td>
+                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                        {{ applicant.last_name|upper }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                        {{ applicant.first_name|capfirst }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                        {{ applicant.created }}
+                                    </a>
+                                </td>
+                                <td style="text-align: center;">
+                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                        {% if applicant.paid %}
+                                        <img src="{% static 'images/checked.png' %}" width="16" alt="">
+                                        {% else %}
+                                        <img src="{% static 'images/cross.png' %}" width="16" alt="">
+                                        {% endif %}
+                                    </a>
+                                </td>
+                                <td style="text-align: center;">
+                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                        {% if applicant.admitted %}
+                                        <img src="{% static 'images/checked.png' %}" width="16" alt="">
+                                        {% else %}
+                                        <img src="{% static 'images/cross.png' %}" width="16" alt="">
+                                        {% endif %}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                        {{ applicant.mobile_number }}
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+
+{% endblock %}
+

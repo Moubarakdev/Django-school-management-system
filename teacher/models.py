@@ -4,28 +4,23 @@ from taggit.managers import TaggableManager
 
 from myschool import settings
 
-
 # Create your models here.
+'''
 class Designation(TimeStampedModel):
     title = models.CharField(max_length=255)
     created = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return str(self.title)
+'''
 
 
 class Teacher(TimeStampedModel):
-    name = models.CharField(max_length=150)
-    '''
+    last_name = models.CharField(max_length=150, verbose_name="nom")
+    first_name = models.CharField(max_length=150, verbose_name="prénom")
     photo = models.ImageField(upload_to='teachers',
                               default='teacheravatar.jpg')
-    '''
     date_of_birth = models.DateField(blank=True, null=True)
-    designation = models.ForeignKey(
-        Designation,
-        on_delete=models.CASCADE,
-        related_name='resources'
-    )
     expertise = TaggableManager(blank=True)
     mobile = models.CharField(max_length=11, blank=True, null=True)
     email = models.CharField(max_length=255, blank=True, null=True)
@@ -35,7 +30,11 @@ class Teacher(TimeStampedModel):
         on_delete=models.DO_NOTHING, null=True)
 
     class Meta:
-        ordering = ['joining_date', 'name']
+        ordering = ['joining_date', 'first_name']
 
     def __str__(self):
-        return '{} ({})'.format(self.name, self.designation)
+        return '{}'.format(self.first_name)
+
+    @property
+    def name(self):
+        return f'{self.last_name} {self.first_name} '

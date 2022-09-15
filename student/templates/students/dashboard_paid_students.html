@@ -1,0 +1,161 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extra_header %}
+{% endblock %}
+
+{% block content %}
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Paid students</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Paid students list</li>
+                </ul>
+            </div>
+            <div class="col-auto text-right float-right ml-auto">
+                <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
+                <a href="{% url 'dashboard:academic:create_ac_session' %}" class="btn btn-primary"><i
+                        class="fas fa-plus"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-center mb-0 datatable">
+                            <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Prénoms</th>
+                                <th scope="col">Adresse</th>
+                                <th scope="col">Departement</th>
+                                <th scope="col">Date Admission</th>
+                                <th class="text-right">Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for applicant in paid_students %}
+                            <tr>
+                                <th scope="row">{{ applicant.id }}</th>
+                                <td>
+                                    <img src="{{ applicant.photo.url }}" width="50" height="50">
+                                </td>
+                                <td>{{ applicant.first_name }}</td>
+                                <td>{{ applicant.last_name }}</td>
+                                <td>{{ applicant.permanent_address }}</td>
+                                <td>{{ applicant.department_choice }}</td>
+                                <td>{{ applicant.created }}</td>
+                                <td>
+                                    <a href="" class="btn btn-sm btn-primary">More</a>
+                                    <a href="{% url 'students:admit_student' pk=applicant.id %}"
+                                       class="btn btn-sm btn-success">
+                                        Admission
+                                    </a>
+                                    <a href="{% url 'students:update_online_registrant' pk=applicant.id %}"
+                                       class="btn btn-sm btn-info">
+                                        Update
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+
+{% endblock %}
+
+
+{% comment %}
+
+
+{% extends 'dashboard.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extra_header %}
+{% endblock %}
+
+{% block dashboard-body %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+        <li class="breadcrumb-item">
+            <a href="{% url 'students:students_dashboard_index' %}">Students</a>
+        </li>
+        <li class="breadcrumb-item active" aria-current="page">Paid Applicants</li>
+    </ol>
+</nav>
+
+<!-- Online Applicants Table Row -->
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 pl-0">
+            <h4 class="ml-0">Online Admission Registrants</h4>
+        </div>
+        <!-- Online Applicants Table -->
+        <div id="online-applicants" class="col-md-12 mt-4">
+            <table class="table table-bordered table-hover">
+                <thead class="thead-light">
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Image</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Adress</th>
+                    <th scope="col">Department Choice</th>
+                    <th scope="col">Application Date</th>
+                    <th scope="col">Actions</th>
+                </tr>
+                </thead>
+                <tbody class="bg-light">
+
+                {% for applicant in paid_students %}
+                <tr>
+                    <th scope="row">{{ applicant.id }}</th>
+                    <td>
+                        <img src="{{ applicant.photo.url }}" width="50" height="50">
+                    </td>
+                    <td>{{ applicant.name }}</td>
+                    <td>{{ applicant.permanent_address }}</td>
+                    <td>{{ applicant.department_choice }}</td>
+                    <td>{{ applicant.created }}</td>
+                    <td>
+                        <a href="" class="btn btn-sm btn-primary">More</a>
+                        <a href="{% url 'students:admit_student' pk=applicant.id %}" class="btn btn-sm btn-success">
+                            Admission
+                        </a>
+                        <a href="{% url 'students:update_online_registrant' pk=applicant.id %}"
+                           class="btn btn-sm btn-info">
+                            Update
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extrajs %}
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+{% endblock %}
+
+{% endcomment %}

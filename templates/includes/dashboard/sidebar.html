@@ -9,6 +9,12 @@
                     <a href="{% url 'dashboard:index' %}"><i class="fas fa-grid-horizontal"></i> <span>Dashboard</span></a>
                 </li>
                 <li class="menu-title">
+                    <span>Dashboards</span>
+                </li>
+                 <li><a href="{% url 'dashboard:student:students_board' %}"> <i
+                        class="fas fa-book-reader"></i><span>Dashboard for students</span></a>
+                </li>
+                <li class="menu-title">
                     <span>Academic</span>
                 </li>
                 <li><a href="{% url 'dashboard:academic:read_ac_sessions' %}"><i class="fas fa-book-reader"></i><span>Sessions Académique</span></a>
@@ -17,20 +23,51 @@
                 </li>
                 <li><a href="{% url 'dashboard:academic:read_semesters' %}"><i class="fas fa-book-reader"></i><span>Semestres</span></a>
                 </li>
-                <li><a href="{% url 'dashboard:academic:read_departments' %}"><i class="fas fa-book-reader"></i><span>Départements</span> </a>
+                <li><a href="{% url 'dashboard:academic:read_departments' %}"><i class="fas fa-book-reader"></i><span>Départements</span>
+                </a>
                 </li>
 
                 <li class="menu-title">
                     <span>Utilisateur</span>
                 </li>
-                <li><a href="{% url 'dashboard:read_requests' %}"><i class="fas fa-book-reader"></i><span>Demandes</span></a>
+                <li><a href="{% url 'dashboard:read_requests' %}"><i
+                        class="fas fa-book-reader"></i><span>Demandes</span></a>
                 </li>
-                <li><a href="{% url 'account:read_accounts' %}"> <i class="fas fa-book-reader"></i><span>Utilisateurs</span></a>
+                <li><a href="{% url 'account:read_accounts' %}"> <i
+                        class="fas fa-book-reader"></i><span>Utilisateurs</span></a>
                 </li>
-                <li><a href="{% url 'dashboard:academic:read_semesters' %}"><i class="fas fa-book-reader"></i><span>Semestres</span></a>
+
+                <li class="menu-title">
+                    <span>Étudiants</span>
                 </li>
-                <li><a href="{% url 'dashboard:academic:read_departments' %}"><i class="fas fa-book-reader"></i><span>Départements</span> </a>
+                <li><a href="{% url 'dashboard:student:all_student' %}"> <i
+                        class="fas fa-book-reader"></i><span>Étudiants</span></a>
                 </li>
+                 <li><a href="{% url 'dashboard:student:all_applicants' %}"> <i
+                        class="fas fa-book-reader"></i><span>Demandes d'inscription</span></a>
+                </li>
+                <li><a href="{% url 'dashboard:student:admitted_student_list' %}"> <i
+                        class="fas fa-book-reader"></i><span>Inscriptions acceptées</span></a>
+                </li>
+                <li><a href="{% url 'dashboard:student:paid_registrant_list' %}"> <i
+                        class="fas fa-book-reader"></i><span>Listes des inscriptions payées</span></a>
+                </li>
+                <li><a href="{% url 'dashboard:student:unpaid_registrant_list' %}"> <i
+                        class="fas fa-book-reader"></i><span>Listes des inscriptions non payées</span></a>
+                </li>
+                <li><a href="{% url 'dashboard:student:rejected_registrant_list' %}"> <i
+                        class="fas fa-book-reader"></i><span>Listes des inscriptions rejetés</span></a>
+                </li>
+                <li><a href="{% url 'dashboard:student:admission_confirmation' %}"> <i
+                        class="fas fa-book-reader"></i><span>Admission confirmation</span></a>
+                </li>
+                <li class="menu-title">
+                    <span>Professeurs</span>
+                </li>
+                <li><a href="{% url 'dashboard:teacher:read_teachers' %}"> <i
+                        class="fas fa-book-reader"></i><span>Teachers</span></a>
+                </li>
+
 
                 <!--
                 <li class="menu-title">

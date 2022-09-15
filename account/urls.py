@@ -1,4 +1,5 @@
 from django.conf.urls.static import static
+from django.contrib.auth.views import LogoutView
 from django.urls import path
 from django_countries import settings
 
@@ -11,6 +12,7 @@ urlpatterns = [
                   path('', profile_complete, name='profile_complete'),
                   path('login/', login_view, name="login"),
                   path('signup/', register, name="register"),
+                  path('logout/', LogoutView.as_view(), name="logout"),
                   path('accounts/', AccountListView.as_view(), name='read_accounts'),
                   path('account/create/<int:pk>', UserUpdateView.as_view(), name='update_account'),
                   path('approval/<int:pk>/<int:approved>', user_approval, name='user_approval'),
