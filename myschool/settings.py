@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'import_export',
     'django_filters',
     'result',
+    'django_file_form',
 
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -106,7 +107,7 @@ WSGI_APPLICATION = 'myschool.wsgi.application'
 AUTH_USER_MODEL = 'account.USER'
 LOGIN_URL = 'account:login'
 LOGIN_REDIRECT_URL = ''  # Route defined in dashboard/urls.py
-LOGOUT_REDIRECT_URL = ''  # Route defined in home/urls.py
+LOGOUT_REDIRECT_URL = 'home:home'  # Route defined in home/urls.py
 
 # for permission management
 ROLEPERMISSIONS_MODULE = 'myschool.roles'

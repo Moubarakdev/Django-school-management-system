@@ -21,7 +21,7 @@
                 <form action="{% url 'dashboard:student:add_counseling_data' student_id=applicant.id %}" method="post">
                     {{ counseling_form|crispy }}
                     {% csrf_token %}
-                    <input type="submit" class="btn btn-primary" value="Save Changes">
+                    <input type="submit" class="btn btn-primary" value="Sauvegarder">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </form>
             </div>

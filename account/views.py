@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, UpdateView
 from rolepermissions.roles import assign_role
 
@@ -184,7 +184,7 @@ def user_approval(request, pk, approved):
             messages.SUCCESS,
             f'{user}\'s request for {requested_role} has been declined.'
         )
-    return redirect('account:user_requests')
+    return redirect('/dashboard/requests')
 
 
 def user_approval_with_modification(request, pk):
@@ -202,7 +202,7 @@ def user_approval_with_modification(request, pk):
             messages.SUCCESS,
             f'{user}\'s account has been approved.'
         )
-        return redirect('account:user_requests')
+        return redirect('/dashboard/requests')
     ctx = {
         'form': form,
     }

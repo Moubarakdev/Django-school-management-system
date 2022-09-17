@@ -3,7 +3,7 @@
 {% load crispy_forms_tags %}
 
 {% block extra_header %}
-<style type="text/css">
+<style>
     #profile-edit-form .multiField:not(:last-child) {
       border-bottom: 1px solid #e1e1e1;
     }
@@ -46,7 +46,7 @@
                                  {% if user.profile.profile_picture %}
                                  src="{{ user.profile.profile_picture.url }}"
                                  {% else %}
-                                 src="{% static '/assets/img/person/user.png' %}"
+                                 src="{% static '/assets/img/user.jpg' %}"
                                  {% endif %}
                                  width="150"/>
                         </form>
@@ -178,7 +178,7 @@
                     {{ verification_form|crispy }}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                     <button type="submit" class="btn btn-primary">Sauvegarder</button>
                 </div>
             </div>

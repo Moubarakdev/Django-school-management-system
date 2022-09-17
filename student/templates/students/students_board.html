@@ -1,414 +1,523 @@
 {% extends 'layouts/base_dash.html' %}
 {% load crispy_forms_tags %}
-{% load static %}
-{% block extra_header %}
+{% load static %} {% block extra_header %}
 {% endblock %}
 
 {% block content %}
 <div class="container-fluid content">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+      <li class="breadcrumb-item"><a href="#">Applicants</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Index</li>
+    </ol>
+  </nav>
 
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
-            <li class="breadcrumb-item"><a href="#">Applicants</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Index</li>
-        </ol>
-    </nav>
-
-    <!-- Stats - Links -->
-    <div class="row gap-20 masonry pos-r">
-        <div class="masonry-sizer col-md-6"></div>
-        <div class="masonry-item w-100">
-            <div class="row gap-20">
-                <div class="col-md-3">
-                    <div class="layers bd bgc-white p-20">
-                        <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">
-                                <a href="{% url 'dashboard:student:all_applicants' %}" class="text-dark">
-                                    Applications
-                                </a>
-                            </h6>
-                        </div>
-                        <div class="layer w-100">
-                            <div class="peers ai-sb fxw-nw">
-                                <div class="peer peer-greed">
-                                    <a href="{% url 'dashboard:student:all_applicants' %}" class="text-dark">
-                                        <i class="fas fa-users fa-3x"></i>
-                                    </a>
-                                </div>
-                                <div class="peer">
-                <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50 c-green-500">
-                  <a href="{% url 'dashboard:student:all_applicants' %}" class="text-dark">
-                    {{ all_applicants.count }}
-                  </a>
-                </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="layers bd bgc-white p-20">
-                        <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">
-                                <a href="{% url 'dashboard:student:admitted_student_list' %}" class="text-dark">
-                                    All-Cleared
-                                </a>
-                            </h6>
-                        </div>
-                        <div class="layer w-100">
-                            <div class="peers ai-sb fxw-nw">
-                                <div class="peer peer-greed">
-                                    <a href="{% url 'dashboard:student:admitted_student_list' %}" class="text-dark">
-                                        <i class="fas fa-users fa-3x"></i>
-                                    </a>
-                                </div>
-                                <div class="peer">
-                <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500">
-                  <a href="{% url 'dashboard:student:admitted_student_list' %}" class="text-dark">
-                    {{ admitted_students.count }}
-                  </a>
-                </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="layers bd bgc-white p-20">
-                        <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">
-                                <a href="{% url 'dashboard:student:unpaid_registrant_list' %}" class="text-dark">
-                                    Unpaid
-                                </a>
-                            </h6>
-                        </div>
-                        <div class="layer w-100">
-                            <div class="peers ai-sb fxw-nw">
-                                <div class="peer peer-greed">
-                                    <a href="{% url 'dashboard:student:unpaid_registrant_list' %}" class="text-dark">
-                                        <i class="fas fa-users fa-3x"></i>
-                                    </a>
-                                </div>
-                                <div class="peer">
-                <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-purple-50 c-purple-500">
-                  <a href="{% url 'dashboard:student:unpaid_registrant_list' %}" class="text-dark">
-                    {{ unpaid_registrants.count }}
-                  </a>
-                </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="layers bd bgc-white p-20">
-                        <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">
-                                <a href="{% url 'dashboard:student:rejected_registrant_list' %}" class="text-dark">
-                                    Rejected
-                                </a>
-                            </h6>
-                        </div>
-                        <div class="layer w-100">
-                            <div class="peers ai-sb fxw-nw">
-                                <div class="peer peer-greed">
-                                    <a href="{% url 'dashboard:student:rejected_registrant_list' %}" class="text-dark">
-                                        <i class="fas fa-users fa-3x"></i>
-                                    </a>
-                                </div>
-                                <div class="peer">
-                <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-50 c-blue-500">
-                  <a href="{% url 'dashboard:student:rejected_registrant_list' %}" class="text-dark">
-                    {{ rejected_applicants.count }}
-                  </a>
-                </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <!-- Stats - Links -->
+  <div class="row gap-20 masonry pos-r">
+    <div class="masonry-sizer col-md-6"></div>
+    <div class="masonry-item w-100">
+      <div class="row gap-20">
+        <div class="col-md-3">
+          <div class="layers bd bgc-white p-20">
+            <div class="layer w-100 mB-10">
+              <h6 class="lh-1">
+                <a
+                  href="{% url 'dashboard:student:all_applicants' %}"
+                  class="text-dark"
+                >
+                  Applications
+                </a>
+              </h6>
             </div>
-        </div>
-
-        <div class="masonry-item w-100">
-            <div class="row gap-20">
-                <div class="col-md-3">
-                    <div class="layers bd bgc-white p-20">
-                        <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">
-                                <a href="{% url 'dashboard:student:admission_confirmation' %}" class="text-dark">
-                                    Confirmation
-                                </a>
-                            </h6>
-                        </div>
-                        <div class="layer w-100">
-                            <div class="peers ai-sb fxw-nw">
-                                <div class="peer peer-greed">
-                                    <a href="{% url 'dashboard:student:admission_confirmation' %}" class="text-dark">
-                                        <i class="fas fa-users fa-3x"></i>
-                                    </a>
-                                </div>
-                                <div class="peer">
-                <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-purple-50 c-purple-500">
-                  <a href="{% url 'dashboard:student:admission_confirmation' %}" class="text-dark">
-                    {{ admitted_students.count }}
+            <div class="layer w-100">
+              <div class="peers ai-sb fxw-nw">
+                <div class="peer peer-greed">
+                  <a
+                    href="{% url 'dashboard:student:all_applicants' %}"
+                    class="text-dark"
+                  >
+                    <i class="fas fa-users fa-3x"></i>
                   </a>
-                </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="layers bd bgc-white p-20">
-                        <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">
-                                <a href="{% url 'dashboard:student:add_student' %}" class="text-dark">
-                                    Add Offline Applicant
-                                </a>
-                            </h6>
-                        </div>
-                        <div class="layer w-100">
-                            <div class="peers ai-sb fxw-nw">
-                                <div class="peer peer-greed">
-                                    <a href="{% url 'dashboard:student:add_student' %}" class="text-dark">
-                                        <i class="fas fa-users fa-3x"></i>
-                                    </a>
-                                </div>
-                                <div class="peer">
-                <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50 c-green-500">
-                  <a href="{% url 'dashboard:student:add_student' %}" class="text-dark">
-                    {{ offline_applicants.count }}
-                  </a>
-                </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="peer">
+                  <span
+                    class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50 c-green-500"
+                  >
+                    <a
+                      href="{% url 'dashboard:student:all_applicants' %}"
+                      class="text-dark"
+                    >
+                      {{ all_applicants.count }}
+                    </a>
+                  </span>
                 </div>
+              </div>
             </div>
+          </div>
         </div>
+        <div class="col-md-3">
+          <div class="layers bd bgc-white p-20">
+            <div class="layer w-100 mB-10">
+              <h6 class="lh-1">
+                <a
+                  href="{% url 'dashboard:student:admitted_student_list' %}"
+                  class="text-dark"
+                >
+                  All-Cleared
+                </a>
+              </h6>
+            </div>
+            <div class="layer w-100">
+              <div class="peers ai-sb fxw-nw">
+                <div class="peer peer-greed">
+                  <a
+                    href="{% url 'dashboard:student:admitted_student_list' %}"
+                    class="text-dark"
+                  >
+                    <i class="fas fa-users fa-3x"></i>
+                  </a>
+                </div>
+                <div class="peer">
+                  <span
+                    class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500"
+                  >
+                    <a
+                      href="{% url 'dashboard:student:admitted_student_list' %}"
+                      class="text-dark"
+                    >
+                      {{ admitted_students.count }}
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="layers bd bgc-white p-20">
+            <div class="layer w-100 mB-10">
+              <h6 class="lh-1">
+                <a
+                  href="{% url 'dashboard:student:unpaid_registrant_list' %}"
+                  class="text-dark"
+                >
+                  Unpaid
+                </a>
+              </h6>
+            </div>
+            <div class="layer w-100">
+              <div class="peers ai-sb fxw-nw">
+                <div class="peer peer-greed">
+                  <a
+                    href="{% url 'dashboard:student:unpaid_registrant_list' %}"
+                    class="text-dark"
+                  >
+                    <i class="fas fa-users fa-3x"></i>
+                  </a>
+                </div>
+                <div class="peer">
+                  <span
+                    class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-purple-50 c-purple-500"
+                  >
+                    <a
+                      href="{% url 'dashboard:student:unpaid_registrant_list' %}"
+                      class="text-dark"
+                    >
+                      {{ unpaid_registrants.count }}
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="layers bd bgc-white p-20">
+            <div class="layer w-100 mB-10">
+              <h6 class="lh-1">
+                <a
+                  href="{% url 'dashboard:student:rejected_registrant_list' %}"
+                  class="text-dark"
+                >
+                  Rejected
+                </a>
+              </h6>
+            </div>
+            <div class="layer w-100">
+              <div class="peers ai-sb fxw-nw">
+                <div class="peer peer-greed">
+                  <a
+                    href="{% url 'dashboard:student:rejected_registrant_list' %}"
+                    class="text-dark"
+                  >
+                    <i class="fas fa-users fa-3x"></i>
+                  </a>
+                </div>
+                <div class="peer">
+                  <span
+                    class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-50 c-blue-500"
+                  >
+                    <a
+                      href="{% url 'dashboard:student:rejected_registrant_list' %}"
+                      class="text-dark"
+                    >
+                      {{ rejected_applicants.count }}
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <hr/>
 
-    <!-- Charts -->
-    <div class="row my-5">
-        <!-- Monthly Report PieChart -->
-        <div class="col-md-6">
-            <div class="card p-4">
-                <h5 class="card-title text-center">
-                    <form action="" method="get">
-                        <div class="form-row align-items-center">
-                            <!-- <div class="form-group col-md-5">Mon th:</div> -->
-                            <div class="form-group">
-                                <select name="monthly_report_piechart_date" id="monthly_report_piechart_date"
-                                        class="form-control"
-                                        onchange="clickSelectedOption(this)">
-                                    <option selected id="reporting_chart_month_selected" disabled></option>
-                                    {% for month in month_list %}
-                                    <option value="{{ month }}" id="report-piechart-{{ month }}" onclick="monthlyReportPieChartByMonth(
-                    document.getElementById('report-piechart-{{ month }}').value)">
-                                        {{ month }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-                </h5>
-                <div id="monthly-report-canvas-holder" style="width: 100%">
-                    <canvas id="monthly-report--chart-area"></canvas>
-                </div>
+    <div class="masonry-item w-100">
+      <div class="row gap-20">
+        <div class="col-md-3">
+          <div class="layers bd bgc-white p-20">
+            <div class="layer w-100 mB-10">
+              <h6 class="lh-1">
+                <a
+                  href="{% url 'dashboard:student:admission_confirmation' %}"
+                  class="text-dark"
+                >
+                  Confirmation
+                </a>
+              </h6>
             </div>
-        </div>
-        <!-- Monthly Report Departmentwise bar Chart -->
-        <div class="col-md-6">
-            <div class="card p-4">
-                <h5 class="card-title text-center">
-                    <form action="" method="get">
-                        <div class="form-row align-items-center justify-content-end">
-                            <!-- <div class="form-group col-md-5">Month:</div> -->
-                            <div class="form-group">
-                                <select name="monthly_report_department_date" id="monthly_report_department_date"
-                                        class="form-control"
-                                        onchange="clickSelectedOption(this)">
-                                    <option selected id="monthly_report_department_month_selected" disabled></option>
-                                    {% for month in month_list %}
-                                    <option value="{{ month }}" id="report-dept-barchart-{{ month }}" onclick="monthlyReportByDepartmentsBarChartByMonth(
-                    document.getElementById('report-dept-barchart-{{ month }}').value)">
-                                        {{ month }}
-                                    </option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                        </div>
-                    </form>
-                </h5>
-                <div id="monthly-report-by-dept-canvas-holder" style="width: 100%">
-                    <canvas id="monthly-report--dept-barchart-area"></canvas>
+            <div class="layer w-100">
+              <div class="peers ai-sb fxw-nw">
+                <div class="peer peer-greed">
+                  <a
+                    href="{% url 'dashboard:student:admission_confirmation' %}"
+                    class="text-dark"
+                  >
+                    <i class="fas fa-users fa-3x"></i>
+                  </a>
                 </div>
+                <div class="peer">
+                  <span
+                    class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-purple-50 c-purple-500"
+                  >
+                    <a
+                      href="{% url 'dashboard:student:admission_confirmation' %}"
+                      class="text-dark"
+                    >
+                      {{ admitted_students.count }}
+                    </a>
+                  </span>
+                </div>
+              </div>
             </div>
+          </div>
         </div>
+        <div class="col-md-3">
+          <div class="layers bd bgc-white p-20">
+            <div class="layer w-100 mB-10">
+              <h6 class="lh-1">
+                <a
+                  href="{% url 'dashboard:student:add_student' %}"
+                  class="text-dark"
+                >
+                  Add Offline Applicant
+                </a>
+              </h6>
+            </div>
+            <div class="layer w-100">
+              <div class="peers ai-sb fxw-nw">
+                <div class="peer peer-greed">
+                  <a
+                    href="{% url 'dashboard:student:add_student' %}"
+                    class="text-dark"
+                  >
+                    <i class="fas fa-users fa-3x"></i>
+                  </a>
+                </div>
+                <div class="peer">
+                  <span
+                    class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50 c-green-500"
+                  >
+                    <a
+                      href="{% url 'dashboard:student:add_student' %}"
+                      class="text-dark"
+                    >
+                      {{ offline_applicants.count }}
+                    </a>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <hr/>
+  </div>
+  <hr />
 
-    <!-- Charts -->
-    <div class="row my-5">
-        <!-- Monthly Report PieChart -->
-        <div class="col-md-12">
-            <div class="card p-4">
-                <div id="year-graph-canvas-holder" style="width: 100%">
-                    <canvas id="year-graph--chart-area"></canvas>
-                </div>
+  <!-- Charts -->
+  <div class="row my-5">
+    <!-- Monthly Report PieChart -->
+    <div class="col-md-6">
+      <div class="card p-4">
+        <h5 class="card-title text-center">
+          <form action="" method="get">
+            <div class="form-row align-items-center">
+              <!-- <div class="form-group col-md-5">Mon th:</div> -->
+              <div class="form-group">
+                <select
+                  name="monthly_report_piechart_date"
+                  id="monthly_report_piechart_date"
+                  class="form-control"
+                  onchange="clickSelectedOption(this)"
+                >
+                  <option
+                    selected
+                    id="reporting_chart_month_selected"
+                    disabled
+                  ></option>
+                  {% for month in month_list %}
+                  <option
+                    value="{{ month }}"
+                    id="report-piechart-{{ month }}"
+                    onclick="monthlyReportPieChartByMonth(
+                    document.getElementById('report-piechart-{{ month }}').value)"
+                  >
+                    {{ month }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
             </div>
+          </form>
+        </h5>
+        <div id="monthly-report-canvas-holder" style="width: 100%">
+          <canvas id="monthly-report--chart-area"></canvas>
         </div>
+      </div>
     </div>
-    <hr/>
-
-    <!-- Monthly Report Table -->
-    <div class="row my-5">
-        <div class="col-md-12">
-            <div class="dashboard-section-title mb-3">
-                <div class="title-v-line"></div>
-                <h4>Monthly Report <span class="color-2">Analysis</span></h4>
+    <!-- Monthly Report Departmentwise bar Chart -->
+    <div class="col-md-6">
+      <div class="card p-4">
+        <h5 class="card-title text-center">
+          <form action="" method="get">
+            <div class="form-row align-items-center justify-content-end">
+              <!-- <div class="form-group col-md-5">Month:</div> -->
+              <div class="form-group">
+                <select
+                  name="monthly_report_department_date"
+                  id="monthly_report_department_date"
+                  class="form-control"
+                  onchange="clickSelectedOption(this)"
+                >
+                  <option
+                    selected
+                    id="monthly_report_department_month_selected"
+                    disabled
+                  ></option>
+                  {% for month in month_list %}
+                  <option
+                    value="{{ month }}"
+                    id="report-dept-barchart-{{ month }}"
+                    onclick="monthlyReportByDepartmentsBarChartByMonth(
+                    document.getElementById('report-dept-barchart-{{ month }}').value)"
+                  >
+                    {{ month }}
+                  </option>
+                  {% endfor %}
+                </select>
+              </div>
             </div>
+          </form>
+        </h5>
+        <div id="monthly-report-by-dept-canvas-holder" style="width: 100%">
+          <canvas id="monthly-report--dept-barchart-area"></canvas>
         </div>
-
-        <div class="col-md-12">
-            <div class="card">
-                <div class="card-top-meta-info d-flex justify-content-between
-        lio-primary-bg border-bottom align-items-center p-3 text-light">
-                    <div class="card-top-meta-info--left d-flex align-items-center text-dark">
-                        <div class="card-collapse pr-3 border-right">
-                            <div class="card-actions-action">
-                                <i class="fas fa-chevron-up"></i> <span class="">Collapse</span>
-                            </div>
-                        </div>
-                        <div class="card-print-pdf-actions d-flex justify-content-between">
-                            <div class="card-actions-action">
-                                <a href="{% url 'dashboard:student:counsel_monthly_report' %}" target="_blank"
-                                   class="text-light">
-                                    <i class="fas fa-external-link-alt"></i>
-                                </a>
-                            </div>
-                            <div class="card-actions-action">
-                                <form action="{% url 'dashboard:student:counsel_monthly_report_typed' response_type='pdf' %}"
-                                      method="get">
-                                    <input type="hidden" name="download" value="yes"/>
-                                    <button type="submit" class="btn p-0">
-                                        <i class="fas fa-cloud-download-alt text-light"></i>
-                                    </button>
-                                </form>
-                            </div>
-                            <div class="card-actions-action">
-                                <a class="text-light"
-                                   href="{% url 'dashboard:student:counsel_monthly_report_typed' response_type='pdf' %}"
-                                   target="_blank">
-                                    <i class="fas fa-file-pdf"></i>
-                                </a>
-                            </div>
-                            <div class="card-actions-action">
-                                <i class="fas fa-print"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-record-date">
-                        <form action="" method="get">
-                            <div class="form-row align-items-center">
-                                <!-- <div class="form-group col-md-5">Month:</div> -->
-                                <div class="form-group">
-                                    <select name="monthly_report_date" id="monthly_report_date" class="form-control"
-                                            onchange="clickSelectedOption(this)">
-                                        <option selected id="reporting_month_selected" disabled></option>
-                                        {% for month in month_list %}
-                                        <option value="{{ month }}" id="report-table-{{ month }}" onclick="monthlyReportTableByMonth(
-                    document.getElementById('report-table-{{ month }}').value)">
-                                            {{ month }}
-                                        </option>
-                                        {% endfor %}
-                                    </select>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <div class="col-sm-12 col-md-12 m-0 p-0" id="monthly-report-table">
-                    <!-- Applications -->
-                    <div class="">
-                        <p class="bg-info text-light pl-4 py-1 mb-0">Total Application</p>
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                            <tr>
-                                <th scope="col">TOTAL</th>
-                                <th scope="col">Online</th>
-                                <th scope="col">On-visit/Call</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td id="total_applications_number"></td>
-                                <td id="total_online_applications"></td>
-                                <td id="total_offline_applications"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- Admissions -->
-                    <div class="">
-                        <p class="bg-info text-light pl-4 py-1 mb-0">Total Admission</p>
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                            <tr>
-                                <th scope="col">TOTAL</th>
-                                <th scope="col">Online</th>
-                                <th scope="col">On-visit/Call</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr>
-                                <td id="total_admission_number"></td>
-                                <td id="total_online_admission"></td>
-                                <td id="total_offline_admission"></td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <!-- By Department -->
-                    <div class="">
-                        <p class="bg-info text-light pl-4 py-1 mb-0">
-                            Admission/Migration/NA By Department
-                        </p>
-                        <table class="table table-striped table-bordered">
-                            <thead>
-                            <tr>
-                                <th scope="col">Department</th>
-                                <th scope="col">Applications</th>
-                                <th scope="col">Admission</th>
-                                <th scope="col">Migrated From</th>
-                                <th scope="col">Migrated To</th>
-                                <th scope="col">Missed</th>
-                            </tr>
-                            </thead>
-                            <tbody id="departmental_report_tbody">
-                            <!-- Updated from ajax -->
-                            </tbody>
-                        </table>
-                    </div>
-
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
+  </div>
+  <hr />
+
+  <!-- Charts -->
+  <div class="row my-5">
+    <!-- Monthly Report PieChart -->
+    <div class="col-md-12">
+      <div class="card p-4">
+        <div id="year-graph-canvas-holder" style="width: 100%">
+          <canvas id="year-graph--chart-area"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+  <hr />
+
+  <!-- Monthly Report Table -->
+  <div class="row my-5">
+    <div class="col-md-12">
+      <div class="dashboard-section-title mb-3">
+        <div class="title-v-line"></div>
+        <h4>Monthly Report <span class="color-2">Analysis</span></h4>
+      </div>
+    </div>
+
+    <div class="col-md-12">
+      <div class="card">
+        <div
+          class="card-top-meta-info d-flex justify-content-between lio-primary-bg border-bottom align-items-center p-3 text-light"
+        >
+          <div
+            class="card-top-meta-info--left d-flex align-items-center text-dark"
+          >
+            <div class="card-collapse pr-3 border-right">
+              <div class="card-actions-action">
+                <i class="fas fa-chevron-up"></i> <span class="">Collapse</span>
+              </div>
+            </div>
+            <div class="card-print-pdf-actions d-flex justify-content-between">
+              <div class="card-actions-action">
+                <a
+                  href="{% url 'dashboard:student:counsel_monthly_report' %}"
+                  target="_blank"
+                  class="text-light"
+                >
+                  <i class="fas fa-external-link-alt"></i>
+                </a>
+              </div>
+              <div class="card-actions-action">
+                <form
+                  action="{% url 'dashboard:student:counsel_monthly_report_typed' response_type='pdf' %}"
+                  method="get"
+                >
+                  <input type="hidden" name="download" value="yes" />
+                  <button type="submit" class="btn p-0">
+                    <i class="fas fa-cloud-download-alt text-light"></i>
+                  </button>
+                </form>
+              </div>
+              <div class="card-actions-action">
+                <a
+                  class="text-light"
+                  href="{% url 'dashboard:student:counsel_monthly_report_typed' response_type='pdf' %}"
+                  target="_blank"
+                >
+                  <i class="fas fa-file-pdf"></i>
+                </a>
+              </div>
+              <div class="card-actions-action">
+                <i class="fas fa-print"></i>
+              </div>
+            </div>
+          </div>
+
+          <div class="card-record-date">
+            <form action="" method="get">
+              <div class="form-row align-items-center">
+                <!-- <div class="form-group col-md-5">Month:</div> -->
+                <div class="form-group">
+                  <select
+                    name="monthly_report_date"
+                    id="monthly_report_date"
+                    class="form-control"
+                    onchange="clickSelectedOption(this)"
+                  >
+                    <option
+                      selected
+                      id="reporting_month_selected"
+                      disabled
+                    ></option>
+                    {% for month in month_list %}
+                    <option
+                      value="{{ month }}"
+                      id="report-table-{{ month }}"
+                      onclick="monthlyReportTableByMonth(
+                    document.getElementById('report-table-{{ month }}').value)"
+                    >
+                      {{ month }}
+                    </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="col-sm-12 col-md-12 m-0 p-0" id="monthly-report-table">
+          <!-- Applications -->
+          <div class="">
+            <p class="bg-info text-light pl-4 py-1 mb-0">Total Application</p>
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">TOTAL</th>
+                  <th scope="col">Online</th>
+                  <th scope="col">On-visit/Call</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="total_applications_number"></td>
+                  <td id="total_online_applications"></td>
+                  <td id="total_offline_applications"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Admissions -->
+          <div class="">
+            <p class="bg-info text-light pl-4 py-1 mb-0">Total Admission</p>
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">TOTAL</th>
+                  <th scope="col">Online</th>
+                  <th scope="col">On-visit/Call</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td id="total_admission_number"></td>
+                  <td id="total_online_admission"></td>
+                  <td id="total_offline_admission"></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- By Department -->
+          <div class="">
+            <p class="bg-info text-light pl-4 py-1 mb-0">
+              Admission/Migration/NA By Department
+            </p>
+            <table class="table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">Department</th>
+                  <th scope="col">Applications</th>
+                  <th scope="col">Admission</th>
+                  <th scope="col">Migrated From</th>
+                  <th scope="col">Migrated To</th>
+                  <th scope="col">Missed</th>
+                </tr>
+              </thead>
+              <tbody id="departmental_report_tbody">
+                <!-- Updated from ajax -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}
 
 {% block customjs %}
+
 <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<script src="{% static 'js/chartjs/Chart.min.js' %}"></script>
 <script>
   // Google Chrome change event support code.
   const is_chrome = navigator.userAgent.toLowerCase().indexOf('chrome') > -1;
@@ -460,9 +569,11 @@
     const dept_report_tbody_elem = document.getElementById(
       "departmental_report_tbody"
     );
+    {% comment%}
     const cities_report_tbody_elem = document.getElementById(
       "cities_report_tbody"
     );
+    {% endcomment%}
 
     // Update UI From Data Records
     reporting_month_elem.innerHTML = record.report_month;
@@ -498,7 +609,8 @@
     }
     dept_report_tbody_elem.innerHTML = template;
 
-     {% comment %} Update Total Admission/Application by Cities Part
+    {% comment %}
+    Update Total Admission/Application by Cities Part
     let cities = record.zila_records;
     let cities_template = "";
     for (let city in cities) {
@@ -514,7 +626,8 @@
       cities_template += city_tr;
     }
 
-    cities_report_tbody_elem.innerHTML = cities_template; {% endcomment %}
+    cities_report_tbody_elem.innerHTML = cities_template;
+    {% endcomment %}
   }
 
   // Monthly Report API Call and UI function call
@@ -698,14 +811,14 @@
       labels: dept_names_array,
       datasets: [{
         label: 'Applications',
-        backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-        borderColor: window.chartColors.red,
+        backgroundColor: color('#F70000').alpha(0.5).rgbString(),
+        borderColor: '#F70000',
         borderWidth: 1,
         data: applications_arr
       }, {
         label: 'Admitted',
-        backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-        borderColor: window.chartColors.blue,
+        backgroundColor: color("#006eff").alpha(0.5).rgbString(),
+        borderColor: "#006eff",
         borderWidth: 1,
         data: admissions_arr
       }]
@@ -818,8 +931,8 @@
         datasets: [{
           label: 'Applications',
           data: application_data_arr,
-          backgroundColor: window.chartColors.blue,
-          borderColor: window.chartColors.blue,
+          backgroundColor: "#0000F7",
+          borderColor: "#0000F7",
           fill: false,
           borderDash: [5, 5],
           pointRadius: 15,
@@ -827,23 +940,23 @@
         }, {
           label: 'Admissions',
           data: admission_data_arr,
-          backgroundColor: window.chartColors.purple,
-          borderColor: window.chartColors.purple,
+          backgroundColor: "#B63CAA",
+          borderColor: "#B63CAA",
           fill: false,
           borderDash: [5, 5],
           pointRadius: [2, 4, 6, 18, 0, 12, 20],
         }, {
           label: 'Pendings',
           data: pending_data_arr,
-          backgroundColor: window.chartColors.orange,
-          borderColor: window.chartColors.orange,
+          backgroundColor: "#F76300",
+          borderColor: "#F76300",
           fill: false,
           pointHoverRadius: 30,
         }, {
           label: 'Rejections',
           data: rejection_data_arr,
-          backgroundColor: window.chartColors.red,
-          borderColor: window.chartColors.red,
+          backgroundColor: "#F70000",
+          borderColor: "#F70000",
           fill: false,
           pointHitRadius: 20,
         }]
@@ -905,8 +1018,5 @@
     });
 
   })
-
-
-
 </script>
 {% endblock %}

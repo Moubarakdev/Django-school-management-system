@@ -36,7 +36,7 @@ urlpatterns = [
     path('applicants/unpaid/', unpaid_registrants, name='unpaid_registrant_list'),
     path('applicants/unpaid/mark-paid/', mark_as_paid_or_unpaid,
          name='mark_as_paid_or_unpaid'),
-    path('add-counsel-data/<int:pk>/', add_counseling_data,
+    path('add-counsel-data/<int:student_id>/', add_counseling_data,
          name='add_counseling_data'),
     path('rejected-registrants/', rejected_registrants,
          name='rejected_registrant_list'),
@@ -63,5 +63,9 @@ urlpatterns = [
 
     path('counsel-report/', counsel_monthly_report, name='counsel_monthly_report'),
     path('counsel-report/<str:response_type>/', counsel_monthly_report,
-         name='counsel_monthly_report_typed')
+         name='counsel_monthly_report_typed'),
+
+    path('counsel-report/<str:response_type>/<date:date_param>/',
+         counsel_monthly_report,
+         name='counsel_report_monthly_with_date'),
 ]

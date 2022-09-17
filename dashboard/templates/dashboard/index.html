@@ -10,7 +10,7 @@
     <div class="page-header">
         <div class="row">
             <div class="col-sm-12">
-                <h3 class="page-title">Welcome Admin!</h3>
+                <h3 class="page-title">Welcome {{request.user.first_name}}!</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item active">Dashboard</li>
                 </ul>
@@ -28,8 +28,8 @@
                             <i class="fas fa-user-graduate"></i>
                         </div>
                         <div class="db-info">
-                            <h3>50055</h3>
-                            <h6>Students</h6>
+                            <h3>{{total_students}}</h3>
+                            <h6>Étudiant{{ total_students|pluralize }}</h6>
                         </div>
                     </div>
                 </div>
@@ -45,8 +45,8 @@
                             <i class="fas fa-chalkboard-teacher"></i>
                         </div>
                         <div class="db-info">
-                            <h3>{{total_teachers}}+</h3>
-                            <h6>Teachers</h6>
+                            <h3>{{total_teachers}}</h3>
+                            <h6>Professeur{{ total_teachers|pluralize }}</h6>
                         </div>
                     </div>
                 </div>
@@ -62,8 +62,8 @@
                             <i class="fas fa-building"></i>
                         </div>
                         <div class="db-info">
-                            <h3>{{total_departments}}+</h3>
-                            <h6>Department</h6>
+                            <h3>{{total_departments}}</h3>
+                            <h6>Département{{ total_departments|pluralize }}</h6>
                         </div>
                     </div>
                 </div>
@@ -288,4 +288,9 @@
     </div>
 </div>
 
+{% endblock %}
+
+{% block customjs %}
+<script src="{% static 'assets/plugins/apexchart/apexcharts.min.js' %}"></script>
+<script src="{% static 'assets/plugins/apexchart/chart-data.js'%}"></script>
 {% endblock %}
