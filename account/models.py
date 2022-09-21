@@ -42,6 +42,7 @@ class User(AbstractUser):
     approval_extra_note = models.TextField(
         blank=True, null=True, verbose_name='message'
     )
+    address = models.TextField(blank=True, null=True, verbose_name='Adresse')
 
 
 '''

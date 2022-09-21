@@ -6,7 +6,7 @@ from student.views.report_views import yearly_graph_api, counsel_monthly_report
 from student.views.students_views import all_applicants, students_board, admitted_students_list, paid_registrants, \
     unpaid_registrants, rejected_registrants, get_json_batch_data, admission_confirmation, admit_student, \
     mark_as_paid_or_unpaid, update_online_registrant, add_counseling_data, add_student_view, students_view, \
-    StudentDetailsView, StudentUpdateView, student_delete_view
+    StudentDetailsView, StudentUpdateView, student_delete_view, students_by_department_view
 
 app_name = 'student'
 
@@ -68,4 +68,7 @@ urlpatterns = [
     path('counsel-report/<str:response_type>/<date:date_param>/',
          counsel_monthly_report,
          name='counsel_report_monthly_with_date'),
+
+    path('<int:pk>/students/', students_by_department_view,
+         name='students_by_dept'),
 ]

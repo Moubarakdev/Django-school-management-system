@@ -27,13 +27,13 @@
                                         Session: {{ object.ac_session }}
                                     </li>
                                     <li class="list-group-item">
-                                        Batch: {{ object.batch.number }}
+                                        Promotion/Lot: {{ object.batch.number }}
                                     </li>
                                 </ul>
                                 <div class="card-footer">
                                     <a href="{% url 'dashboard:student:student_details' pk=student.id %}"
                                        class="btn btn-sm btn-dark">
-                                        View Details
+                                        Details
                                     </a>
                                 </div>
                             </div>
@@ -45,9 +45,9 @@
                                 {% csrf_token %}
                                 {{ form|crispy }}
                                 <a href="{% url 'dashboard:student:students_board' %}" class="btn btn-dark">
-                                    <i class="fas fa-arrow-left"></i> Back
+                                    <i class="fas fa-arrow-left"></i> Retour
                                 </a>
-                                <input class="btn btn-info" type="submit" value="Update Details">
+                                <input class="btn btn-info" type="submit" value="Modifier Details">
                             </form>
                         </div>
                     </div>

@@ -6,12 +6,12 @@
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
                 <li>
-                    <a href="{% url 'dashboard:index' %}"><i class="fas fa-grid-horizontal"></i> <span>Dashboard</span></a>
+                    <a href="{% url 'dashboard:index' %}"><i class="fas fa-dashcube"></i><span>Dashboard</span></a>
                 </li>
                 <li class="menu-title">
                     <span>Dashboards</span>
                 </li>
-                 <li><a href="{% url 'dashboard:student:students_board' %}"> <i
+                <li><a href="{% url 'dashboard:student:students_board' %}"> <i
                         class="fas fa-book-reader"></i><span>Dashboard for students</span></a>
                 </li>
                 <li class="menu-title">
@@ -43,7 +43,7 @@
                 <li><a href="{% url 'dashboard:student:all_student' %}"> <i
                         class="fas fa-book-reader"></i><span>Étudiants</span></a>
                 </li>
-                 <li><a href="{% url 'dashboard:student:all_applicants' %}"> <i
+                <li><a href="{% url 'dashboard:student:all_applicants' %}"> <i
                         class="fas fa-book-reader"></i><span>Demandes d'inscription</span></a>
                 </li>
                 <li><a href="{% url 'dashboard:student:admitted_student_list' %}"> <i
@@ -65,7 +65,22 @@
                     <span>Professeurs</span>
                 </li>
                 <li><a href="{% url 'dashboard:teacher:read_teachers' %}"> <i
-                        class="fas fa-book-reader"></i><span>Teachers</span></a>
+                        class="fas fa-book-reader"></i><span>Professeurs</span></a>
+                </li>
+                <li class="menu-title">
+                    <span>Subject</span>
+                </li>
+                <li><a href="{% url 'result:subject_groups' %}"> <i
+                        class="fas fa-book-reader"></i><span>Subject group list</span></a>
+                </li>
+                <li class="menu-title">
+                    <span>Results</span>
+                </li>
+                <li><a href="{% url 'result:index' %}"> <i
+                        class="fas fa-book-reader"></i><span>Results</span></a>
+                </li>
+                <li><a href="{% url 'result:result_entry' %}"> <i
+                        class="fas fa-book-reader"></i><span>Results Entry</span></a>
                 </li>
 
 

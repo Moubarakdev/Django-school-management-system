@@ -1809,6 +1809,7 @@ footer p {
 }
 .page-wrapper > .content {
 	padding: 1.875rem 1.875rem 0;
+	min-height: 100vh;
 }
 .page-header {
 	margin-bottom: 1.875rem;
@@ -3359,6 +3360,7 @@ table.table-inbox tbody tr.checked {
 	}
 	.page-wrapper > .content {
 		padding: 0.9375rem 0.9375rem 0;
+		min-height: 100vh;
 	}
 	.card-body {
 		padding: 1.25rem;

@@ -1,0 +1,167 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extra_header %}
+
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid content">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Résultats</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'result:index' %}">Résultats</a></li>
+                    <li class="breadcrumb-item active">Filtres</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Form -->
+    <div class="row border">
+        <div class="col-md-12 py-2">
+            <form action="" method="get">
+                <div class="row align-items-end">
+                    <div class="col">
+                        {{ filter.form.student__admission_student__choosen_department|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                        {{ filter.form.semester|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                        {{ filter.form.subject|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                        {{ filter.form.student__temporary_id|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <div class="">
+                                <input type="submit" value="Submit" class="btn btn-primary">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Filter Results -->
+    <div class="row">
+        <div class="col-md-2 col-sm-6 pl-0 my-2">
+            <a class="btn btn-primary" data-toggle="collapse"
+               href="#resultDataTable" role="button"
+               aria-expanded="false" aria-controls="resultDataTable">
+                Masquer/Démasquer
+            </a>
+        </div>
+        <div class="col-md-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="resultDataTable" class="table table-stripped table-hover table-center datatable">
+                            <thead>
+                            <tr>
+                                <th>Matricule</th>
+                                <th>Nom</th>
+                                <th>Prénom</th>
+                                <th>Cours</th>
+                                <th>Total</th>
+                                <th>Note pratique</th>
+                                <th>Note théorique</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for obj in filter.qs %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'result:result_detail_view' student_pk=obj.student.pk %}"
+                                       class="text-dark">
+                                        {{ obj.student.temporary_id }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'result:result_detail_view' student_pk=obj.student.pk %}"
+                                       class="text-dark">
+                                        {{ obj.student.admission_student.last_name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'result:result_detail_view' student_pk=obj.student.pk %}"
+                                       class="text-dark">
+                                        {{ obj.student.admission_student.first_name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ obj.subject.name}}
+                                </td>
+                                <td>
+                                    {{ obj.total_marks }}
+                                </td>
+                                <td>
+                                    {{ obj.practical_marks }}
+                                </td>
+                                <td>
+                                    {{ obj.theory_marks }}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-md-12 mb-3">
+            <h3>Result Administratives</h3>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3">
+                <p>Entrer les résultats par</p>
+                <h4>
+                    <a class=""
+                       href="{% url 'result:result_entry' %}">
+                        DEPARTEMENT
+                    </a>
+                </h4>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card p-3">
+                <p>Entrer les résultats par</p>
+                <h4>
+                    <a class="" href="">MATIERE</a>
+                </h4>
+            </div>
+        </div>
+        <div class="col-md-3 ">
+            <div class="card p-3">
+                <p>Entrer les résultats par</p>
+                <h4>
+                    <a class="" href="">EXAMEN & DEPART</a>
+                </h4>
+            </div>
+        </div>
+        <div class="col-md-3 ">
+            <div class="card p-3">
+                <p>Entrer les résultats par</p>
+                <h4>
+                    <a class="" href="">INDIVIDU</a>
+                </h4>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block customjs %}
+
+{% endblock %}

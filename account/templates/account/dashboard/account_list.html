@@ -28,7 +28,7 @@
             </div>
             <div class="col-auto text-right float-right ml-auto">
                 <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
-                <a href="{% url 'dashboard:academic:create_semester' %}" class="btn btn-primary"><i
+                <a href="{% url 'account:create_account' %}" class="btn btn-primary"><i
                         class="fas fa-plus"></i></a>
             </div>
         </div>
@@ -43,6 +43,7 @@
                             <tr>
                                 <th>Nom d'utilisateur</th>
                                 <th>Nom</th>
+                                <th>Prénom</th>
                                 <th>Email</th>
                                 <th>Rôle</th>
                                 <th class="text-right">Action</th>
@@ -52,7 +53,8 @@
                             {% for account in accounts %}
                             <tr>
                                 <td>{{account.username|title}}</td>
-                                <td>{{account.first_name|upper}}</td>
+                                <td>{{account.last_name|upper}}</td>
+                                <td>{{account.first_name|capfirst}}</td>
                                 <td>{{account.email|capfirst}}</td>
                                 <td>
                                     {% for group in account.groups.all %}

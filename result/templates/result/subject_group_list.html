@@ -1,0 +1,78 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+
+
+{% block content %}
+<div class="container-fluid content">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Liste des groupes de matières</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'result:subject_groups' %}">Liste des groupes de
+                        matières</a></li>
+                    <div class="col-auto text-right float-right ml-auto">
+                        <a href="{% url 'result:create_subject_group' %}" class="btn btn-primary"><i
+                                class="fas fa-plus"></i></a>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="subjectGroupDataTable" class="table table-hover table-center mb-0 datatable">
+                            <thead>
+                            <tr>
+                                <th scope="col">Département</th>
+                                <th scope="col">Semestre</th>
+                                <th scope="col">Matières</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for subject_group in subject_groups %}
+                            <tr>
+                                <td>
+                                    {{ subject_group.department }}
+                                </td>
+                                <td>
+                                    {{ subject_group.semester }}
+                                </td>
+                                <td>
+                                    {% for subject in subject_group.subjects.all %}
+                                    <p>
+                                        <i>{{ subject }}</i>
+                                    </p>
+                                    {% endfor %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}
+
+
+{% block customjs %}
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<script src="{% static 'js/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'js/dataTables.bootstrap4.min.js' %}"></script>
+
+<script>
+      $(document).ready(function () {
+        $('#subjectGroupDataTable').dataTable();
+      });
+
+</script>
+{% endblock %}

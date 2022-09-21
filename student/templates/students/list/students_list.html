@@ -44,31 +44,34 @@
                                 <th scope="row">
                                     <a href="{% url 'dashboard:student:student_details' pk=student.id %}">
                                         {{ student.temporary_id }}
+                                    </a>
                                 </th>
                                 <td>
                                     <a href="{% url 'dashboard:student:student_details' pk=student.id %}">
                                         <img src="{{ student.photo.url }}" class="mr-2 rounded-circle" height=24
                                              width=24>
                                         {{ student.admission_student.last_name }}
+                                    </a>
                                 </td>
                                 <td>
                                     <a href="{% url 'dashboard:student:student_details' pk=student.id %}">
-                                        <img src="{{ student.photo.url }}" class="mr-2 rounded-circle" height=24
-                                             width=24>
                                         {{ student.admission_student.first_name }}
+                                    </a>
                                 </td>
                                 <td>
                                     <a href="{% url 'dashboard:student:student_details' pk=student.id %}">
                                         {{ student.admission_student.choosen_department.name }}
+                                    </a>
                                 </td>
-                                <td>
-                                    <div class="btn-group" role="group" aria-label="Basic example">
-                                        <button type="button" class="btn btn-success">
-                                            <i class="fas fa-cogs"></i>
-                                        </button>
-                                        <a href="{% url 'dashboard:student:update_student' pk=student.id %}"
-                                           class="btn btn-secondary">
-                                            <i class="fas fa-edit"></i>
+                                <td class="text-right">
+                                    <div class="actions">
+                                        <a href="{% url 'dashboard:student:update_student' pk=student.id %}" class=" btn
+                                           btn-sm bg-success-light mr-2">
+                                            <i class="fas fa-pen"></i>
+                                        </a>
+                                        <a href="{% url 'dashboard:student:delete_student' pk=student.id %}"
+                                           class="btn btn-sm bg-danger-light">
+                                            <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
                                 </td>

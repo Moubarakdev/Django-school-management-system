@@ -52,11 +52,11 @@
                                 <td>{{subject.created_by}}</td>
                                 <td class="text-right">
                                     <div class="actions">
-                                        <a href="{% url 'dashboard:academic:update_semester' pk=subject.pk%}"
+                                        <a href="{% url 'dashboard:academic:update_subject' pk=subject.pk%}"
                                            class="btn btn-sm bg-success-light mr-2">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <a href="{% url 'dashboard:academic:delete_semester' pk=subject.pk%}" class="btn btn-sm bg-danger-light">
+                                        <a href="{% url 'dashboard:academic:delete_subject' pk=subject.pk%}" class="btn btn-sm bg-danger-light">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>

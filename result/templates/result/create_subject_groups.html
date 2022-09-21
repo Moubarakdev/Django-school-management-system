@@ -1,0 +1,158 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid content">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Créer un groupe de matière</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'result:subject_groups' %}">Liste des groupes de
+                        matières</a></li>
+                    <li class="breadcrumb-item active">Créer un groupe de matière</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <!-- Dept, Semester form -->
+            <form action="" id="subjectGroupCreateForm" method="post">
+                {% csrf_token %}
+                <!-- Inputs -->
+                <div id="subjectGroupInputs">
+                    <div class="form-inline">
+                        <label class="sr-only" for="department">Département</label>
+                        <select name="department" class="form-control mb-2 mr-sm-2" id="department">
+                            <option value="" selected disabled>Choisir un département</option>
+                            {% for dept in departments %}
+                            <option value="{{ dept.pk }}">{{ dept.name }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <label class="sr-only" for="semester">Semestre</label>
+                        <select name="semester" class="form-control mb-2 mr-sm-2" id="semester">
+                            <option value="" selected disabled>Choisir un semestre</option>
+                            {% for semester in semesters %}
+                            <option value="{{ semester.pk }}">{{ semester }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div><h3 class="py-4">Choix des matières</h3></div>
+                    </div>
+                </div>
+                <!-- Subject Listing -->
+                <div class="row" id="subjects-container">
+                    {% for subject in subjects %}
+                    <!-- Single Subject -->
+                    <div class="col-sm-6 col-md-2 col-lg-3 subject-col" data-subject-pk="{{ subject.pk }}">
+                        <div class="subject-wrapper">
+                            <div class="card mb-3" style="cursor: pointer; background-color: white;" id="subject">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ subject.name }}</h5>
+                                    <div class="card-footer">
+                                        <i style="font-weight: bold;">Code cours: </i> {{ subject.subject_code }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div><!-- Subject Wrapper End  -->
+
+                <div id="hiddenInputs"></div>
+
+                <input type="submit" value="CREER UN NOUVEAU GROUPE DE SUJET" class="float-right btn btn-primary">
+            </form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div id="subjectCounter" class="">
+                <span id="subjectCounterN">0</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block customjs %}
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<script>
+    const btn = document.getElementById('subject');
+
+    btn.addEventListener('click', function onClick(event) {
+      const backgroundColor = btn.style.backgroundColor;
+
+      if (backgroundColor === 'white') {
+        btn.style.backgroundColor = 'yellow';
+      } else if (backgroundColor === 'yellow') {
+        btn.style.backgroundColor = 'white';
+      } else {
+        btn.style.backgroundColor = 'white';
+      }
+    });
+</script>
+<script>
+    const subjectsContainer = document.getElementById('subjects-container');
+    const dept = document.getElementById('department');
+    const semester = document.getElementById('semester');
+    const subjectGroupForm = document.getElementById('subjectGroupCreateForm');
+    const hiddenInputs = document.getElementById('hiddenInputs');
+    const semesterPk = parseInt(semester.value);
+    const deptPk = parseInt(dept.value);
+    const url = `{% url 'result:create_subject_group' dept_pk=${deptPk} semester_pk=${semesterPk}`;
+    const selectedCounterContainer = document.getElementById('subjectCounter');
+    const selectedCounter = document.getElementById('subjectCounterN');
+    
+    let selectedCards = 0;
+
+    for (let i = 0; i < subjectsContainer.childNodes.length; i++) {
+      if (subjectsContainer.childNodes[i].classList && 
+        subjectsContainer.childNodes[i].classList.contains('subject-col')) {
+        
+        const subjectCol = subjectsContainer.childNodes[i];
+        
+        // Conditional Code Runs from here
+        subjectCol.addEventListener('click', function(){
+          const cardItem = this.children[0].children[0] // get .card class
+          cardItem.classList.toggle('selected-item');
+
+          // get data to add new subject to a subject group
+          const subjectPk = parseInt(subjectCol.attributes[1].value);
+
+          if (cardItem.classList.contains('selected-item')) {
+            // remove border-radius from card, and card-img-top
+            cardItem.style.borderRadius = 0;
+            cardItem.children[0].style.borderRadius = 0;
+            
+            let newInput = `<input type="hidden" name="subject" value="${subjectPk}" id="${subjectPk}-subject">`;
+            hiddenInputs.innerHTML += newInput;
+            selectedCards += 1;
+            selectedCounter.innerHTML = selectedCards;
+          } else {
+            // apply prev styles on deselect item.
+            cardItem.style.borderRadius = '.25rem';
+            cardItem.children[0].style.borderTopLeftRadius = 'calc(.25rem - 1px)';
+            cardItem.children[0].style.borderTopRightRadius = 'calc(.25rem - 1px)';
+            const remHiddenInput = document.getElementById(`${subjectPk}-subject`);
+            remHiddenInput.remove();
+            selectedCards -= 1
+            selectedCounter.innerHTML = selectedCards;
+          }         
+        })
+      }
+    }
+
+
+
+</script>
+{% endblock %}

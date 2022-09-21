@@ -2,11 +2,13 @@
 
 <div class="header">
     <div class="header-left">
-        <a href="index.html" class="logo">
-            <img src="{% static 'assets/img/logo.png' %}" alt="Logo">
+        <a href="{% url 'dashboard:index' %}" class="logo">
+           logo
         </a>
-        <a href="index.html" class="logo logo-small">
-            <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30">
+        <a href="{% url 'dashboard:index' %}" class="navbar-brand logo">My<span class="text-primary">School.</span></a>
+        <a href="" class="logo logo-small">
+           <!-- <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30"> -->
+            logo small
         </a>
     </div>
     <a href="javascript:void(0);" id="toggle_btn">
@@ -103,17 +105,25 @@
         </li>
         <li class="nav-item dropdown has-arrow">
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
-                <span class="user-img"><img class="rounded-circle" src="{% static 'assets/img/profiles/avatar-01.jpg' %}" width="31"
+                <span class="user-img"><img class="rounded-circle" {% if user.profile.profile_picture %}
+                                            src="{{ user.profile.profile_picture.url }}"
+                                            {% else %}
+                                            src="{% static '/assets/img/user.png' %}"
+                                            {% endif %} width="31"
                                             alt="Ryan Taylor"></span>
             </a>
             <div class="dropdown-menu">
                 <div class="user-header">
                     <div class="avatar avatar-sm">
-                        <img src="{% static 'assets/img/profiles/avatar-01.jpg' %}" alt="User Image" class="avatar-img rounded-circle">
+                        <img {% if user.profile.profile_picture %}
+                             src="{{ user.profile.profile_picture.url }}"
+                             {% else %}
+                             src="{% static '/assets/img/user.png' %}"
+                             {% endif %} alt="User Image" class="avatar-img rounded-circle">
                     </div>
                     <div class="user-text">
-                        <h6>Ryan Taylor</h6>
-                        <p class="text-muted mb-0">Administrator</p>
+                        <h6>{{request.user.last_name}} {{request.user.first_name}}</h6>
+                        <p class="text-muted mb-0">{{ request.user.requested_role }}</p>
                     </div>
                 </div>
                 <a class="dropdown-item" href="{% url 'account:profile_complete' %}">My Profile</a>

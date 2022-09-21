@@ -3,7 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, UpdateView
+from django.views.generic import ListView, UpdateView, CreateView
 from rolepermissions.roles import assign_role
 
 from account.forms import CommonUserProfileForm, UserProfileSocialLinksFormSet, ProfileCompleteForm, LoginForm, \
@@ -230,4 +230,16 @@ class UserUpdateView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context['button'] = "Modifier"
+        return context
+
+
+class CreateUserView(CreateView):
+    form_class = UserChangeFormDashboard
+    queryset = User.objects.all()
+    template_name = 'account/dashboard/account_form.html'
+    success_url = reverse_lazy('account:read_accounts')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['button'] = "Créer"
         return context

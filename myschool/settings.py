@@ -48,7 +48,6 @@ INSTALLED_APPS = [
     'dashboard',
     'student',
 
-
     # APP TIERS
     'ckeditor',  # ckeditor for blog content
     'crispy_forms',  # crispy
@@ -111,7 +110,7 @@ LOGOUT_REDIRECT_URL = 'home:home'  # Route defined in home/urls.py
 
 # for permission management
 ROLEPERMISSIONS_MODULE = 'myschool.roles'
-#ROLEPERMISSIONS_REGISTER_ADMIN = True
+# ROLEPERMISSIONS_REGISTER_ADMIN = True
 
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases

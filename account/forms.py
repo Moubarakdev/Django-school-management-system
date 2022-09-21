@@ -42,8 +42,9 @@ class UserRegistrationForm(forms.UserCreationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
-        self.helper.template_pack = 'bootstrap5'
+        self.helper.template_pack = 'bootstrap4'
 
+    '''
     error_message = forms.UserCreationForm.error_messages.update(
         {
             "duplicate_username": _(
@@ -51,6 +52,8 @@ class UserRegistrationForm(forms.UserCreationForm):
             )
         }
     )
+    '''
+
     last_name = djform.CharField(
         widget=djform.TextInput(
             attrs={
@@ -79,6 +82,14 @@ class UserRegistrationForm(forms.UserCreationForm):
                 "class": "form-control"
             }
         ))
+    address = djform.CharField(
+        widget=djform.TextInput(
+            attrs={
+                "placeholder": "Adresse",
+                "class": "form-control"
+            }
+        )
+    )
     password1 = djform.CharField(
         widget=djform.PasswordInput(
             attrs={
@@ -96,8 +107,9 @@ class UserRegistrationForm(forms.UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('first_name', 'last_name', 'username', 'email', 'password1', 'password2')
+        fields = ('last_name', 'first_name', 'username', 'email', 'address', 'password1', 'password2')
 
+    '''
     def clean_username(self):
         username = self.cleaned_data["username"]
 
@@ -115,6 +127,7 @@ class UserRegistrationForm(forms.UserCreationForm):
         if cd['password1'] != cd['password2']:
             raise forms.ValidationError('Password didn\'t match!')
         return cd['password2']
+'''
 
 
 class ProfileCompleteForm(djform.ModelForm):

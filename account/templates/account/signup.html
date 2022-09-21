@@ -17,29 +17,30 @@
                 <div class="login-right">
                     <div class="login-right-wrap">
                         {% if messages %}
-                        <ul class="messages" style="background-color: red; opacity:0.1; ">
+                        <ul class="messages">
                             {% for message in messages %}
-                            <li
-                                    {% if message.tags %} class="{{ message.tags }}" {% endif %}>
-                                {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}Important: {% endif %}
-                                <span class="text-success">{{ message }}</span>
-                            </li>
+                            <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                                <strong>{{ message }}</strong>
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
                             {% endfor %}
                         </ul>
                         {% endif %}
                         <div class="login-right-wrap">
-                            <h1>Register</h1>
-                            <p class="account-subtitle">Access to our dashboard</p>
+                            <h1>Créer un compte</h1>
+                            <p class="account-subtitle"></p>
 
                             <form action="" method="post">
                                 {% csrf_token %}
                                 <div class="form-group">
-                                    {{user_form.first_name}}
-                                    <span class="text-error" style="color:red;">{{ user_form.first_name.errors }}</span>
-                                </div>
-                                <div class="form-group">
                                     {{user_form.last_name}}
                                     <span class="text-error" style="color:red;">{{ user_form.last_name.errors }}</span>
+                                </div>
+                                <div class="form-group">
+                                    {{user_form.first_name}}
+                                    <span class="text-error" style="color:red;">{{ user_form.first_name.errors }}</span>
                                 </div>
                                 <div class="form-group">
                                     {{user_form.username}}
@@ -57,35 +58,25 @@
                                     {{user_form.password2}}
                                     <span class="text-error" style="color:red;">{{ user_form.password2.errors }}</span>
                                 </div>
-                                <div class="form-group">
-                                    <!-- Show password -->
-                                    <input class="h-4 w-4 rounded"
-                                           type="checkbox" onclick="showPassword()"
-                                           style="margin-top: 0; display: inline;">
-                                    <label class="block text-sm text-gray-900"
-                                           style="margin-top: 0; display: inline;">
-                                        Show Password
-                                    </label>
-                                </div>
                                 <div class="form-group mb-0">
-                                    <button class="btn btn-primary btn-block" type="submit">Register</button>
+                                    <button class="btn btn-primary btn-block" type="submit">créer le compte</button>
                                 </div>
                             </form>
 
                             <div class="login-or">
                                 <span class="or-line"></span>
-                                <span class="span-or">or</span>
+                                <span class="span-or">ou</span>
                             </div>
 
                             <div class="social-login">
-                                <span>Register with</span>
+                                <span>Se connecter avec</span>
                                 <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a><a href="#"
                                                                                                      class="google"><i
                                     class="fab fa-google"></i></a>
                             </div>
 
                             <div class="text-center dont-have">Already have an account? <a
-                                    href="{% url 'account:login' %}">Login</a>
+                                    href="{% url 'account:login' %}">Se connecter</a>
                             </div>
                         </div>
                     </div>
@@ -110,6 +101,7 @@
           password2.type = "password";
         }
       }
+
 
 </script>
 {% endblock extrajs %}

@@ -21,24 +21,24 @@
                 <tr>
                     <th scope="row">
                         <a href="{% url 'students:student_details' pk=student.id %}">
-                            {{ student.roll }}
+                            {{ student.roll }} </a>
                     </th>
                     <td>
                         <a href="{% url 'students:student_details' pk=student.id %}">
-                            {{ student.registration_number }}
+                            {{ student.registration_number }} </a>
                     </td>
                     <td>
                         <a href="{% url 'students:student_details' pk=student.id %}">
                             <img src="{{ student.photo.url }}" class="mr-2 rounded-circle" height=24 width=24>
-                            {{ student.name }}
+                            {{ student.name }} </a>
                     </td>
                     <td>
                         <a href="{% url 'students:student_details' pk=student.id %}">
-                            {{ student.department.name }}
+                            {{ student.department.name }} </a>
                     </td>
                     <td>
                         <a href="{% url 'students:student_details' pk=student.id %}">
-                            {{ student.semester }}
+                            {{ student.semester }} </a>
                     </td>
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic example">
