@@ -1,10 +1,13 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.views import PasswordChangeView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, UpdateView, CreateView
 from rolepermissions.roles import assign_role
+from verify_email.email_handler import send_verification_email
 
 from account.forms import CommonUserProfileForm, UserProfileSocialLinksFormSet, ProfileCompleteForm, LoginForm, \
     UserRegistrationForm, ApprovalProfileUpdateForm, UserChangeFormDashboard
@@ -45,21 +48,42 @@ def register(request):
     if request.method == 'POST':
         user_form = UserRegistrationForm(request.POST)
         if user_form.is_valid():
-            new_user = user_form.save(commit=False)
-            new_user.set_password(
-                user_form.cleaned_data['password1'])
-            new_user.save()
+            first_name = user_form.cleaned_data.get("first_name")
+            lastname = user_form.cleaned_data.get("last_name")
+            username = user_form.cleaned_data.get("username")
+            email = user_form.cleaned_data.get("email")
+            address = user_form.cleaned_data.get("address")
+            raw_password = user_form.cleaned_data.get("password1")
+
             auth_user = authenticate(
-                username=user_form.cleaned_data['username'],
-                password=user_form.cleaned_data['password1']
+                first_name=first_name,
+                lastname=lastname,
+                username=username,
+                password=raw_password,
+                email=email,
+                address=address
             )
+
             if auth_user is not None:
                 login(request, auth_user)
-            if auth_user.is_staff:
-                return redirect('dashboard:index')  #
             else:
-                return redirect('account:profile_complete')
+                inactive_user = send_verification_email(request, user_form)
+
+                messages.add_message(
+                    request,
+                    messages.SUCCESS,
+                    f"Un email vous a été envoyer à l'adresse {email}, Veuillez confirmer votre adresse mail pour "
+                    f"activer "
+                    f"votre compte "
+                )
+                return redirect('/login')
+
         else:
+            messages.add_message(
+                request,
+                messages.ERROR,
+                'Formulaire incorrect'
+            )
             return render(request, 'account/signup.html', {'user_form': user_form})
 
     else:
@@ -243,3 +267,9 @@ class CreateUserView(CreateView):
         context = super().get_context_data()
         context['button'] = "Créer"
         return context
+
+
+class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
+    template_name = 'account/profile_complete.html'
+    success_message = "Mot de passe changé avec succès"
+    success_url = reverse_lazy('account:profile_complete')

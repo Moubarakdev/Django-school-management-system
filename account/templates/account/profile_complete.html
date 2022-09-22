@@ -29,7 +29,7 @@
             <div class="profile-header">
                 <div class="row align-items-center">
                     <div class="col-auto profile-image">
-                        <form action="{% url 'account:profile_picture_upload' %}" method="post" id="profile-image-form"
+                        <form action="{% url 'profile_picture_upload' %}" method="post" id="profile-image-form"
                               enctype="multipart/form-data">
                             {% csrf_token %}
                             <input id="profile-image-upload" class="hidden d-none" type="file" name="profile-picture">
@@ -105,9 +105,9 @@
                                     <h5 class="card-title d-flex justify-content-between">
                                         <span>Status du compte</span>
                                     </h5>
-                                    <button class="btn btn-success" type="button"><i class="fe fe-check-verified"></i>
+                                    <div class="card p-3 bg-success text-white">
                                         {{ user.get_approval_status_display }}
-                                    </button>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card">
@@ -130,23 +130,27 @@
                 <div id="password_tab" class="tab-pane fade">
                     <div class="card">
                         <div class="card-body">
-                            <h5 class="card-title">Change Password</h5>
+                            <h5 class="card-title">Changement de mot de passe</h5>
                             <div class="row">
                                 <div class="col-md-10 col-lg-6">
-                                    <form>
+                                    <form action="" method="POST">
+                                        {% csrf_token %}
                                         <div class="form-group">
-                                            <label>Old Password</label>
-                                            <input type="password" class="form-control">
+                                            <label for="id_old_password">Mot de passe actuel</label>
+                                            <input type="password" name="old_password" autocomplete="new-password"
+                                                   class="form-control" required id="id_old_password">
                                         </div>
                                         <div class="form-group">
-                                            <label>New Password</label>
-                                            <input type="password" class="form-control">
+                                            <label for="id_new_password1">Nouveau mot de passe</label>
+                                            <input type="password" name="new_password1" autocomplete="new-password"
+                                                   class="form-control" required id="id_new_password1">
                                         </div>
                                         <div class="form-group">
-                                            <label>Confirm Password</label>
-                                            <input type="password" class="form-control">
+                                            <label for="id_new_password2"> Confirmer le mot de passe</label>
+                                            <input type="password" name="new_password2" autocomplete="new-password"
+                                                   required id="id_new_password2" class="form-control">
                                         </div>
-                                        <button class="btn btn-primary" type="submit">Sauvegarder</button>
+                                        <a class="btn btn-primary" href="{% url 'password_change'%}">Modifier</a>
                                     </form>
                                 </div>
                             </div>
@@ -224,7 +228,7 @@
 
 <div class="modal fade" id="request-update-modal" tabindex="-1" role="dialog" aria-hidden="true"
      style="z-index: 1000000;">
-    <form action="{% url 'account:profile_complete' %}" method="post">
+    <form action="{% url 'profile_complete' %}" method="post">
         {% csrf_token %}
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -300,6 +304,11 @@
   $('#profile-image-upload').on('change', function() {
     $('#profile-image-form').submit();
   })
+
+
+
+
+
 
 
 

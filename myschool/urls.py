@@ -21,7 +21,7 @@ from myschool import settings
 
 urlpatterns = [
                   path('admin/', admin.site.urls),
-                  path('authentication/', include('account.urls')),
+                  path('', include('account.urls')),
                   path('', include("home.urls")),
                   path('dashboard/', include('dashboard.urls')),
                   path('result/', include('result.urls')),

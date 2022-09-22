@@ -32,34 +32,38 @@
                             <h1>Créer un compte</h1>
                             <p class="account-subtitle"></p>
 
-                            <form action="" method="post">
+                            <form action="" method="POST">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     {{user_form.last_name}}
-                                    <span class="text-error" style="color:red;">{{ user_form.last_name.errors }}</span>
                                 </div>
+                                <span class="text-error" style="color:red;">{{ user_form.last_name.errors }}</span>
                                 <div class="form-group">
                                     {{user_form.first_name}}
-                                    <span class="text-error" style="color:red;">{{ user_form.first_name.errors }}</span>
                                 </div>
+                                <span class="text-error" style="color:red;">{{ user_form.first_name.errors }}</span>
                                 <div class="form-group">
                                     {{user_form.username}}
-                                    <span class="text-error" style="color:red;">{{ user_form.username.errors }}</span>
                                 </div>
+                                <span class="text-error" style="color:red;">{{ user_form.username.errors }}</span>
                                 <div class="form-group">
                                     {{user_form.email}}
-                                    <span class="text-error" style="color:red;">{{ user_form.email.errors }}</span>
                                 </div>
+                                <span class="text-error" style="color:red;">{{ user_form.email.errors }}</span>
+                                <div class="form-group">
+                                    {{user_form.address}}
+                                </div>
+                                <span class="text-error" style="color:red;">{{ user_form.address.errors }}</span>
                                 <div class="form-group">
                                     {{user_form.password1}}
-                                    <span class="text-error" style="color:red;">{{ user_form.password1.errors }}</span>
                                 </div>
+                                <span class="text-error" style="color:red;">{{ user_form.password1.errors }}</span>
                                 <div class="form-group">
                                     {{user_form.password2}}
-                                    <span class="text-error" style="color:red;">{{ user_form.password2.errors }}</span>
                                 </div>
+                                <span class="text-error" style="color:red;">{{ user_form.password2.errors }}</span>
                                 <div class="form-group mb-0">
-                                    <button class="btn btn-primary btn-block" type="submit">créer le compte</button>
+                                    <button class="btn btn-primary btn-block">créer le compte</button>
                                 </div>
                             </form>
 
@@ -76,7 +80,7 @@
                             </div>
 
                             <div class="text-center dont-have">Already have an account? <a
-                                    href="{% url 'account:login' %}">Se connecter</a>
+                                    href="{% url 'login' %}">Se connecter</a>
                             </div>
                         </div>
                     </div>
@@ -88,7 +92,7 @@
 
 {% endblock %}
 
-{% block extrajs %}
+{% block customjs %}
 <script>
       function showPassword() {
         var password1 = document.getElementById("id_password1");
@@ -101,7 +105,5 @@
           password2.type = "password";
         }
       }
-
-
 </script>
-{% endblock extrajs %}
+{% endblock  %}

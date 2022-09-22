@@ -126,9 +126,9 @@
                         <p class="text-muted mb-0">{{ request.user.requested_role }}</p>
                     </div>
                 </div>
-                <a class="dropdown-item" href="{% url 'account:profile_complete' %}">My Profile</a>
+                <a class="dropdown-item" href="{% url 'profile_complete' %}">My Profile</a>
                 <a class="dropdown-item" href="inbox.html">Inbox</a>
-                <a class="dropdown-item" href="{% url 'account:logout' %}">Logout</a>
+                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
             </div>
         </li>
     </ul>

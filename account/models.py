@@ -7,7 +7,7 @@ from django_countries.fields import CountryField
 from myschool import settings
 
 
-# Create your views here.
+# Create your models here.
 
 class User(AbstractUser):
     REQUESTED_ACCOUNT_TYPE_CHOICES = (
@@ -44,6 +44,8 @@ class User(AbstractUser):
     )
     address = models.TextField(blank=True, null=True, verbose_name='Adresse')
 
+
+User._meta.get_field('email')._unique = True
 
 '''
     def get_author_url(self):

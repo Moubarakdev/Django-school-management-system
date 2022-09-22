@@ -22,13 +22,13 @@
             <div class="col">
                 <h3 class="page-title">Utilisateurs</h3>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'account:read_accounts' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
                     <li class="breadcrumb-item active">Utilisateurs</li>
                 </ul>
             </div>
             <div class="col-auto text-right float-right ml-auto">
                 <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
-                <a href="{% url 'account:create_account' %}" class="btn btn-primary"><i
+                <a href="{% url 'create_account' %}" class="btn btn-primary"><i
                         class="fas fa-plus"></i></a>
             </div>
         </div>
@@ -64,15 +64,10 @@
                                     {% empty %}
                                     General user
                                     {% endfor %}
-                                    <sup>
-                                        <a href="#" class="">
-                                            change
-                                        </a>
-                                    </sup>
                                 </td>
                                 <td class="text-right">
                                     <div class="actions">
-                                        <a href="{% url 'account:update_account' pk=account.pk %}"
+                                        <a href="{% url 'update_account' pk=account.pk %}"
                                            class="btn btn-sm bg-success-light mr-2">
                                             <i class="fas fa-pen"></i>
                                         </a>

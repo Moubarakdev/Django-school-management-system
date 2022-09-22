@@ -44,15 +44,13 @@ class UserRegistrationForm(forms.UserCreationForm):
         self.helper = FormHelper(self)
         self.helper.template_pack = 'bootstrap4'
 
-    '''
     error_message = forms.UserCreationForm.error_messages.update(
         {
             "duplicate_username": _(
-                "This username has already been taken."
+                "Ce nom d'utilisateur existe déjà."
             )
         }
     )
-    '''
 
     last_name = djform.CharField(
         widget=djform.TextInput(

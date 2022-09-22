@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+
+    <title>Vérification d'adresse électronique</title>
+
+    <style>
+        .format-font {
+            font-family: 'Montserrat', sans-serif;
+        }
+        .my-container {
+            margin: 10px;
+            padding: 10px;
+            padding-top: 0px;
+            justify-content: center;
+            border-radius: 5px;
+            border: 1px solid rgb(204, 203, 203);
+        }
+
+        .my-button {
+            padding: 10px;
+            padding-left: 35px;
+            padding-right: 35px;
+            background-color: rgb(110, 3, 211);
+            color: white;
+            border-radius: 25px;
+            transition-duration: 500ms;
+            text-decoration: none;
+
+        }
+        .my-button:hover {
+            color: rgb(110, 3, 211);
+            background-color: white;
+            border-radius: 0px;
+            border: 1px solid rgb(110, 3, 211);
+            transition-duration: 200ms;
+        }
+
+
+
+    </style>
+</head>
+<body>
+
+<div class="my-container">
+
+    <div style="background-color: rgb(110, 3, 211); border-radius: 15px;">
+        <h1 class="format-font" style="text-align: center; padding: 2px; color:white;">
+            Activation de compte
+        </h1>
+    </div>
+
+    <h2 class="format-font" style="text-align: center;">Confirmation de l'Email</h2>
+    <hr style="background-color:  rgb(110, 3, 211); width:100px">
+
+    <div class="format-font" style="margin-top: 20px; line-height: 1.5;">
+        <p style="text-align: center; font-weight: bold;">Salutations !</p>
+        Vous avez reçu ce mail car vous avez tenté de créer un compte sur notre site,
+        Veuillez cliquer sur le lien ci-dessous pour confirmer l'e-mail et activer votre compte.
+    </div>
+
+    <p class="format-font" style="text-align: center; margin-top: 50px;">
+        S'il vous plaît vérifier votre e-mail
+    <hr style="background-color:  rgb(110, 3, 211); width:50px">
+    <div class="format-font" style="text-align: center; margin-top: 30px;">
+        <a href="{{link}}" class="my-button">Vérifier</a>
+    </div>
+
+    </p>
+
+    <p class="format-font" style="margin-top: 50px;">
+        <b> Vous nous rejoindrez juste après la vérification !</b>
+    </p>
+
+    <p class="format-font" style="line-height: 1.5;">
+        <b>
+            Merci de nous avoir rejoint ! <br>Ne répondez pas à ce mail</b>
+    </p>
+
+</div>
+
+</body>
+</html>

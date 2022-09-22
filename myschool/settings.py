@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'django_filters',
     'result',
     'django_file_form',
+    'verify_email.apps.VerifyEmailConfig',  # verify email
 
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -104,7 +105,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myschool.wsgi.application'
 
 AUTH_USER_MODEL = 'account.USER'
-LOGIN_URL = 'account:login'
+LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = ''  # Route defined in dashboard/urls.py
 LOGOUT_REDIRECT_URL = 'home:home'  # Route defined in home/urls.py
 
@@ -185,9 +186,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # SMTP configuration
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
+EMAIL_HOST = os.environ.get('EMAIL_HOST')
+EMAIL_PORT = os.environ.get('EMAIL_PORT')
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('EMAIL_ID')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_PW')
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = 'MbkSite<staff@opentransport.org>'
+
+# ##############################################
+# Email verify settings
+EXPIRE_AFTER = "1h"
+HTML_MESSAGE_TEMPLATE = 'email/email_verification.html'
