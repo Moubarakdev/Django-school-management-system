@@ -2,9 +2,12 @@ from django.contrib import messages
 from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.views.generic import UpdateView
 
 from academic.models import Semester, Subject, Department
 from result.filters import ResultFilter, SubjectGroupFilter
+from result.forms import SubjectGroupForm
 from result.models import Result, SubjectGroup
 from student.models import Student
 
@@ -106,8 +109,8 @@ def result_entry(request):
                         except IntegrityError:
                             messages.error(
                                 request,
-                                f'Les notes de {student.admission_student.last_name} '
-                                f'pour {subject} ont déjà été créées.'
+                                f'Les notes de {student.admission_student.last_name}\' dans la matière '
+                                f' {subject} ont déjà été saisis.'
                             )
                 except ValueError:
                     pass
@@ -158,3 +161,15 @@ def subject_group_list(request):
         'subject_groups': subject_groups,
     }
     return render(request, 'result/subject_group_list.html', ctx)
+
+
+class UpdateSubjectGroup(UpdateView):
+    model = SubjectGroup
+    form_class = SubjectGroupForm
+    template_name = 'result/subject_group_form.html'
+    success_url = reverse_lazy('result:subject_groups')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['button'] = "Modifier"
+        return context

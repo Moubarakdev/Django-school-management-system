@@ -41,7 +41,7 @@
                     <div class="col">
                         <div class="form-group">
                             <div class="">
-                                <input type="submit" value="Submit" class="btn btn-primary">
+                                <input type="submit" value="filtrer" class="btn btn-primary">
                             </div>
                         </div>
                     </div>
@@ -75,7 +75,7 @@
                                 <th>Note rattrapage</th>
                                 <th>Total</th>
                                 <th>Moyenne</th>
-                                <th></th>
+                                <th>Validation</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -118,7 +118,7 @@
                                     {{ obj.average }}
                                 </td>
                                 <td>
-                                    {{ obj.validated }}
+                                    {{ obj.validated_or_not }}
                                 </td>
                             </tr>
                             {% endfor %}

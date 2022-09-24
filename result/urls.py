@@ -1,7 +1,7 @@
 from django.urls import path
 
 from result.views import result_view, result_detail_view, result_entry, create_subject_group, find_student, \
-    subject_group_list
+    subject_group_list, UpdateSubjectGroup
 
 app_name = 'result'
 
@@ -11,5 +11,6 @@ urlpatterns = [
     path('entry/', result_entry, name='result_entry'),
     path('create-subject-group/', create_subject_group, name='create_subject_group'),
     path('subject-groups/', subject_group_list, name='subject_groups'),
+    path('subject-groups/update/<int:pk>', UpdateSubjectGroup.as_view(), name='update_subject_groups'),
     path('student/find/<str:student_id>', find_student, name='find_student'),
 ]

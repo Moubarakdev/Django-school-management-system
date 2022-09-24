@@ -19,7 +19,7 @@ class Exam(TimeStampedModel):
     )
     exam_name = models.CharField(
         max_length=1,
-        choices=EXAM_CHOICES, verbose_name='nom de l\'examen'
+        choices=EXAM_CHOICES, verbose_name='titre de l\'examen'
     )
     exam_date = models.DateTimeField(verbose_name="Date examen")
 
@@ -32,35 +32,35 @@ class Result(TimeStampedModel):
     student = models.ForeignKey(
         Student,
         on_delete=models.CASCADE,
-        related_name='results', verbose_name='étudiant'
+        related_name='results'
     )
     semester = models.ForeignKey(
         Semester,
-        on_delete=models.CASCADE, verbose_name='semestre'
+        on_delete=models.CASCADE
     )
     subject = models.ForeignKey(
         Subject,
-        on_delete=models.CASCADE, verbose_name='matière'
+        on_delete=models.CASCADE
     )
     exam = models.ForeignKey(
         Exam, on_delete=models.CASCADE,
-        blank=True, null=True, verbose_name='examen'
+        blank=True, null=True, verbose_name="Examen"
     )
     class_marks = models.FloatField(
         blank=True,
-        null=True, verbose_name='note de devoir'
+        null=True, verbose_name="Note de classe"
     )
     exam_marks = models.FloatField(
         blank=True,
-        null=True, verbose_name='note d\'examen'
+        null=True, verbose_name="Note d'examen"
     )
     extra_marks = models.FloatField(
-        blank=True, default=0,
+        blank=True,
         null=True, verbose_name='note de rattrapage'
     )
     total_marks = models.FloatField(
         blank=True,
-        null=True, verbose_name='total'
+        null=True, verbose_name="Total"
     )
     average = models.FloatField(
         blank=True,
@@ -78,8 +78,11 @@ class Result(TimeStampedModel):
     def __str__(self):
         return f'{self.student} | {self.subject} | {self.total_marks}'
 
-    def save(self, *args, **kwargs):
+    @property
+    def validated_or_not(self):
+        return "validé" if self.validated == True else "non validé"
 
+    def save(self, *args, **kwargs):
         if self.class_marks and self.exam_marks:
             self.total_marks = self.class_marks + self.exam_marks
         elif self.class_marks and not self.exam_marks:
@@ -88,8 +91,9 @@ class Result(TimeStampedModel):
             self.total_marks = self.exam_marks
         self.average = self.total_marks / 2
         if self.extra_marks:
-            if self.average < self.extra_marks:
+            if self.average < self.extra_note:
                 self.average = self.extra_marks
+
         if self.average > 20:
             self.validated = True
         else:
@@ -122,3 +126,6 @@ class SubjectGroup(TimeStampedModel):
 
     def get_subjects(self):
         return " | ".join([str(sg) for sg in self.subjects.all()])
+
+    class Meta:
+        unique_together = ['department', 'semester']

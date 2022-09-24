@@ -140,7 +140,7 @@ def profile_complete(request):
                 messages.SUCCESS,
                 'Votre profil a été enregistré.'
             )
-            return redirect('account:profile_complete')
+            return redirect('profile_complete')
         else:
             if verification_form.is_valid():
                 verification_form.instance.approval_status = 'p'
@@ -151,7 +151,7 @@ def profile_complete(request):
                     messages.SUCCESS,
                     'Votre demande a été envoyée, veuillez patienter.'
                 )
-                return redirect('account:profile_complete')
+                return redirect('profile_complete')
     user_permissions = user.user_permissions.all()
     ctx.update({
         'verification_form': verification_form,
@@ -200,13 +200,13 @@ def user_approval(request, pk, approved):
         messages.add_message(
             request,
             messages.SUCCESS,
-            f'{user}\'s account has been approved.'
+            f'le compte de {user} a été approuvé'
         )
     else:
         messages.add_message(
             request,
             messages.SUCCESS,
-            f'{user}\'s request for {requested_role} has been declined.'
+            f'La demande de {user} pour le rôle de {requested_role} a été rejeté'
         )
     return redirect('/dashboard/requests')
 
@@ -224,7 +224,7 @@ def user_approval_with_modification(request, pk):
         messages.add_message(
             request,
             messages.SUCCESS,
-            f'{user}\'s account has been approved.'
+            f'Le compte de {user}\a été approuvé'
         )
         return redirect('/dashboard/requests')
     ctx = {
@@ -241,7 +241,7 @@ class AccountListView(ListView):
 
     def handle_no_permission(self):
         if self.request.user.is_authenticated:
-            return redirect('account:profile_complete')
+            return redirect('profile_complete')
         return redirect('/login')
 
 
@@ -249,7 +249,7 @@ class UserUpdateView(UpdateView):
     form_class = UserChangeFormDashboard
     queryset = User.objects.all()
     template_name = 'account/dashboard/account_form.html'
-    success_url = reverse_lazy('account:read_accounts')
+    success_url = reverse_lazy('read_accounts')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -261,7 +261,7 @@ class CreateUserView(CreateView):
     form_class = UserChangeFormDashboard
     queryset = User.objects.all()
     template_name = 'account/dashboard/account_form.html'
-    success_url = reverse_lazy('account:read_accounts')
+    success_url = reverse_lazy('read_accounts')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -272,4 +272,4 @@ class CreateUserView(CreateView):
 class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     template_name = 'account/profile_complete.html'
     success_message = "Mot de passe changé avec succès"
-    success_url = reverse_lazy('account:profile_complete')
+    success_url = reverse_lazy('profile_complete')

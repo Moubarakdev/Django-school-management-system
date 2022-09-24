@@ -1,16 +1,15 @@
 from django.contrib import admin
 
-from result.models import Result, Exam, SubjectGroup
+from .models import Result, Exam, SubjectGroup
 
 
-# Register your models here.
 class ResutlAdmin(admin.ModelAdmin):
     list_display = (
         'student', 'semester', 'exam',
         'subject', 'class_marks',
-        'exam_marks', 'total_marks', 'extra_marks'
+        'exam_marks', 'extra_marks', 'total_marks', 'average', 'validated',
     )
-    list_editable = ('total_marks', 'exam')
+    list_editable = ('class_marks', 'exam_marks', 'extra_marks', 'exam')
 
 
 class ExamAdmin(admin.ModelAdmin):

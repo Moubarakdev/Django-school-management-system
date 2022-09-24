@@ -16,7 +16,7 @@ class ResultFilter(django_filters.FilterSet):
             'student__admission_student__choosen_department',
             'semester',
             'subject',
-            'student__temporary_id'
+            'student__temporary_id',
         ]
 
     def __init__(self, *args, **kwargs):

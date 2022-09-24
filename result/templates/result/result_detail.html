@@ -18,15 +18,19 @@
                 <table class="table table-bordered mb-0">
                     <tbody>
                     <tr>
-                        <th scope="row">Name</th>
-                        <td>{{ student.admission_student.name }}</td>
+                        <th scope="row">Nom</th>
+                        <td>{{ student.admission_student.last_name }}</td>
                     </tr>
                     <tr>
-                        <th scope="row">Department</th>
+                        <th scope="row">Prénom</th>
+                        <td>{{ student.admission_student.first_name }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Département</th>
                         <td>{{ student.admission_student.choosen_department }}</td>
                     </tr>
                     <tr>
-                        <th scope="row">Batch</th>
+                        <th scope="row">Promotion</th>
                         <td colspan="2">{{ student.batch }}</td>
                     </tr>
                     </tbody>
@@ -38,16 +42,19 @@
         <div class="col-md-8">
             {% for semester, results in semester_results.items %}
             <div class="result-box mb-5">
-                <h4 class="mb-3">{{ semester }} Semester's Result: </h4>
+                <h4 class="mb-3">Résultats du semestre {{ semester }} : </h4>
                 <table
-                        class='{% cycle "table table-striped table-bordered table-dark" "table table-striped table-bordered" %}'>
+                        class='{% cycle "table table-striped table-bordered datatable" "table table-striped table-bordered datatable" %}'>
                     <thead>
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Matière</th>
-                        <th scope="col">Total</th>
-                        <th scope="col">Theory</th>
-                        <th scope="col">Practical</th>
+                        <th scope="col">Note de classe</th>
+                        <th scope="col">Note d'examen</th>
+                        <th>Note rattrapage</th>
+                        <th>Total</th>
+                        <th>Moyenne</th>
+                        <th>Validation</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -55,9 +62,12 @@
                     <tr>
                         <td>{{ forloop.counter }}</td>
                         <td>{{ result.subject }}</td>
+                        <td>{{ result.class_marks }}</td>
+                        <td>{{ result.exam_marks }}</td>
+                        <td>{{ result.extra_marks }}</td>
                         <td>{{ result.total_marks }}</td>
-                        <td>{{ result.theory_marks }}</td>
-                        <td>{{ result.practical_marks }}</td>
+                        <td>{{ result.average }}</td>
+                        <td>{{ result.validated_or_not}}</td>
                     </tr>
                     {% endfor %}
                     </tbody>
@@ -320,6 +330,7 @@
         $(document).ready(function(){
             $('#resultDataTable').dataTable();
         });
+
 
 </script>
 {% endblock %}
