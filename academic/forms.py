@@ -28,4 +28,4 @@ class SubjectForm(ModelForm):
     class Meta:
         model = Subject
         fields = '__all__'
-        exclude = ['created_by', ]
+        exclude = ['created_by', 't']

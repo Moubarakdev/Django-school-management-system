@@ -46,17 +46,30 @@ class Result(TimeStampedModel):
         Exam, on_delete=models.CASCADE,
         blank=True, null=True, verbose_name='examen'
     )
-    practical_marks = models.SmallIntegerField(
+    class_marks = models.FloatField(
         blank=True,
-        null=True, verbose_name='note pratique'
+        null=True, verbose_name='note de devoir'
     )
-    theory_marks = models.SmallIntegerField(
+    exam_marks = models.FloatField(
         blank=True,
-        null=True, verbose_name='note théorique'
+        null=True, verbose_name='note d\'examen'
     )
-    total_marks = models.SmallIntegerField(
+    extra_marks = models.FloatField(
+        blank=True, default=0,
+        null=True, verbose_name='note de rattrapage'
+    )
+    total_marks = models.FloatField(
         blank=True,
-        null=True, verbose_name='total notes'
+        null=True, verbose_name='total'
+    )
+    average = models.FloatField(
+        blank=True,
+        null=True, verbose_name='moyenne'
+    )
+    validated = models.BooleanField(
+        blank=True,
+        default="False",
+        verbose_name="Validé ?"
     )
 
     class Meta:
@@ -66,12 +79,21 @@ class Result(TimeStampedModel):
         return f'{self.student} | {self.subject} | {self.total_marks}'
 
     def save(self, *args, **kwargs):
-        if self.theory_marks and self.practical_marks:
-            self.total_marks = self.practical_marks + self.theory_marks
-        elif self.practical_marks and not self.theory_marks:
-            self.total_marks = self.practical_marks
+
+        if self.class_marks and self.exam_marks:
+            self.total_marks = self.class_marks + self.exam_marks
+        elif self.class_marks and not self.exam_marks:
+            self.total_marks = self.class_marks
         else:
-            self.total_marks = self.theory_marks
+            self.total_marks = self.exam_marks
+        self.average = self.total_marks / 2
+        if self.extra_marks:
+            if self.average < self.extra_marks:
+                self.average = self.extra_marks
+        if self.average > 20:
+            self.validated = True
+        else:
+            self.validated = False
         super().save(*args, **kwargs)
 
 

@@ -24,7 +24,7 @@
         <div class="row">
             <div class="col-md-12 border py-3">
                 <h5>Ajouter des résultats : Trouver les Matières <span id="title-dept"></span></h5>
-                <form action="" method="get">
+                <form action="" method="GET">
                     <div class="form-row align-items-end">
                         <div class="col">
                             {{ subject_group_filter.form.department|as_crispy_field }}
@@ -68,13 +68,14 @@
                 <div class="card card-table">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table id="studentsDataList" class="table datatable table-striped table-bordered" style="width:100%">
+                            <table id="studentsDataList" class="table datatable table-striped table-bordered"
+                                   style="width:100%">
                                 <thead>
                                 <tr>
                                     <th>Matière</th>
-                                    <th>Note pratique</th>
-                                    <th>Note théorique</th>
-                                </tr>
+                                    <th>Note de classe</th>
+                                    <th>Note d'examen</th>
+                                    <th>Note de rattrapage</th>
                                 </thead>
                                 <tbody>
                                 {% for subject_group in subject_group_filter.qs %}
@@ -92,18 +93,23 @@
                                     </td>
                                     <td>
                                         <input type="number"
-                                               name="practical_marks.{{ subject.pk }}">
+                                               name="class_marks.{{ subject.pk }}">
                                     </td>
                                     <td>
                                         <input type="number"
-                                               name="theory_marks.{{ subject.pk }}">
+                                               name="exam_marks.{{ subject.pk }}">
+                                    </td>
+                                    <td>
+                                        <input type="number"
+                                               name="extra_marks.{{ subject.pk }}">
                                     </td>
                                 </tr>
                                 {% endfor %}
+
                                 {% empty %}
                                 <tr>
                                     <td colspan="5">
-                                        AUCUN RESULTAT
+                                        NO RESULT FOUND
                                     </td>
                                 </tr>
                                 {% endfor %}
@@ -115,7 +121,7 @@
             </div>
 
             <div class="col-md-12">
-                <div class="row justify-content-end">
+                <div class="row justify-content-center">
                     <div class="col-md-3">
                         <div class="form-group">
                             <input class="form-control"
@@ -130,7 +136,7 @@
                     </div>
                 </div>
                 <!-- Student preveiw card -->
-                <div class="row justify-content-end">
+                <div class="row justify-content-center">
                     <div class="col-md-4">
                         <div id="student-preview-card" class="d-none">
                             <div class="card" style="width: 100%;">
@@ -146,7 +152,7 @@
                         </div>
                         <div id="student-preview-card-placeholder">
                             <p class="text-center">
-                               ZONE DE PREVISUALISATION
+                                ZONE DE PREVISUALISATION
                             </p>
                         </div>
                     </div>
@@ -201,6 +207,7 @@
             })
         });
     })
+
 
 </script>
 {% endblock %}

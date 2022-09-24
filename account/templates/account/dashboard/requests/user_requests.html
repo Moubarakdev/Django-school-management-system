@@ -60,15 +60,15 @@
                                 <td>{{ user.get_requested_role_display }}</td>
                                 <td class="text-right">
                                     <div class="actions">
-                                        <a href="{% url 'account:user_approval' pk=user.pk approved=1 %}"
+                                        <a href="{% url 'user_approval' pk=user.pk approved=1 %}"
                                            class="btn btn-sm bg-success mr-2" data-user-pk="{{ user.pk }}">
                                             <i class="fa-sharp fa-solid fa-check"></i>
                                         </a>
-                                        <a href="{% url 'account:approval_with_modification' pk=user.pk %}"
+                                        <a href="{% url 'approval_with_modification' pk=user.pk %}"
                                            class="btn btn-sm bg-danger-light mr-2" data-user-pk="{{ user.pk }}">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <a href="{% url 'account:user_approval' pk=user.pk approved=0 %}"
+                                        <a href="{% url 'user_approval' pk=user.pk approved=0 %}"
                                            class="btn btn-sm bg-danger" data-user-pk="{{ user.pk }}">
                                             <i class="fa-solid fa-xmark"></i>
                                         </a>

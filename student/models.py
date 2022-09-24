@@ -153,7 +153,7 @@ class AdmissionStudent(StudentBase):
     assigned_as_student = models.BooleanField(default=False, verbose_name="Assigné comme étudiant")
 
     def __str__(self):
-        return f"{self.first_name}"
+        return f"{self.last_name}"
 
     def save(self, *args, **kwargs):
         if self.department_choice != self.choosen_department:
@@ -201,7 +201,8 @@ class Student(TimeStampedModel):
 
     def __str__(self):
         return '{} ({}) semester {} dept.'.format(
-            self.admission_student.name,
+            self.admission_student.last_name,
+            self.admission_student.first_name,
             self.semester,
             self.admission_student.choosen_department
         )

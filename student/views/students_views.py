@@ -2,13 +2,16 @@ from collections import OrderedDict
 from datetime import datetime, timedelta, date
 
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import DetailView, UpdateView
+from django.views.generic import DetailView, UpdateView, ListView
 
 from academic.models import Batch, AcademicSession, Semester, Department
+from permission_handlers.basic import user_is_verified
 from result.models import SubjectGroup
+from student.filters import AlumniFilter
 from student.forms import AdmissionForm, StudentRegistrantUpdateForm, CounselingDataForm, StudentForm, StudentUpdateForm
 from student.models import AdmissionStudent, Student, CounselingComment
 
@@ -150,7 +153,7 @@ def admission_confirmation(request):
             messages.add_message(
                 request,
                 messages.ERROR,
-                'Please select applicants to permit for admission.'
+                'Veuillez sélectionner les candidats à autoriser pour l`\'admission.'
             )
             to_be_admitted = []
 
@@ -163,13 +166,13 @@ def admission_confirmation(request):
             messages.add_message(
                 request,
                 messages.ERROR,
-                f'Given semester number {semester_number} not found!'
+                f'Numéro de semestre  {semester_number} non trouvé!'
             )
         except Batch.DoesNotExist:
             messages.add_message(
                 request,
                 messages.ERROR,
-                'Please select/create a batch first.'
+                'Veuillez d\'abord sélectionner/créer une promotion.'
             )
 
         students = []
@@ -180,7 +183,7 @@ def admission_confirmation(request):
                 messages.add_message(
                     request,
                     messages.ERROR,
-                    'Please choose a valid session.'
+                    'Veuillez choisir une session valide.'
                 )
             # If student.save() doesn't raise any exceptions,
             # we save student, except, we skip making student object.
@@ -374,3 +377,29 @@ def student_delete_view(request, pk):
     student = Student.objects.get(pk=pk)
     student.delete()
     return redirect('dashboard:student:all_student')
+
+
+class AlumnusListView(ListView):
+    model = Student
+    context_object_name = 'alumnus'
+    template_name = 'students/list/alumnus.html'
+
+    def test_func(self):
+        user = self.request.user
+        return user_is_verified(user)
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            return redirect('account:profile_complete')
+        return redirect('account_login')
+
+    def get_queryset(self):
+        queryset = Student.alumnus.all()
+        return queryset
+
+    def get_context_data(self, *args, object_list=None, **kwargs):
+        ctx = super().get_context_data(*args, object_list=object_list, **kwargs)
+        alumnus = Student.alumnus.all()
+        f = AlumniFilter(self.request.GET, queryset=alumnus)
+        ctx['filter'] = f
+        return ctx

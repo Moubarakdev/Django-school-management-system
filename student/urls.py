@@ -6,7 +6,7 @@ from student.views.report_views import yearly_graph_api, counsel_monthly_report
 from student.views.students_views import all_applicants, students_board, admitted_students_list, paid_registrants, \
     unpaid_registrants, rejected_registrants, get_json_batch_data, admission_confirmation, admit_student, \
     mark_as_paid_or_unpaid, update_online_registrant, add_counseling_data, add_student_view, students_view, \
-    StudentDetailsView, StudentUpdateView, student_delete_view, students_by_department_view
+    StudentDetailsView, StudentUpdateView, student_delete_view, students_by_department_view, AlumnusListView
 
 app_name = 'student'
 
@@ -28,6 +28,7 @@ urlpatterns = [
     path('', students_board, name='students_board'),
     path('add/', add_student_view, name='add_student'),
     path('all/', students_view, name='all_student'),
+    path('alumnus/', AlumnusListView.as_view(), name='alumnus'),
     path('applicants/', all_applicants, name='all_applicants'),
     path('admitted-students/', admitted_students_list,
          name='admitted_student_list'),

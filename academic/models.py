@@ -82,8 +82,6 @@ class Subject(TimeStampedModel):
         Teacher, on_delete=models.CASCADE,
         blank=True, null=True, verbose_name="Instructeur"
     )
-    theory_marks = models.PositiveIntegerField(blank=True, null=True, verbose_name="Note théorique")
-    practical_marks = models.PositiveIntegerField(blank=True, null=True, verbose_name="Note pratique")
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True)

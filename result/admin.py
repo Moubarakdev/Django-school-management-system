@@ -7,8 +7,8 @@ from result.models import Result, Exam, SubjectGroup
 class ResutlAdmin(admin.ModelAdmin):
     list_display = (
         'student', 'semester', 'exam',
-        'subject', 'theory_marks',
-        'practical_marks', 'total_marks'
+        'subject', 'class_marks',
+        'exam_marks', 'total_marks', 'extra_marks'
     )
     list_editable = ('total_marks', 'exam')
 

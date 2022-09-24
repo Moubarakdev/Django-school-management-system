@@ -83,18 +83,22 @@ def result_entry(request):
                     subject = Subject.objects.get(pk=s_pk)
                     if not result_created.get(str(s_pk)):
                         # get subject marks
-                        practical_marks = int(
-                            request.POST.get(f'practical_marks.{s_pk}')
+                        class_marks = int(
+                            request.POST.get(f'class_marks.{s_pk}')
                         )
-                        theory_marks = int(
-                            request.POST.get(f'theory_marks.{s_pk}')
+                        exam_marks = int(
+                            request.POST.get(f'exam_marks.{s_pk}')
+                        )
+                        extra_marks = int(
+                            request.POST.get(f'extra_marks.{s_pk}')
                         )
                         result = Result(
                             student=student,
                             semester=semester,
                             subject=subject,
-                            practical_marks=practical_marks,
-                            theory_marks=theory_marks
+                            class_marks=class_marks,
+                            exam_marks=exam_marks,
+                            extra_marks=extra_marks,
                         )
                         try:
                             result.save()
@@ -102,8 +106,8 @@ def result_entry(request):
                         except IntegrityError:
                             messages.error(
                                 request,
-                                f'{student.admission_student.name}\'s result '
-                                f'for {subject} has been created already.'
+                                f'Les notes de {student.admission_student.last_name} '
+                                f'pour {subject} ont déjà été créées.'
                             )
                 except ValueError:
                     pass

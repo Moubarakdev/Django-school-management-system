@@ -1,22 +1,89 @@
 {% load static %}
-
+{% load active_link_tags %}
 <div class="sidebar" id="sidebar">
 
     <div class="sidebar-inner slimscroll" style="overflow: hidden; width: 100%; height: 654px;">
         <div id="sidebar-menu" class="sidebar-menu">
             <ul>
-                <li>
-                    <a href="{% url 'dashboard:index' %}"><i class="fas fa-dashcube"></i><span>Dashboard</span></a>
+                <li class="{% active_link  'dashboard:index' 'active' strict=True%}">
+                    <a href="{% url 'dashboard:index' %}"><i
+                            class="fas fa-user-graduate "></i><span>Dashboard</span></a>
                 </li>
+                <!-- Counsel/Admission Dashboard -->
                 <li class="menu-title">
-                    <span>Dashboards</span>
+                    <span>Dashboard</span>
                 </li>
-                <li><a href="{% url 'dashboard:student:students_board' %}"> <i
-                        class="fas fa-book-reader"></i><span>Dashboard for students</span></a>
+                <li class="{% active_link  'dashboard:student:students_board' 'active' strict=True%}"><a
+                        href="{% url 'dashboard:student:students_board' %}"> <i
+                        class="fas fa-book-reader"></i><span>Conseil et admissions</span></a>
                 </li>
+
+                <!-- Students -->
                 <li class="menu-title">
-                    <span>Academic</span>
+                    <span>Étudiants</span>
                 </li>
+                <li class="submenu">
+                    <a href="#"><i class="fas fa-user-graduate" ></i> <span>Étudiants</span> <span
+                            class="menu-arrow"></span></a>
+                    <ul>
+                        <li class="{% active_link  'dashboard:student:all_student' 'active' strict=True%}">
+                            <a href="{% url 'dashboard:student:add_student' %}">Nouvelle inscription</a></li>
+                        <li><a href="{% url 'dashboard:student:all_student' %}">Liste des étudiants</a></li>
+                        <li class="{% active_link  'result:result_entry' 'active' strict=True%}">
+                            <a href="{% url 'result:result_entry' %}">Ajouter des notes</a></li>
+                        <li class="{% active_link  'result:index' 'active' strict=True%}">
+                            <a href="{% url 'result:index' %}">Résultats</a></li>
+                        <li class="{% active_link  'dashboard:student:alumnus' 'active' strict=True%}">
+                            <a href="{% url 'dashboard:student:alumnus' %}">Anciens étudiants</a></li>
+                    </ul>
+                </li>
+
+                <!-- Professeurs -->
+                <li class="menu-title">
+                    <span>Professeurs</span>
+                </li>
+                <li class="submenu">
+                    <a href="#"><i class="fas fa-chalkboard-teacher"></i> <span>Professeurs</span> <span
+                            class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="{% url 'dashboard:teacher:read_teachers' %}">Liste des professeurs</a></li>
+                    </ul>
+                </li>
+
+                <!-- Academic Tools -->
+                <li class="menu-title">
+                    <span>Academics</span>
+                </li>
+                <li class="submenu">
+                    <a href="#"><i class="fas fa-user-graduate"></i> <span>Options académiques</span> <span
+                            class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="{% url 'dashboard:academic:read_departments' %}">Listes des départements</a></li>
+                        <li><a href="{% url 'dashboard:academic:create_subject' %}">Créer une matière</a></li>
+                        <li><a href="{% url 'result:create_subject_group' %}">Ajouter un groupe de sujet</a></li>
+                        <li><a href="{% url 'result:subject_groups' %}">Groupe de sujets</a></li>
+                        <li><a href="{% url 'dashboard:academic:read_ac_sessions' %}">Sessions académiques</a></li>
+                        <li><a href="{% url 'dashboard:academic:read_semesters' %}">Semestres</a></li>
+                    </ul>
+                </li>
+                <!-- USER OPTIONS -->
+                <li class="menu-title">
+                    <span>Administrative</span>
+                </li>
+                <li class="submenu">
+                    <a href="#"><i class="fas fa-user-graduate"></i> <span>Administration</span> <span
+                            class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="{% url 'create_account' %}">Ajouter des comptes</a></li>
+                        <li><a href="{% url 'dashboard:read_requests' %}">Demandes d'approbation</a></li>
+                        <li><a href="{% url 'read_accounts' %}">Liste des utilisateurs</a></li>
+                        <li><a href="{% url 'result:subject_groups' %}">Groupe de sujets</a></li>
+                        <li><a href="{% url 'dashboard:academic:read_ac_sessions' %}">Sessions académiques</a></li>
+                        <li><a href="{% url 'dashboard:academic:read_semesters' %}">Semestres</a></li>
+                    </ul>
+                </li>
+
+                {% comment %}
                 <li><a href="{% url 'dashboard:academic:read_ac_sessions' %}"><i class="fas fa-book-reader"></i><span>Sessions Académique</span></a>
                 </li>
                 <li><a href="{% url 'dashboard:academic:read_subjects' %}"> <i class="fas fa-book-reader"></i><span>Matières</span></a>
@@ -83,7 +150,7 @@
                         class="fas fa-book-reader"></i><span>Results Entry</span></a>
                 </li>
 
-
+                {% endcomment %}
                 <!--
                 <li class="menu-title">
                     <span>Main Menu</span>

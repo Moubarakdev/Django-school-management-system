@@ -69,10 +69,13 @@
                                 <th>Matricule</th>
                                 <th>Nom</th>
                                 <th>Prénom</th>
-                                <th>Cours</th>
+                                <th>Matière</th>
+                                <th>Note devoir</th>
+                                <th>Note examen</th>
+                                <th>Note rattrapage</th>
                                 <th>Total</th>
-                                <th>Note pratique</th>
-                                <th>Note théorique</th>
+                                <th>Moyenne</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -100,13 +103,22 @@
                                     {{ obj.subject.name}}
                                 </td>
                                 <td>
+                                    {{ obj.class_marks }}
+                                </td>
+                                <td>
+                                    {{ obj.exam_marks }}
+                                </td>
+                                <td>
+                                    {{ obj.extra_marks }}
+                                </td>
+                                <td>
                                     {{ obj.total_marks }}
                                 </td>
                                 <td>
-                                    {{ obj.practical_marks }}
+                                    {{ obj.average }}
                                 </td>
                                 <td>
-                                    {{ obj.theory_marks }}
+                                    {{ obj.validated }}
                                 </td>
                             </tr>
                             {% endfor %}

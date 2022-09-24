@@ -21,13 +21,13 @@
             <div class="col">
                 <h3 class="page-title">Dashboard Étudiant</h3>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'account:read_accounts' %}">Dashboard Étudiant</a></li>
-                    <li class="breadcrumb-item active">Index</li>
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Étudiants</li>
                 </ul>
             </div>
             <div class="col-auto text-right float-right ml-auto">
-                <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
-                <a href="{% url 'account:create_account' %}" class="btn btn-primary"><i
+                <!-- <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a> -->
+                <a href="{% url 'dashboard:student:add_student' %}" class="btn btn-primary"><i
                         class="fas fa-plus"></i></a>
             </div>
         </div>
@@ -44,7 +44,7 @@
                         <div class="layer w-100 mB-10">
                             <h6 class="lh-1">
                                 <a href="{% url 'dashboard:student:all_applicants' %}" class="text-dark">
-                                    Applications
+                                    Demandes d'inscription
                                 </a>
                             </h6>
                         </div>
@@ -70,11 +70,8 @@
                     <div class="layers bd bgc-white p-20">
                         <div class="layer w-100 mB-10">
                             <h6 class="lh-1">
-                                <a
-                                        href="{% url 'dashboard:student:admitted_student_list' %}"
-                                        class="text-dark"
-                                >
-                                    All-Cleared
+                                <a href="{% url 'dashboard:student:admitted_student_list' %}" class="text-dark">
+                                    Entièrement terminé
                                 </a>
                             </h6>
                         </div>
@@ -112,7 +109,7 @@
                                         href="{% url 'dashboard:student:unpaid_registrant_list' %}"
                                         class="text-dark"
                                 >
-                                    Unpaid
+                                    Inscriptions Non payées
                                 </a>
                             </h6>
                         </div>
@@ -150,7 +147,7 @@
                                         href="{% url 'dashboard:student:rejected_registrant_list' %}"
                                         class="text-dark"
                                 >
-                                    Rejected
+                                    Inscriptions rejetées
                                 </a>
                             </h6>
                         </div>
@@ -193,7 +190,7 @@
                                         href="{% url 'dashboard:student:admission_confirmation' %}"
                                         class="text-dark"
                                 >
-                                    Confirmation
+                                    Confirmation d'inscription
                                 </a>
                             </h6>
                         </div>
@@ -231,7 +228,7 @@
                                         href="{% url 'dashboard:student:add_student' %}"
                                         class="text-dark"
                                 >
-                                    Add Offline Applicant
+                                    Procéder à une inscription hors ligne
                                 </a>
                             </h6>
                         </div>
@@ -1028,6 +1025,8 @@
     });
 
   })
+
+
 
 
 
