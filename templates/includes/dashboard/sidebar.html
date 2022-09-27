@@ -7,7 +7,7 @@
             <ul>
                 <li class="{% active_link  'dashboard:index' 'active' strict=True%}">
                     <a href="{% url 'dashboard:index' %}"><i
-                            class="fas fa-user-graduate "></i><span>Dashboard</span></a>
+                            class="fas fa-tachometer-alt "></i><span>Dashboard</span></a>
                 </li>
                 <!-- Counsel/Admission Dashboard -->
                 <li class="menu-title">
@@ -23,7 +23,7 @@
                     <span>Étudiants</span>
                 </li>
                 <li class="submenu">
-                    <a href="#"><i class="fas fa-user-graduate" ></i> <span>Étudiants</span> <span
+                    <a href="#"><i class="fas fa-user-graduate"></i> <span>Étudiants</span> <span
                             class="menu-arrow"></span></a>
                     <ul>
                         <li class="{% active_link  'dashboard:student:all_student' 'active' strict=True%}">
@@ -63,6 +63,7 @@
                         <li><a href="{% url 'result:create_subject_group' %}">Ajouter un groupe de matières</a></li>
                         <li><a href="{% url 'result:subject_groups' %}">Groupe de matières</a></li>
                         <li><a href="{% url 'dashboard:academic:read_ac_sessions' %}">Sessions académiques</a></li>
+                        <li><a href="{% url 'dashboard:academic:read_batches' %}">Promotions</a></li>
                         <li><a href="{% url 'dashboard:academic:read_semesters' %}">Semestres</a></li>
                     </ul>
                 </li>

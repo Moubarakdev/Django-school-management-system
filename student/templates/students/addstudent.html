@@ -18,11 +18,11 @@
                 <div class="alert alert-warning">
                     <p>
                         Remplissez d'abord tous les champs obligatoires, puis cliquez sur
-                        <em>Ajouter une nouvelle application</em>
+                        <em>Valider</em>
                     </p>
                 </div>
                 {% csrf_token %} {{ form|crispy }}
-                <input type="submit" value="Add New Application" class="btn btn-dark"/>
+                <input type="submit" value="Valider" class="btn btn-dark"/>
             </form>
         </div>
         <div class="col-md-5">

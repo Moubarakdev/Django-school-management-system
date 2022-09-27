@@ -7,7 +7,7 @@ from teacher.models import Teacher
 
 
 # Create your models here.
-# Departement #filiere #serie
+# Department #filiere #serie
 class Department(TimeStampedModel):
     name = models.CharField(max_length=255, unique=True, verbose_name='Nom de département')
     code = models.PositiveIntegerField(verbose_name="Code department ")
@@ -20,6 +20,8 @@ class Department(TimeStampedModel):
     establish_date = models.DateField(auto_now_add=True, verbose_name='Date de création')
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING,
                                    null=True, verbose_name="Créateur")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     def __str__(self):
         return str(self.name)
@@ -30,6 +32,8 @@ class AcademicSession(TimeStampedModel):
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True, verbose_name="Créateur")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     def __str__(self):
         return '{} - {}'.format(self.year, self.year + 1)
@@ -51,24 +55,25 @@ class Semester(TimeStampedModel):
         default=None, null=True, blank=True
       )
     '''
-    active = models.BooleanField(default=True, verbose_name='Opérationnel'),
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True
     )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     class Meta:
         ordering = ['number', ]
 
     def __str__(self):
         if self.number == 1:
-            return '1st'
+            return 'Semestre 1'
         if self.number == 2:
-            return '2nd'
+            return 'Semestre 2'
         if self.number == 3:
-            return '3rd'
+            return 'Semestre 3'
         if self.number and 3 < self.number <= 12:
-            return '%sth' % self.number
+            return 'Semestre ' + '%s' % self.number
 
     @property
     def active_or_not(self):
@@ -85,15 +90,22 @@ class Subject(TimeStampedModel):
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     def __str__(self):
         return "{} ({})".format(self.name, self.subject_code)
 
 
 class Batch(TimeStampedModel):
-    year = models.ForeignKey(AcademicSession, on_delete=models.CASCADE, verbose_name="Année")
+    year = models.ForeignKey(AcademicSession, on_delete=models.CASCADE, verbose_name="Année scolaire")
     number = models.PositiveIntegerField('Numéro promotion')
     department = models.ForeignKey(Department, on_delete=models.CASCADE, verbose_name='Département')
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.DO_NOTHING, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     class Meta:
         verbose_name_plural = 'Promotions'
@@ -110,6 +122,8 @@ class TempSerialID(TimeStampedModel):
                                    related_name='temp_serials', verbose_name="Département")
     year = models.ForeignKey(AcademicSession, on_delete=models.CASCADE, verbose_name="Année académique")
     serial = models.CharField(max_length=50, blank=True, verbose_name="Numéro de série")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     # class Meta:
     #     unique_together = ['department', 'year']

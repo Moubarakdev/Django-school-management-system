@@ -2,6 +2,7 @@ from collections import OrderedDict
 from datetime import datetime, timedelta, date
 
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
@@ -9,6 +10,7 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, UpdateView, ListView
 
 from academic.models import Batch, AcademicSession, Semester, Department
+from permission_handlers.administrative import user_is_admin_su_or_ac_officer
 from permission_handlers.basic import user_is_verified
 from result.models import SubjectGroup
 from student.filters import AlumniFilter
@@ -16,6 +18,7 @@ from student.forms import AdmissionForm, StudentRegistrantUpdateForm, Counseling
 from student.models import AdmissionStudent, Student, CounselingComment
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def students_board(request):
     """
     Dashboard for online admission system.
@@ -56,6 +59,7 @@ def students_board(request):
     return render(request, 'students/students_board.html', context)
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def all_applicants(request):
     """Display all registered students list"""
     registrants = AdmissionStudent.objects.all().order_by('-created')
@@ -65,6 +69,7 @@ def all_applicants(request):
     return render(request, 'students/all_applicants.html', ctx)
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def admitted_students_list(request):
     """
     Returns list of students admitted from online registration.
@@ -76,6 +81,7 @@ def admitted_students_list(request):
     return render(request, 'students/dashboard_all_cleared_students.html', context)
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def paid_registrants(request):
     """
     Returns list of students already paid from online registration.
@@ -87,6 +93,7 @@ def paid_registrants(request):
     return render(request, 'students/dashboard_paid_students.html', context)
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def unpaid_registrants(request):
     """
     Returns list of students haven't paid admission fee yet.
@@ -98,6 +105,7 @@ def unpaid_registrants(request):
     return render(request, 'students/unpaid_applicants.html', context)
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def rejected_registrants(request):
     ctx = {
         'rejected_registrants': AdmissionStudent.objects.filter(rejected=True),
@@ -113,6 +121,7 @@ def get_json_batch_data(request, *args, **kwargs):
     return JsonResponse({'data': department_batches})
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def admission_confirmation(request):
     """
     If request is get, show list of applicants to be admitted finally as student,
@@ -204,6 +213,7 @@ def admission_confirmation(request):
         return render(request, 'students/list/confirm_admission.html', ctx)
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def admit_student(request, pk):
     """
     Admit applicant found by id/pk into chosen department
@@ -225,6 +235,7 @@ def admit_student(request, pk):
     return render(request, 'students/dashboard_admit_student.html', context)
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def mark_as_paid_or_unpaid(request):
     """ Change student applicants payment status """
     if request.method == 'POST':
@@ -241,6 +252,7 @@ def mark_as_paid_or_unpaid(request):
         return JsonResponse({'data': False})
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def update_online_registrant(request, pk):
     """
     Update applicants details, counseling information
@@ -373,13 +385,14 @@ class StudentDetailsView(DetailView):
         return context
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def student_delete_view(request, pk):
     student = Student.objects.get(pk=pk)
     student.delete()
     return redirect('dashboard:student:all_student')
 
 
-class AlumnusListView(ListView):
+class AlumnusListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Student
     context_object_name = 'alumnus'
     template_name = 'students/list/alumnus.html'
@@ -390,8 +403,8 @@ class AlumnusListView(ListView):
 
     def handle_no_permission(self):
         if self.request.user.is_authenticated:
-            return redirect('account:profile_complete')
-        return redirect('account_login')
+            return redirect('profile_complete')
+        return redirect('login')
 
     def get_queryset(self):
         queryset = Student.alumnus.all()

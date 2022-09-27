@@ -4,7 +4,7 @@
 
 {% block extra_header %}
 {% endblock %}
-{% block ccontent %}
+{% block content %}
 
 
 <div class="content container-fluid">
@@ -13,13 +13,12 @@
             <div class="col">
                 <h3 class="page-title">Promotions</h3>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:student:students_board' %}">Dashboard</a></li>
                     <li class="breadcrumb-item active">Promotions</li>
                 </ul>
             </div>
             <div class="col-auto text-right float-right ml-auto">
-                <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
-                <a href="add-student.html" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                <a href="{% url 'dashboard:academic:create_batch' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
             </div>
         </div>
     </div>
@@ -31,43 +30,33 @@
                         <table class="table table-hover table-center mb-0 datatable">
                             <thead>
                             <tr>
-                                <th>ID</th>
-                                <th>Name</th>
-                                <th>Class</th>
-                                <th>DOB</th>
-                                <th>Parent Name</th>
-                                <th>Mobile Number</th>
-                                <th>Address</th>
+                                <th>Année scolaire</th>
+                                <th>Numéro</th>
+                                <th>Département</th>
+                                <th>Créer par</th>
                                 <th class="text-right">Action</th>
                             </tr>
                             </thead>
                             <tbody>
+                            {% for batch in batches%}
                             <tr>
-                                <td>PRE2209</td>
-                                <td>
-                                    <h2 class="table-avatar">
-                                        <a href="student-details.html" class="avatar avatar-sm mr-2"><img
-                                                class="avatar-img rounded-circle"
-                                                src="assets/img/profiles/avatar-01.jpg" alt="User Image"></a>
-                                        <a href="student-details.html">Aaliyah</a>
-                                    </h2>
-                                </td>
-                                <td>10 A</td>
-                                <td>2 Feb 2002</td>
-                                <td>Jeffrey Wong</td>
-                                <td>097 3584 5870</td>
-                                <td>911 Deer Ridge Drive,USA</td>
+                                <td>{{batch.year}}</td>
+                                <td>{{batch.number}}</td>
+                                <td>{{batch.department}}</td>
+                                <td>{{batch.created_by}}</td>
                                 <td class="text-right">
                                     <div class="actions">
-                                        <a href="edit-student.html" class="btn btn-sm bg-success-light mr-2">
+                                        <a href="{% url 'dashboard:academic:update_batch' pk=batch.pk%}"
+                                           class="btn btn-sm bg-success-light mr-2">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <a href="#" class="btn btn-sm bg-danger-light">
+                                        <a href="{% url 'dashboard:academic:delete_batch' pk=batch.pk%}" class="btn btn-sm bg-danger-light">
                                             <i class="fas fa-trash"></i>
                                         </a>
                                     </div>
                                 </td>
                             </tr>
+                            {% endfor %}
                             </tbody>
                         </table>
                     </div>

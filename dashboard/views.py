@@ -1,12 +1,14 @@
+from django.contrib.auth.decorators import user_passes_test
 from django.shortcuts import render
 
 from academic.models import Department
+from permission_handlers.basic import user_is_verified
 from student.models import Student
 from teacher.models import Teacher
 
 
 # Create your views here.
-
+@user_passes_test(user_is_verified)
 def index(request):
     total_teachers = Teacher.objects.count()
     total_departments = Department.objects.count()

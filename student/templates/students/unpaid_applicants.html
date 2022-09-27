@@ -12,7 +12,8 @@
             <div class="col">
                 <h3 class="page-title">Inscriptions non payées</h3>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'dashboard:student:students_board' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:student:students_board' %}">Dashboard</a>
+                    </li>
                     <li class="breadcrumb-item active">Liste des inscriptions non payées</li>
                 </ul>
             </div>
@@ -105,11 +106,13 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
 
-        {% endblock %}
+{% endblock %}
 
-        {% block customjs %}
-        <script>
+{% block customjs %}
+<script>
         const forms = document.querySelectorAll('.mark-paid-form');
         forms.forEach(function(element){
             element.addEventListener('submit', function(event){
@@ -138,6 +141,5 @@
             });
         }
 
-
-        </script>
-        {% endblock %}
+</script>
+{% endblock %}

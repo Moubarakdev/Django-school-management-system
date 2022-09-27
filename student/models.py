@@ -137,7 +137,7 @@ class AdmissionStudent(StudentBase):
         default=False
     )
     admitted = models.BooleanField(default=False, verbose_name="Accepté")
-    admission_date = models.DateField(blank=True, null=True, verbose_name="Date d'acceptation")
+    admission_date = models.DateField(auto_now=True)
     paid = models.BooleanField(default=False, verbose_name="Payé")
     application_type = models.CharField(
         max_length=1,

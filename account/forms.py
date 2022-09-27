@@ -147,8 +147,8 @@ class ApprovalProfileUpdateForm(djform.ModelForm):
 UserProfileSocialLinksFormSet = inlineformset_factory(
     CommonUserProfile, SocialLink,
     fields=('media_name', 'url'),
-    extra=4,
-    max_num=4
+    extra=2,
+    max_num=2
 )
 
 
@@ -178,3 +178,15 @@ class LoginForm(djform.Form):
                 "class": "form-control"
             }
         ))
+
+
+class UpdateUserForm(djform.ModelForm):
+    username = djform.CharField(max_length=100,
+                               required=True,
+                               widget=djform.TextInput(attrs={'class': 'form-control'}))
+    email = djform.EmailField(required=True, disabled=True,
+                             widget=djform.TextInput(attrs={'class': 'form-control'}))
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'last_name', 'first_name', ]

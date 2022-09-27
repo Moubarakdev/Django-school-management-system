@@ -5,7 +5,7 @@ from django.urls import path, include
 from academic.views import ReadSemester, CreateSemester, DeleteSemester, UpdateSemester, SubjectListView, \
     CreateSubjectView, UpdateSubjectView, DeleteSubjectView, CreateDepartmentView, UpdateDepartmentView, \
     DeleteDepartmentView, CreateAcademicSession, AcademicSessionListView, DepartmentListView, DeleteAcademicSession, \
-    UpdateAcademicSession
+    UpdateAcademicSession, CreateBatchView, DeleteBatchView, UpdateBatchView, BatchListView
 from myschool import settings
 
 app_name = 'academic'
@@ -34,4 +34,10 @@ urlpatterns = [
                   path('academicsession/create/', CreateAcademicSession.as_view(), name="create_ac_session"),
                   path('academicsession/delete/<int:pk>', DeleteAcademicSession.as_view(), name="delete_ac_session"),
                   path('academicsession/update/<int:pk>', UpdateAcademicSession.as_view(), name="update_ac_session"),
+
+                  # Batch
+                  path('batch/', BatchListView.as_view(), name="read_batches"),
+                  path('batch/create/', CreateBatchView.as_view(), name="create_batch"),
+                  path('batch/delete/<int:pk>', DeleteBatchView.as_view(), name="delete_batch"),
+                  path('batch/update/<int:pk>', UpdateBatchView.as_view(), name="update_batch"),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

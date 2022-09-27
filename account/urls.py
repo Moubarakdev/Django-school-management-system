@@ -6,6 +6,7 @@ from django_countries import settings
 
 from account.views import login_view, profile_complete, register, profile_picture_upload, user_approval, \
     user_approval_with_modification, AccountListView, UserUpdateView, CreateUserView, ChangePasswordView
+from permission_handlers.basic import permission_error
 
 # app_name = 'account'
 
@@ -22,7 +23,7 @@ urlpatterns = [
                   path('modify-and-approve/<int:pk>/', user_approval_with_modification,
                        name='approval_with_modification'),
                   path('api/upload-profile-picture', profile_picture_upload, name='profile_picture_upload'),
-
+                  path('permission-error/', permission_error, name='permission_error'),
                   # Password reset urls ##############################################################################
                   path('reset_password/', PasswordResetView.as_view(template_name="account/password_reset.html"),
                        name="reset_password"),

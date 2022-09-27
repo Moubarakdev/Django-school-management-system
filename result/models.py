@@ -22,6 +22,8 @@ class Exam(TimeStampedModel):
         choices=EXAM_CHOICES, verbose_name='titre de l\'examen'
     )
     exam_date = models.DateTimeField(verbose_name="Date examen")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     def __str__(self):
         return f'{self.get_exam_name_display()} - \
@@ -47,23 +49,23 @@ class Result(TimeStampedModel):
         blank=True, null=True, verbose_name="Examen"
     )
     class_marks = models.FloatField(
-        blank=True,
+        blank=True, default=0,
         null=True, verbose_name="Note de classe"
     )
     exam_marks = models.FloatField(
-        blank=True,
+        blank=True, default=0,
         null=True, verbose_name="Note d'examen"
     )
     extra_marks = models.FloatField(
-        blank=True,
+        blank=True, default=0,
         null=True, verbose_name='note de rattrapage'
     )
     total_marks = models.FloatField(
-        blank=True,
+        blank=True, default=0,
         null=True, verbose_name="Total"
     )
     average = models.FloatField(
-        blank=True,
+        blank=True, default=0,
         null=True, verbose_name='moyenne'
     )
     validated = models.BooleanField(
@@ -71,6 +73,8 @@ class Result(TimeStampedModel):
         default="False",
         verbose_name="Validé ?"
     )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     class Meta:
         unique_together = ('student', 'semester', 'subject')
@@ -120,6 +124,8 @@ class SubjectGroup(TimeStampedModel):
         on_delete=models.CASCADE, verbose_name='semestre'
     )
     subjects = models.ManyToManyField(Subject, blank=True, verbose_name='matières')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     def __str__(self):
         return f'{self.department} - {self.semester}'

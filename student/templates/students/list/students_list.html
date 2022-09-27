@@ -48,7 +48,7 @@
                                 </th>
                                 <td>
                                     <a href="{% url 'dashboard:student:student_details' pk=student.id %}">
-                                        <img src="{{ student.photo.url }}" class="mr-2 rounded-circle" height=24
+                                        <img src="{{ student.admission_student.photo.url }}" class="mr-2 rounded-circle" height=24
                                              width=24>
                                         {{ student.admission_student.last_name }}
                                     </a>

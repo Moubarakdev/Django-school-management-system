@@ -1,5 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
@@ -10,8 +12,10 @@ from rolepermissions.roles import assign_role
 from verify_email.email_handler import send_verification_email
 
 from account.forms import CommonUserProfileForm, UserProfileSocialLinksFormSet, ProfileCompleteForm, LoginForm, \
-    UserRegistrationForm, ApprovalProfileUpdateForm, UserChangeFormDashboard
-from account.models import User
+    UserRegistrationForm, ApprovalProfileUpdateForm, UserChangeFormDashboard, UpdateUserForm
+from account.models import User, CustomGroup
+from permission_handlers.administrative import user_is_admin_or_su
+from permission_handlers.basic import user_is_verified
 
 
 def login_view(request):
@@ -91,6 +95,7 @@ def register(request):
         return render(request, 'account/signup.html', {'user_form': user_form})
 
 
+@login_required
 def profile_complete(request):
     ctx = {}
     user = User.objects.get(pk=request.user.pk)
@@ -104,7 +109,7 @@ def profile_complete(request):
         )
         ctx.update({
             'profile_edit_form': profile_edit_form,
-            'social_links_form': social_links_form
+            'social_links_form': social_links_form,
         })
     except:
         messages.add_message(
@@ -114,11 +119,13 @@ def profile_complete(request):
         )
 
     verification_form = ProfileCompleteForm(instance=user)
+    user_form = UpdateUserForm(instance=request.user)
     if request.method == 'POST':
         verification_form = ProfileCompleteForm(
             request.POST,
             instance=user
         )
+        user_form = UpdateUserForm(request.POST, instance=user)
         if 'user-profile-update-form' in request.POST:
             profile_edit_form = CommonUserProfileForm(
                 request.POST,
@@ -135,12 +142,16 @@ def profile_complete(request):
             if social_links_form.is_valid():
                 social_links_form.save()
 
+            if user_form.is_valid():
+                user_form.save()
+
             messages.add_message(
                 request,
                 messages.SUCCESS,
-                'Votre profil a été enregistré.'
+                'Profil modifié avec succès.'
             )
             return redirect('profile_complete')
+
         else:
             if verification_form.is_valid():
                 verification_form.instance.approval_status = 'p'
@@ -152,14 +163,17 @@ def profile_complete(request):
                     'Votre demande a été envoyée, veuillez patienter.'
                 )
                 return redirect('profile_complete')
+
     user_permissions = user.user_permissions.all()
     ctx.update({
         'verification_form': verification_form,
+        'user_form': user_form,
         'user_perms': user_permissions if user_permissions else None,
     })
     return render(request, 'account/profile_complete.html', ctx)
 
 
+@user_passes_test(user_is_admin_or_su, login_url='permission_error')
 def profile_picture_upload(request):
     """
     Handles profile pic uploads coming through ajax.
@@ -178,12 +192,17 @@ def profile_picture_upload(request):
 
 
 # #################################### REQUESTS #################################
-class UserRequestsListView(ListView):
+class UserRequestsListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     queryset = User.objects.exclude(approval_status='a')
     template_name = 'account/dashboard/requests/user_requests.html'
     context_object_name = 'users'
 
+    def test_func(self):
+        user = self.request.user
+        return user_is_admin_or_su(user)
 
+
+@user_passes_test(user_is_admin_or_su, login_url='permission_error')
 def user_approval(request, pk, approved):
     """ Approve or decline approval request based on parameter `approved`.
     approved=0 means decline, 1 means approve.
@@ -211,6 +230,7 @@ def user_approval(request, pk, approved):
     return redirect('/dashboard/requests')
 
 
+@user_passes_test(user_is_admin_or_su, login_url='permission_error')
 def user_approval_with_modification(request, pk):
     user = User.objects.get(pk=pk)
     form = ApprovalProfileUpdateForm()
@@ -234,18 +254,22 @@ def user_approval_with_modification(request, pk):
 
 
 # ############################# ACCOUNTS #############################
-class AccountListView(ListView):
+class AccountListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = User
     template_name = 'account/dashboard/account_list.html'
     context_object_name = 'accounts'
 
+    def test_func(self):
+        user = self.request.user
+        return user_is_verified(user)
+
     def handle_no_permission(self):
         if self.request.user.is_authenticated:
             return redirect('profile_complete')
-        return redirect('/login')
+        return redirect('login')
 
 
-class UserUpdateView(UpdateView):
+class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     form_class = UserChangeFormDashboard
     queryset = User.objects.all()
     template_name = 'account/dashboard/account_form.html'
@@ -256,8 +280,17 @@ class UserUpdateView(UpdateView):
         context['button'] = "Modifier"
         return context
 
+    def test_func(self):
+        user = self.request.user
+        return user_is_verified(user)
 
-class CreateUserView(CreateView):
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            return redirect('profile_complete')
+        return redirect('login')
+
+
+class CreateUserView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     form_class = UserChangeFormDashboard
     queryset = User.objects.all()
     template_name = 'account/dashboard/account_form.html'
@@ -268,8 +301,32 @@ class CreateUserView(CreateView):
         context['button'] = "Créer"
         return context
 
+    def test_func(self):
+        user = self.request.user
+        return user_is_verified(user)
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            return redirect('profile_complete')
+        return redirect('login')
+
 
 class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     template_name = 'account/profile_complete.html'
     success_message = "Mot de passe changé avec succès"
     success_url = reverse_lazy('profile_complete')
+
+
+class GroupListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = CustomGroup
+    template_name = 'academic/group_list.html'
+    context_object_name = 'groups'
+
+    def test_func(self):
+        user = self.request.user
+        return user_is_verified(user)
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            return redirect('profile_complete')
+        return redirect('login')

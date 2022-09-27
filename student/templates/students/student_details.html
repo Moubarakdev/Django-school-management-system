@@ -25,7 +25,10 @@
                     <div class="col-8">
                         <h2>{{ student.admission_student.name }}</h2>
                         <h4>
-                            {{ student.admission_student.choosen_department }} {{ student.semester }}
+                            {{ student.admission_student.choosen_department }}
+                        </h4>
+                        <h4>
+                            Semestre : {{ student.semester }}
                         </h4>
                         <h4>
                             Matricule : {{ student.temporary_id }}
@@ -64,7 +67,7 @@
                                     <thead>
                                     <tr>
                                         <th scope="col">#</th>
-                                        <th scope="col">Cours</th>
+                                        <th scope="col">Matière</th>
                                         <th scope="col">Note de classe</th>
                                         <th scope="col">Note d'examen</th>
                                         <th scope="col">Note de rattrapage</th>

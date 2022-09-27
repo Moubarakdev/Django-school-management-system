@@ -43,6 +43,8 @@ class User(AbstractUser):
         blank=True, null=True, verbose_name='message'
     )
     address = models.TextField(blank=True, null=True, verbose_name='Adresse')
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
 
 User._meta.get_field('email')._unique = True
@@ -74,6 +76,8 @@ class SocialLink(models.Model):
         max_length=50, verbose_name='Nom'
     )
     url = models.URLField()
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     def __str__(self):
         return self.media_name
@@ -127,6 +131,8 @@ class CommonUserProfile(models.Model):
         related_name='social_links',
         blank=True, verbose_name='Réseau social'
     )
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     class Meta:
         verbose_name = 'Profil'
@@ -134,3 +140,4 @@ class CommonUserProfile(models.Model):
 
     def __str__(self):
         return f'{self.user}\'s profile'
+

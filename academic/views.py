@@ -4,8 +4,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from academic.forms import DepartmentForm, SemesterForm, AcademicSessionForm, SubjectForm
-from academic.models import Department, Semester, Subject, AcademicSession
+from academic.forms import DepartmentForm, SemesterForm, AcademicSessionForm, SubjectForm, BatchForm
+from academic.models import Department, Semester, Subject, AcademicSession, Batch
 from permission_handlers.administrative import user_is_admin_su_editor_or_ac_officer, user_editor_admin_or_su, \
     user_is_teacher_or_administrative
 from permission_handlers.basic import user_is_verified
@@ -251,3 +251,65 @@ class DeleteAcademicSession(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
     def test_func(self):
         user = self.request.user
         return user_is_admin_su_editor_or_ac_officer(user)
+
+
+# ########## BATCH ###################
+class CreateBatchView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    model = Batch
+    form_class = BatchForm
+
+    def test_func(self):
+        user = self.request.user
+        return user_editor_admin_or_su(user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['button'] = "Créer"
+        return context
+
+    success_url = reverse_lazy('dashboard:academic:read_batches')
+    template_name = 'batch/batch_form.html'
+
+    def form_valid(self, form):
+        if self.request.user.is_authenticated:
+            form.instance.created_by = self.request.user
+        return super().form_valid(form)
+
+
+class UpdateBatchView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Batch
+    form_class = BatchForm
+    template_name = 'batch/batch_form.html'
+
+    def test_func(self):
+        user = self.request.user
+        return user_is_verified(user)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['button'] = "Modifier"
+        return context
+
+    success_url = reverse_lazy('dashboard:academic:read_batches')
+
+
+class BatchListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = Batch
+    context_object_name = "batches"
+    template_name = 'batch/batch_list.html'
+
+    def test_func(self):
+        user = self.request.user
+        return user_is_verified(user)
+
+
+class DeleteBatchView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Batch
+    template_name = 'batch/batch_confirm_delete.html'
+    success_url = reverse_lazy('dashboard:academic:read_batches')
+
+    def test_func(self):
+        user = self.request.user
+        return user_editor_admin_or_su(user)
+
+# #################################

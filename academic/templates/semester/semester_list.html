@@ -32,7 +32,6 @@
                             <thead>
                             <tr>
                                 <th>Numéro Semestre</th>
-                                <th>Opérationnalité</th>
                                 <th>Créer par</th>
                                 <th class="text-right">Action</th>
                             </tr>
@@ -41,7 +40,6 @@
                             {% for semester in semesters%}
                             <tr>
                                 <td>{{semester.number}}</td>
-                                <td>{{semester.active_or_not}}</td>
                                 <td>{{semester.created_by}}</td>
                                 <td class="text-right">
                                     <div class="actions">
