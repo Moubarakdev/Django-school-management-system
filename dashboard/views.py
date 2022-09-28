@@ -8,7 +8,7 @@ from teacher.models import Teacher
 
 
 # Create your views here.
-@user_passes_test(user_is_verified)
+@user_passes_test(user_is_verified, login_url='permission_error')
 def index(request):
     total_teachers = Teacher.objects.count()
     total_departments = Department.objects.count()

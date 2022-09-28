@@ -93,15 +93,15 @@
                                     </td>
                                     <td>
                                         <input type="number"
-                                               name="class_marks.{{ subject.pk }}">
+                                               name="class_marks.{{ subject.pk }}" max=20 min=0>
                                     </td>
                                     <td>
                                         <input type="number"
-                                               name="exam_marks.{{ subject.pk }}">
+                                               name="exam_marks.{{ subject.pk }}" max=20 min=0 >
                                     </td>
                                     <td>
                                         <input type="number"
-                                               name="extra_marks.{{ subject.pk }}">
+                                               name="extra_marks.{{ subject.pk }}" max=20 min=0>
                                     </td>
                                 </tr>
                                 {% endfor %}

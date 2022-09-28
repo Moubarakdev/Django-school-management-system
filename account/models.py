@@ -27,15 +27,19 @@ class User(AbstractUser):
     approval_status = models.CharField(
         max_length=2,
         choices=APPROVAL_CHOICES,
-        default='n',
+        default='p',
     )
     employee_or_student_id = models.CharField(
-        help_text="seulement si vous êtes déjà Étudiant ou Professeur",
+        help_text="seulement si vous êtes déjà Étudiant",
         max_length=10,
         blank=True, null=True, verbose_name='Matricule'
     )
     requested_role = models.CharField(
         choices=REQUESTED_ACCOUNT_TYPE_CHOICES,
+        max_length=50,
+        default=REQUESTED_ACCOUNT_TYPE_CHOICES[0][0], verbose_name='Type de compte demandé'
+    )
+    role = models.CharField(
         max_length=50,
         default=REQUESTED_ACCOUNT_TYPE_CHOICES[0][0], verbose_name='Type de compte'
     )
@@ -45,6 +49,20 @@ class User(AbstractUser):
     address = models.TextField(blank=True, null=True, verbose_name='Adresse')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
+
+    def __str__(self):
+        if self.requested_role or self.role == "suscriber":
+            return 'Abonné'
+        if self.requested_role or self.role == "student":
+            return 'Étudiant'
+        if self.requested_role or self.role == "teacher":
+            return 'Professeur'
+        if self.requested_role or self.role == "editor":
+            return 'Editeur'
+        if self.requested_role or self.role == "academic_officer":
+            return 'Direction Académique'
+        if self.requested_role or self.role == "admin":
+            return 'Administrateur'
 
 
 User._meta.get_field('email')._unique = True
@@ -140,4 +158,3 @@ class CommonUserProfile(models.Model):
 
     def __str__(self):
         return f'{self.user}\'s profile'
-

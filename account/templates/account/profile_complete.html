@@ -118,9 +118,7 @@
                                            data-target="#request-update-modal"><i class="far fa-edit mr-1"></i> Modifier</a>
                                     </h5>
                                     <div class="skill-tags">
-                                        {% if user.approval_status == 'a'%}
-                                        <span>{{ request.user.requested_role }}</span>
-                                        {% endif %}
+                                        <span>{{ request.user.role }}</span>
                                     </div>
                                 </div>
                             </div>
@@ -165,9 +163,14 @@
             <div class="card">
                 <div class="card-body">
                     <!-- Profile Complete Form -->
-                    {% if user.approval_status != 'a' %}
+                    {% if user.approval_status == 'd'%}
+                    <div class="alert alert-danger" role="alert">
+                        Votre demande d'approbation pour un compte <strong>{{ user.requested_role }}</strong> a été rejeté .
+                    </div>
+                    {% elif user.approval_status == 'p'%}
                     <div class="alert alert-warning" role="alert">
-                        Votre profil n’est pas encore vérifié, veuillez vérifier votre compte.
+                        Votre demande d'approbation pour un compte <strong>{{ user.requested_role }}</strong> est en attente
+                        d'approbation.
                     </div>
                     {% endif %}
 
@@ -183,7 +186,7 @@
                     {% endif %}
 
                     <!-- Form for UnVerified User (SENDS A VERIFICATION REQUEST) -->
-                    {% if user.approval_status != 'a' %}
+                    {% if user.approval_status != 'a' and user.requested_role == 'suscriber'%}
                     <form method="post">
                         <div class="alert alert-warning alert-dismissible fade show" role="alert">
                             <strong>Votre compte n’est pas vérifié.</strong>
@@ -195,14 +198,14 @@
                         <!-- Form for verfied users (UPDATES USER PROFILE DETAILS) -->
                         <form action="" method="POST" enctype="multipart/form-data" id="profile-edit-form">
                             {% csrf_token %}
-                            <div class="card-header">
+                            <div class="card-header bg-light">
                                 Informations Générales
                             </div>
                             <div class="">
                                 {% if not profile_not_found %}
                                 {{ profile_edit_form|crispy }}
                                 <hr>
-                                <div class="card-header">Social Links</div>
+                                <div class="card-header bg-light">Social Links</div>
                                 {{ social_links_form|crispy }}
                                 {% else %}
                                 <div class="alert alert-warning" role="alert">
@@ -331,6 +334,8 @@
   $('#profile-image-upload').on('change', function() {
     $('#profile-image-form').submit();
   })
+
+
 
 
 

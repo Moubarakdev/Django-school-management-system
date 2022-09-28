@@ -95,10 +95,10 @@ class Result(TimeStampedModel):
             self.total_marks = self.exam_marks
         self.average = self.total_marks / 2
         if self.extra_marks:
-            if self.average < self.extra_note:
+            if self.average < self.extra_marks:
                 self.average = self.extra_marks
 
-        if self.average > 20:
+        if self.average > 10:
             self.validated = True
         else:
             self.validated = False

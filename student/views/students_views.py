@@ -278,6 +278,7 @@ def update_online_registrant(request, pk):
     return render(request, 'students/dashboard_update_online_applicant.html', context)
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def add_counseling_data(request, student_id):
     registrant = get_object_or_404(AdmissionStudent, id=student_id)
     if request.method == 'POST':
@@ -290,6 +291,7 @@ def add_counseling_data(request, student_id):
             return redirect('dashboard:student:update_online_registrant', pk=student_id)
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def add_student_view(request):
     """
     :param request:
@@ -310,6 +312,7 @@ def add_student_view(request):
     return render(request, 'students/addstudent.html', context)
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def students_view(request):
     """
     :param request:
@@ -324,6 +327,7 @@ def students_view(request):
     return render(request, 'students/list/students_list.html', context)
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def students_by_department_view(request, pk):
     dept_name = Department.objects.get(pk=pk)
     students = Student.objects.select_related(
@@ -332,7 +336,7 @@ def students_by_department_view(request, pk):
     return render(request, 'students/students_by_department.html', context)
 
 
-class StudentUpdateView(UpdateView):
+class StudentUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     """
     renders a student update form to update students details.
     """
@@ -340,10 +344,14 @@ class StudentUpdateView(UpdateView):
     form_class = StudentUpdateForm
     template_name = 'students/update_student.html'
 
+    def test_func(self):
+        user = self.request.user
+        return user_is_admin_su_or_ac_officer(user)
+
     def handle_no_permission(self):
         if self.request.user.is_authenticated:
-            return redirect('account:profile_complete')
-        return redirect('/login')
+            return redirect('profile_complete')
+        return redirect('login')
 
     def post(self, request, pk, *args, **kwargs):
         obj = get_object_or_404(Student, pk=pk)
@@ -357,14 +365,18 @@ class StudentUpdateView(UpdateView):
         return reverse_lazy('dashboard:student:student_details', kwargs={'pk': student_id})
 
 
-class StudentDetailsView(DetailView):
+class StudentDetailsView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
     model = Student
     template_name = 'students/student_details.html'
 
+    def test_func(self):
+        user = self.request.user
+        return user_is_admin_su_or_ac_officer(user)
+
     def handle_no_permission(self):
         if self.request.user.is_authenticated:
-            return redirect('account:profile_complete')
-        return redirect('account_login')
+            return redirect('profile_complete')
+        return redirect('login')
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

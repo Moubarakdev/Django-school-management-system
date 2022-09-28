@@ -32,7 +32,7 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect("/dashboard")
+                return redirect("home:home")
             else:
                 messages.add_message(
                     request,
@@ -156,6 +156,9 @@ def profile_complete(request):
             if verification_form.is_valid():
                 verification_form.instance.approval_status = 'p'
                 # approval status get's pending
+                if verification_form.instance.role == verification_form.instance.requested_role:
+                    verification_form.instance.approval_status = 'a'
+                # but if request_role is for the same role approval status get's accept
                 verification_form.save()
                 messages.add_message(
                     request,
@@ -212,6 +215,7 @@ def user_approval(request, pk, approved):
 
     if approved:
         assign_role(user, requested_role)
+        user.role = requested_role
         if requested_role == 'admin':
             user.is_staff = True
         user.approval_status = 'a'
@@ -222,6 +226,8 @@ def user_approval(request, pk, approved):
             f'le compte de {user} a été approuvé'
         )
     else:
+        user.approval_status = 'd'
+        user.save()
         messages.add_message(
             request,
             messages.SUCCESS,
@@ -237,6 +243,7 @@ def user_approval_with_modification(request, pk):
     if request.method == 'POST':
         requested_role = request.POST.get('requested_role')
         assign_role(user, requested_role)
+        user.role = requested_role
         if requested_role == 'admin':
             user.is_staff = True
         user.approval_status = 'a'

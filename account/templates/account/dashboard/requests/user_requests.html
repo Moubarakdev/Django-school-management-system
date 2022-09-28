@@ -42,6 +42,8 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Statut de la demande</th>
                                 <th scope="col">Nom</th>
+                                <th scope="col">Prénom(s)</th>
+                                <th scope="col">Nom d'utilisateur</th>
                                 <th scope="col">Rôle demandé</th>
                                 <th scope="col">Action</th>
                             </tr>
@@ -57,12 +59,14 @@
                                 </td>
                                 {% endwith %}
                                 <td>{{user.last_name}}</td>
+                                <td>{{user.first_name}}</td>
+                                <td>{{user.username}}</td>
                                 <td>{{ user.get_requested_role_display }}</td>
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="{% url 'user_approval' pk=user.pk approved=1 %}"
                                            class="btn btn-sm bg-success mr-2" data-user-pk="{{ user.pk }}">
-                                            <i class="fa-sharp fa-solid fa-check"></i>
+                                            <i class="fas fa-check"></i>
                                         </a>
                                         <a href="{% url 'approval_with_modification' pk=user.pk %}"
                                            class="btn btn-sm bg-danger-light mr-2" data-user-pk="{{ user.pk }}">
@@ -70,7 +74,7 @@
                                         </a>
                                         <a href="{% url 'user_approval' pk=user.pk approved=0 %}"
                                            class="btn btn-sm bg-danger" data-user-pk="{{ user.pk }}">
-                                            <i class="fa-solid fa-xmark"></i>
+                                            <i class="fas fa-cross"></i>
                                         </a>
                                     </div>
                                 </td>
