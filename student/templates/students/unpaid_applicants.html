@@ -130,9 +130,9 @@
                 data: data,
                 success: function(response) {
                     if (response.data) {
-                        element.querySelector('.mark-paid-text').innerHTML = '<b>PAID</b>'
+                        element.querySelector('.mark-paid-text').innerHTML = '<b>PAYER</b>'
                     } else {
-                        element.querySelector('.mark-paid-text').innerHTML = '<b>Mark as paid</b>'
+                        element.querySelector('.mark-paid-text').innerHTML = '<b>Marquer comme payer</b>'
                     }
                 },
                 error: function(error){

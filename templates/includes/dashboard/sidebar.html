@@ -18,6 +18,7 @@
                         class="fas fa-book-reader"></i><span>Conseil et admissions</span></a>
                 </li>
 
+                {% comment %}
                 <!-- Students -->
                 <li class="menu-title">
                     <span>Étudiants</span>
@@ -84,7 +85,7 @@
                     </ul>
                 </li>
 
-                {% comment %}
+
                 <li><a href="{% url 'dashboard:academic:read_ac_sessions' %}"><i class="fas fa-book-reader"></i><span>Sessions Académique</span></a>
                 </li>
                 <li><a href="{% url 'dashboard:academic:read_subjects' %}"> <i class="fas fa-book-reader"></i><span>Matières</span></a>
@@ -95,21 +96,49 @@
                 </a>
                 </li>
 
+                {% endcomment %}
+
+                <!-- Academic Tools -->
                 <li class="menu-title">
-                    <span>Utilisateur</span>
+                    <span>Academics</span>
                 </li>
+                <li class="submenu">
+                    <a href="#"><i class="fas fa-user-graduate"></i> <span>Options académiques</span> <span
+                            class="menu-arrow"></span></a>
+                    <ul>
+                        <li><a href="{% url 'dashboard:academic:read_ac_sessions' %}">Sessions académiques</a></li>
+                        <li><a href="{% url 'dashboard:academic:read_departments' %}">Départements</a></li>
+                        <li><a href="{% url 'dashboard:academic:read_batches' %}">Promotions</a></li>
+                        <li><a href="{% url 'dashboard:academic:read_semesters' %}">Semestres</a></li>
+                    </ul>
+                </li>
+
+                <!-- Administrative -->
+
+                <li class="menu-title">
+                    <span>Administrative</span>
+                </li>
+                <li><a href="{% url 'create_account' %}">Ajouter des comptes</a></li>
                 <li><a href="{% url 'dashboard:read_requests' %}"><i
-                        class="fas fa-book-reader"></i><span>Demandes</span></a>
+                        class="fas fa-book-reader"></i><span>Demandes d'approbation</span></a>
                 </li>
                 <li><a href="{% url 'read_accounts' %}"> <i
-                        class="fas fa-book-reader"></i><span>Utilisateurs</span></a>
+                        class="fas fa-book-reader"></i><span>Liste des utilisateurs</span></a>
                 </li>
+
+                <!-- Étudiant -->
 
                 <li class="menu-title">
                     <span>Étudiants</span>
                 </li>
                 <li><a href="{% url 'dashboard:student:all_student' %}"> <i
                         class="fas fa-book-reader"></i><span>Étudiants</span></a>
+                </li>
+                <li class="{% active_link  'dashboard:student:all_student' 'active' strict=True%}">
+                    <a href="{% url 'dashboard:student:add_student' %}">Nouvelle inscription</a>
+                </li>
+                <li><a href="{% url 'dashboard:student:admission_confirmation' %}"> <i
+                        class="fas fa-book-reader"></i><span>Confirmer des admissions</span></a>
                 </li>
                 <li><a href="{% url 'dashboard:student:all_applicants' %}"> <i
                         class="fas fa-book-reader"></i><span>Demandes d'inscription</span></a>
@@ -126,32 +155,32 @@
                 <li><a href="{% url 'dashboard:student:rejected_registrant_list' %}"> <i
                         class="fas fa-book-reader"></i><span>Listes des inscriptions rejetés</span></a>
                 </li>
-                <li><a href="{% url 'dashboard:student:admission_confirmation' %}"> <i
-                        class="fas fa-book-reader"></i><span>Admission confirmation</span></a>
-                </li>
+                <!-- Professeur -->
+
                 <li class="menu-title">
                     <span>Professeurs</span>
                 </li>
                 <li><a href="{% url 'dashboard:teacher:read_teachers' %}"> <i
-                        class="fas fa-book-reader"></i><span>Professeurs</span></a>
+                        class="fas fa-book-reader"></i><span>Listes des professeurs</span></a>
                 </li>
                 <li class="menu-title">
-                    <span>Subject</span>
+                    <span>Matières</span>
                 </li>
                 <li><a href="{% url 'result:subject_groups' %}"> <i
-                        class="fas fa-book-reader"></i><span>Subject group list</span></a>
-                </li>
-                <li class="menu-title">
-                    <span>Results</span>
-                </li>
-                <li><a href="{% url 'result:index' %}"> <i
-                        class="fas fa-book-reader"></i><span>Results</span></a>
-                </li>
-                <li><a href="{% url 'result:result_entry' %}"> <i
-                        class="fas fa-book-reader"></i><span>Results Entry</span></a>
+                        class="fas fa-book-reader"></i><span>Groupes de matières</span></a>
                 </li>
 
-                {% endcomment %}
+                <!-- Résultats -->
+                <li class="menu-title">
+                    <span>Résultats</span>
+                </li>
+                <li><a href="{% url 'result:index' %}"> <i
+                        class="fas fa-book-reader"></i><span>Résultats</span></a>
+                </li>
+                <li><a href="{% url 'result:result_entry' %}"> <i
+                        class="fas fa-book-reader"></i><span>Ajouter des résultats</span></a>
+                </li>
+
                 <!--
                 <li class="menu-title">
                     <span>Main Menu</span>

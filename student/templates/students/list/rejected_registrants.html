@@ -7,59 +7,86 @@
 
 {% block content %}
 <div class="container-fluid content">
-    <nav aria-label="breadcrumb">
-        <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="{% url 'dashboard:student:student_board' %}">Dashboard</a></li>
-            <li class="breadcrumb-item">
-                <a href="{% url 'dashboard:student:students_board' %}">Students</a>
-            </li>
-            <li class="breadcrumb-item active" aria-current="page">Rejected Applicants</li>
-        </ol>
-    </nav>
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Inscriptions rejetés</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:student:students_board' %}">Dashboard</a>
+                    </li>
+                    <li class="breadcrumb-item active">Liste des étudiants rejetés</li>
+                </ul>
+            </div>
+            <div class="col-auto text-right float-right ml-auto">
+                <a href="{% url 'dashboard:student:add_student' %}" class="btn btn-primary"><i
+                        class="fas fa-plus"></i></a>
+            </div>
+        </div>
+    </div>
 
     <!-- Online Applicants Table Row -->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12 pl-0">
-                <h4 class="ml-0">Rejected Registrants</h4>
-            </div>
-            <!-- Online Applicants Table -->
-            <div id="online-applicants" class="col-md-12 mt-4">
-                <table class="table table-bordered table-hover">
-                    <thead class="thead-light">
-                    <tr>
-                        <th scope="col">SYL</th>
-                        <th scope="col">Image</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Contact</th>
-                        <th scope="col">Department Choice</th>
-                        <th scope="col">Application Date</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                    </thead>
-                    <tbody class="bg-light">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <!-- Online Applicants Table -->
+                    <div class="table-responsive">
+                        <table class="table table-hover table-center mb-0 datatable">
+                            <thead>
+                            <tr>
+                                <th scope="col">SYL</th>
+                                <th scope="col">Image</th>
+                                <th scope="col">Nom</th>
+                                <th scope="col">Prénom</th>
+                                <th scope="col">Contact</th>
+                                <th scope="col">Département Choisi</th>
+                                <th scope="col">Date de demande</th>
+                            </tr>
+                            </thead>
+                            <tbody class="bg-light">
 
-                    {% for applicant in rejected_registrants %}
-                    <tr>
-                        <th scope="row">{{ forloop.counter }}</th>
-                        <td>
-                            <img src="{{ applicant.photo.url }}" width="50" height="50">
-                        </td>
-                        <td>{{ applicant.name }}</td>
-                        <td>{{ applicant.mobile_number }}</td>
-                        <td>{{ applicant.department_choice }}</td>
-                        <td>{{ applicant.created }}</td>
-                        <td>
-                            <a href="{% url 'students:update_online_registrant' pk=applicant.id %}"
-                               class="btn btn-sm btn-success">
-                                Update
-                            </a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-
-                    </tbody>
-                </table>
+                            {% for applicant in unpaid_applicants %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>
+                                    <img src="{{ applicant.photo.url }}" width="50" height="50">
+                                </td>
+                                <td>
+                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}"
+                                       class="text-dark">
+                                        {{ applicant.last_name|upper }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}"
+                                       class="text-dark">
+                                        {{ applicant.first_name|capfirst }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}"
+                                       class="text-dark">
+                                        {{ applicant.mobile_number }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}"
+                                       class="text-dark">
+                                        {{ applicant.department_choice }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}"
+                                       class="text-dark">
+                                        {{ applicant.created }}
+                                    </a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
