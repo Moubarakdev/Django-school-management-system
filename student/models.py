@@ -189,6 +189,9 @@ class Student(TimeStampedModel):
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True
     )
+    student_account = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name="student_accounts",
+        on_delete=models.DO_NOTHING, null=True)
     is_alumni = models.BooleanField(default=False, verbose_name="Ancien élève ?")
     is_dropped = models.BooleanField(default=False, verbose_name="A quitté l'école ?")
 

@@ -25,6 +25,9 @@ class Teacher(TimeStampedModel):
     mobile = models.CharField(max_length=11, blank=True, null=True)
     email = models.CharField(max_length=255, blank=True, null=True)
     joining_date = models.DateField(auto_now=True)
+    teacher_account = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name="teacher_accounts",
+        on_delete=models.DO_NOTHING, null=True)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True)
