@@ -35,233 +35,103 @@
 
 
     <!-- Stats - Links -->
-    <div class="row gap-20 masonry pos-r">
-        <div class="masonry-sizer col-md-6"></div>
-        <div class="masonry-item w-100">
-            <div class="row gap-20">
-                <div class="col-md-3">
-                    <div class="layers bd bgc-white p-20">
-                        <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">
-                                <a href="{% url 'dashboard:student:all_applicants' %}" class="text-dark">
-                                    Demandes d'inscription
-                                </a>
-                            </h6>
-                        </div>
-                        <div class="layer w-100">
-                            <div class="peers ai-sb fxw-nw">
-                                <div class="peer peer-greed">
-                                    <a href="{% url 'dashboard:student:all_applicants' %}" class="text-dark">
-                                        <i class="fas fa-users fa-3x"></i>
-                                    </a>
-                                </div>
-                                <div class="peer">
-                                  <span class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50 c-green-500">
-                                    <a href="{% url 'dashboard:student:all_applicants' %}" class="text-dark">
-                                      {{ all_applicants.count }}
-                                    </a>
-                                  </span>
-                                </div>
+    <div class="row">
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+            <a href="{% url 'dashboard:student:all_applicants' %}">
+                <div class="card bg-one w-100">
+                    <div class="card-body">
+                        <div
+                                class="db-widgets d-flex justify-content-between align-items-center"
+                        >
+                            <div class="db-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="db-info">
+                                <h3>{{all_applicants.count}}</h3>
+                                <h6>Demandes d'inscription</h6>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="layers bd bgc-white p-20">
-                        <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">
-                                <a href="{% url 'dashboard:student:admitted_student_list' %}" class="text-dark">
-                                    Entièrement terminé
-                                </a>
-                            </h6>
-                        </div>
-                        <div class="layer w-100">
-                            <div class="peers ai-sb fxw-nw">
-                                <div class="peer peer-greed">
-                                    <a
-                                            href="{% url 'dashboard:student:admitted_student_list' %}"
-                                            class="text-dark"
-                                    >
-                                        <i class="fas fa-users fa-3x"></i>
-                                    </a>
-                                </div>
-                                <div class="peer">
-                  <span
-                          class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-red-50 c-red-500"
-                  >
-                    <a
-                            href="{% url 'dashboard:student:admitted_student_list' %}"
-                            class="text-dark"
-                    >
-                      {{ admitted_students.count }}
-                    </a>
-                  </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="layers bd bgc-white p-20">
-                        <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">
-                                <a
-                                        href="{% url 'dashboard:student:unpaid_registrant_list' %}"
-                                        class="text-dark"
-                                >
-                                    Inscriptions Non payées
-                                </a>
-                            </h6>
-                        </div>
-                        <div class="layer w-100">
-                            <div class="peers ai-sb fxw-nw">
-                                <div class="peer peer-greed">
-                                    <a
-                                            href="{% url 'dashboard:student:unpaid_registrant_list' %}"
-                                            class="text-dark"
-                                    >
-                                        <i class="fas fa-users fa-3x"></i>
-                                    </a>
-                                </div>
-                                <div class="peer">
-                  <span
-                          class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-purple-50 c-purple-500"
-                  >
-                    <a
-                            href="{% url 'dashboard:student:unpaid_registrant_list' %}"
-                            class="text-dark"
-                    >
-                      {{ unpaid_registrants.count }}
-                    </a>
-                  </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="layers bd bgc-white p-20">
-                        <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">
-                                <a
-                                        href="{% url 'dashboard:student:rejected_registrant_list' %}"
-                                        class="text-dark"
-                                >
-                                    Inscriptions rejetées
-                                </a>
-                            </h6>
-                        </div>
-                        <div class="layer w-100">
-                            <div class="peers ai-sb fxw-nw">
-                                <div class="peer peer-greed">
-                                    <a
-                                            href="{% url 'dashboard:student:rejected_registrant_list' %}"
-                                            class="text-dark"
-                                    >
-                                        <i class="fas fa-users fa-3x"></i>
-                                    </a>
-                                </div>
-                                <div class="peer">
-                  <span
-                          class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-blue-50 c-blue-500"
-                  >
-                    <a
-                            href="{% url 'dashboard:student:rejected_registrant_list' %}"
-                            class="text-dark"
-                    >
-                      {{ rejected_applicants.count }}
-                    </a>
-                  </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            </a>
         </div>
-
-        <div class="masonry-item w-100">
-            <div class="row gap-20">
-                <div class="col-md-3">
-                    <div class="layers bd bgc-white p-20">
-                        <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">
-                                <a
-                                        href="{% url 'dashboard:student:admission_confirmation' %}"
-                                        class="text-dark"
-                                >
-                                    Confirmation d'inscription
-                                </a>
-                            </h6>
-                        </div>
-                        <div class="layer w-100">
-                            <div class="peers ai-sb fxw-nw">
-                                <div class="peer peer-greed">
-                                    <a
-                                            href="{% url 'dashboard:student:admission_confirmation' %}"
-                                            class="text-dark"
-                                    >
-                                        <i class="fas fa-users fa-3x"></i>
-                                    </a>
-                                </div>
-                                <div class="peer">
-                  <span
-                          class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-purple-50 c-purple-500"
-                  >
-                    <a
-                            href="{% url 'dashboard:student:admission_confirmation' %}"
-                            class="text-dark"
-                    >
-                      {{ admitted_students.count }}
-                    </a>
-                  </span>
-                                </div>
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+            <a href="{% url 'dashboard:student:admitted_student_list' %}">
+                <div class="card bg-two w-100">
+                    <div class="card-body">
+                        <div
+                                class="db-widgets d-flex justify-content-between align-items-center"
+                        >
+                            <div class="db-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="db-info">
+                                <h3>{{ admitted_students.count }}</h3>
+                                <h6>Entièrement terminés</h6>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-3">
-                    <div class="layers bd bgc-white p-20">
-                        <div class="layer w-100 mB-10">
-                            <h6 class="lh-1">
-                                <a
-                                        href="{% url 'dashboard:student:add_student' %}"
-                                        class="text-dark"
-                                >
-                                    Procéder à une inscription hors ligne
-                                </a>
-                            </h6>
-                        </div>
-                        <div class="layer w-100">
-                            <div class="peers ai-sb fxw-nw">
-                                <div class="peer peer-greed">
-                                    <a
-                                            href="{% url 'dashboard:student:add_student' %}"
-                                            class="text-dark"
-                                    >
-                                        <i class="fas fa-users fa-3x"></i>
-                                    </a>
-                                </div>
-                                <div class="peer">
-                  <span
-                          class="d-ib lh-0 va-m fw-600 bdrs-10em pX-15 pY-15 bgc-green-50 c-green-500"
-                  >
-                    <a
-                            href="{% url 'dashboard:student:add_student' %}"
-                            class="text-dark"
-                    >
-                      {{ offline_applicants.count }}
-                    </a>
-                  </span>
-                                </div>
+            </a>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+            <a href="{% url 'dashboard:student:unpaid_registrant_list' %}">
+                <div class="card bg-three w-100">
+                    <div class="card-body">
+                        <div
+                                class="db-widgets d-flex justify-content-between align-items-center"
+                        >
+                            <div class="db-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="db-info">
+                                <h3>{{ unpaid_registrants.count }}</h3>
+                                <h6>Inscriptions Non payées</h6>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </a>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+            <a href="{% url 'dashboard:student:rejected_registrant_list' %}">
+                <div class="card bg-three w-100">
+                    <div class="card-body">
+                        <div
+                                class="db-widgets d-flex justify-content-between align-items-center"
+                        >
+                            <div class="db-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="db-info">
+                                <h3>{{rejected_applicants.count }}</h3>
+                                <h6>Inscriptions rejetées</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+            <a href="{% url 'dashboard:student:admission_confirmation' %}">
+                <div class="card bg-one w-100">
+                    <div class="card-body">
+                        <div
+                                class="db-widgets d-flex justify-content-between align-items-center"
+                        >
+                            <div class="db-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="db-info">
+                                <h3>{{rejected_applicants.count }}</h3>
+                                <h6>En attente de confirmation</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
         </div>
     </div>
-    <hr/>
 
     <!-- Charts -->
     <div class="row my-5">

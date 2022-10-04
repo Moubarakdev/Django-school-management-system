@@ -21,6 +21,19 @@
             </div>
             <div class="login_info">
               <ul class="d-flex">
+                {% if request.user.is_authenticated %}
+                 <li class="nav-item">
+                  <a
+                    href="{% url 'dashboard:index' %}"
+                    class="nav-link sign-in js-modal-show"
+                    ><i
+                      class="flaticon-dashboard"
+                    ></i
+                    >Dashboard</a
+                  >
+                </li>
+                {% else %}
+
                 <li class="nav-item">
                   <a
                     href="{% url 'register' %}"
@@ -38,6 +51,7 @@
                     ><i class="flaticon-padlock"></i>Se connecter</a
                   >
                 </li>
+                {% endif %}
               </ul>
               <a href="#" title="" class="apply_btn">Apply Now</a>
             </div>

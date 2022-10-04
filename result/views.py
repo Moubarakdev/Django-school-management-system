@@ -5,13 +5,13 @@ from django.db import IntegrityError
 from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, DeleteView
 
 from academic.models import Semester, Subject, Department
 from permission_handlers.administrative import user_is_teacher_or_administrative
 from permission_handlers.basic import user_is_verified
 from result.filters import ResultFilter, SubjectGroupFilter
-from result.forms import SubjectGroupForm
+from result.forms import SubjectGroupForm, ResultForm
 from result.models import Result, SubjectGroup
 from student.models import Student
 
@@ -242,6 +242,48 @@ class UpdateSubjectGroup(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     form_class = SubjectGroupForm
     template_name = 'result/subject_group_form.html'
     success_url = reverse_lazy('result:subject_groups')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['button'] = "Modifier"
+        return context
+
+    def test_func(self):
+        user = self.request.user
+        return user_is_teacher_or_administrative(user)
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            return redirect('account:profile_complete')
+        return redirect('account_login')
+
+
+class UpdateResultView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Result
+    form_class = ResultForm
+    template_name = 'result/result_form.html'
+    success_url = reverse_lazy('result:result_filter')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['button'] = "Modifier"
+        return context
+
+    def test_func(self):
+        user = self.request.user
+        return user_is_teacher_or_administrative(user)
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            return redirect('account:profile_complete')
+        return redirect('account_login')
+
+
+class DeleteResultView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Result
+    form_class = ResultForm
+    template_name = 'result/result_form.html'
+    success_url = reverse_lazy('result:result_filter')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()

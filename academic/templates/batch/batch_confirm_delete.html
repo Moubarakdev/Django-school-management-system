@@ -1,0 +1,48 @@
+{% extends 'layouts/base_dash.html' %}
+
+{% block title %} Supprimer une promotion {% endblock title %}
+
+{% block content %}
+<div class="container-fluid content">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Supprimer une promotion</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:academic:read_batches' %}">Promotions</a></li>
+                    <li class="breadcrumb-item active">Supprimer une promotion</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <h6 class="modal-title">
+                        <i class="fas fa-trash-alt"></i>&nbsp;&nbsp; SUPPRESSION PROMOTION
+                    </h6>
+                    <hr>
+                    <div class="text-center text-danger"><i class="far fa-times-circle fa-5x mb-4 mt-3"></i></div>
+                    <div class="text-center text-danger">
+                        <span>VOULEZ-VOUS SUPPRIMER CETTE PROMOTION ???</span>
+                        <div class="text-dark mt-3 mb-2">Promotion: <strong>{{ batch.year|safe }}</strong></div>
+                    </div>
+                    <hr>
+                    <form method="POST" class="text-center">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-outline-danger btn-sm sm-2" value="Confirmer">
+                        <a href="{% url 'dashboard:academic:read_subjects' %}"
+                           class="btn btn-secondary btn-sm">Annuler</a>
+                    </form>
+                </div>
+                <hr>
+                <span class="text-danger text-center">Si vous acceptez, Cette donnée sera irrecupérable. </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

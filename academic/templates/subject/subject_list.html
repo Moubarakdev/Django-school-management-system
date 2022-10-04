@@ -18,7 +18,6 @@
                 </ul>
             </div>
             <div class="col-auto text-right float-right ml-auto">
-                <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
                 <a href="{% url 'dashboard:academic:create_subject' %}" class="btn btn-primary"><i
                         class="fas fa-plus"></i></a>
             </div>
@@ -45,7 +44,7 @@
                                 <td>{{subject.name}}</td>
                                 <td>{{subject.subject_code}}</td>
                                 <td>{{subject.instructor}}</td>
-                                <td>{{subject.created_by}}</td>
+                                <td>{{subject.created_by.username}}</td>
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="{% url 'dashboard:academic:update_subject' pk=subject.pk%}"

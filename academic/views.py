@@ -124,6 +124,7 @@ class UpdateSubjectView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
 class DeleteSubjectView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Subject
+    context_object_name = 'subject'
     template_name = 'subject/subject_confirm_delete.html'
     success_url = reverse_lazy('dashboard:academic:read_subjects')
 
@@ -184,6 +185,7 @@ class DepartmentListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 class DeleteDepartmentView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Department
+    context_object_name = 'department'
     template_name = 'department/department_confirm_delete.html'
     success_url = reverse_lazy('dashboard:academic:read_departments')
 
@@ -245,6 +247,7 @@ class UpdateAcademicSession(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
 
 class DeleteAcademicSession(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = AcademicSession
+    context_object_name = 'ac_session'
     template_name = 'academic/academic_confirm_delete.html'
     success_url = reverse_lazy('dashboard:academic:read_ac_sessions')
 
@@ -305,6 +308,7 @@ class BatchListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 class DeleteBatchView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Batch
+    context_object_name = 'batch'
     template_name = 'batch/batch_confirm_delete.html'
     success_url = reverse_lazy('dashboard:academic:read_batches')
 

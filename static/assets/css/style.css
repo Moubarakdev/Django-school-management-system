@@ -39,6 +39,9 @@ Version      : 1.0
 html {
 	height: 100%;
 }
+.content {
+    min-height: 100vh;
+}
 body {
 	background-color: #fff;
 	color: #333;
