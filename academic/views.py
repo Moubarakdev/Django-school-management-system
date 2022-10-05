@@ -209,7 +209,7 @@ class CreateAcademicSession(LoginRequiredMixin, UserPassesTestMixin, CreateView)
         context['button'] = "Créer"
         return context
 
-    success_url = reverse_lazy('dashboard:academic:read_academic_sessions')
+    success_url = reverse_lazy('dashboard:academic:read_ac_sessions')
     template_name = 'academic/academic_form.html'
 
     def form_valid(self, form):

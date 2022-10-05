@@ -133,8 +133,7 @@ class AdmissionStudent(StudentBase):
     admission_policy_agreement = models.BooleanField(
         """
         Accepter les conditions
-        """,
-        default=False
+        """
     )
     admitted = models.BooleanField(default=False, verbose_name="Accepté")
     admission_date = models.DateField(auto_now=True)

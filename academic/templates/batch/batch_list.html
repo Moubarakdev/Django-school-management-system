@@ -43,7 +43,7 @@
                                 <td>{{batch.year}}</td>
                                 <td>{{batch.number}}</td>
                                 <td>{{batch.department}}</td>
-                                <td>{{batch.created_by}}</td>
+                                <td>{{batch.created_by.username}}</td>
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="{% url 'dashboard:academic:update_batch' pk=batch.pk%}"

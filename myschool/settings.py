@@ -62,6 +62,7 @@ INSTALLED_APPS = [
     'result',
     'django_file_form',
     'verify_email.apps.VerifyEmailConfig',  # verify email
+    "django_extensions",
 
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -197,3 +198,8 @@ DEFAULT_FROM_EMAIL = 'MbkSite<staff@opentransport.org>'
 # Email verify settings
 EXPIRE_AFTER = "1h"
 HTML_MESSAGE_TEMPLATE = 'email/email_verification.html'
+
+GRAPH_MODELS = {
+    'all_applications': True,
+    'group_models': True,
+}

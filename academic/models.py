@@ -131,6 +131,12 @@ class TempSerialID(TimeStampedModel):
     def __str__(self):
         return self.serial
 
+    def save(self, *args, **kwargs):
+        if self.student.admission_student.admitted:
+            super().save(*args, **kwargs)
+        else:
+            raise OperationalError('Please check if student is admitted or not.')
+
     def get_serial(self):
         # Get current year last two digit
         yf = str(self.student.ac_session)[-2:]
@@ -143,3 +149,5 @@ class TempSerialID(TimeStampedModel):
 
         # return something like: 21-15-666-15
         return f'{yf}-{bn}-{dc}-{syl}'
+
+
