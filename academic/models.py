@@ -151,3 +151,23 @@ class TempSerialID(TimeStampedModel):
         return f'{yf}-{bn}-{dc}-{syl}'
 
 
+'''
+class GroupFees(TimeStampedModel):
+    """ Keep track of group of subjects that belongs to a
+        department, semesters
+        """
+    department = models.ForeignKey(
+        Department,
+        related_name='subjects',
+        on_delete=models.DO_NOTHING, verbose_name='département'
+    )
+    semesters = models.ManyToManyField(
+        Semester,
+        verbose_name='semestres',
+        limit_choices_to=2, blank=True
+    )
+    description = models.CharField(verbose_name="Description", max_length=15)
+    fees_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Montant des frais")
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
+'''

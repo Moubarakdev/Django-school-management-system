@@ -5,6 +5,7 @@ from django_countries.fields import CountryField
 
 from academic.models import Department, TempSerialID, Semester, AcademicSession, Batch
 from myschool import settings
+from payment.models import StudentFeesInfo
 from teacher.models import Teacher
 
 
@@ -38,6 +39,7 @@ class StudentBase(TimeStampedModel):
     date_of_birth = models.DateField(verbose_name="Date de naissance")
     email = models.EmailField(verbose_name="Email")
     gender = models.CharField(verbose_name="Sexe", max_length=15, choices=GENDER)
+    religion = models.CharField(verbose_name="Religion", max_length=30)
 
     nationality = CountryField(blank=False,
                                null=True,
@@ -48,7 +50,7 @@ class StudentBase(TimeStampedModel):
     mobile_number = models.CharField('Numéro de téléphone', max_length=11)
     guardian_mobile_number = models.CharField('Numéro Personne à prévenir', max_length=20)
 
-    department_choice = models.ForeignKey(
+    choosen_department = models.ForeignKey(
         Department,
         on_delete=models.CASCADE, verbose_name="Choix du département"
     )
@@ -188,8 +190,9 @@ class Student(TimeStampedModel):
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True
     )
-    student_account = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name="student_accounts",
+    # TODO: Generate account for any student
+    student_account = models.OneToOneField(
+        settings.AUTH_USER_MODEL, related_name="student_account",
         on_delete=models.DO_NOTHING, null=True)
     is_alumni = models.BooleanField(default=False, verbose_name="Ancien élève ?")
     is_dropped = models.BooleanField(default=False, verbose_name="A quitté l'école ?")

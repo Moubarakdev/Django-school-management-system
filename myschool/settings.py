@@ -41,12 +41,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'home',
     'account',
+    'home',
     'teacher',
     'academic',
     'dashboard',
     'student',
+    'payment',
 
     # APP TIERS
     'ckeditor',  # ckeditor for blog content

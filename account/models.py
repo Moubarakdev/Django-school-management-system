@@ -51,18 +51,7 @@ class User(AbstractUser):
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     def __str__(self):
-        if self.requested_role or self.role == "suscriber":
-            return 'Abonné'
-        if self.requested_role or self.role == "student":
-            return 'Étudiant'
-        if self.requested_role or self.role == "teacher":
-            return 'Professeur'
-        if self.requested_role or self.role == "editor":
-            return 'Editeur'
-        if self.requested_role or self.role == "academic_officer":
-            return 'Direction Académique'
-        if self.requested_role or self.role == "admin":
-            return 'Administrateur'
+        return self.username
 
 
 User._meta.get_field('email')._unique = True

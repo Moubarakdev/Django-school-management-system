@@ -10,6 +10,8 @@ from django.urls import reverse_lazy
 from django.views.generic import DetailView, UpdateView, ListView
 
 from academic.models import Batch, AcademicSession, Semester, Department
+from account.models import User
+from payment.models import StudentFeesInfo, SchoolFees
 from permission_handlers.administrative import user_is_admin_su_or_ac_officer
 from permission_handlers.basic import user_is_verified
 from result.models import SubjectGroup
@@ -197,18 +199,30 @@ def admission_confirmation(request):
             # If student.save() doesn't raise any exceptions,
             # we save student, except, we skip making student object.
             try:
+                '''student_account = User.objects.create_user(
+                    username=candidate.first_name,
+                    email=candidate.email,
+                    password="etudiant1234",
+                    last_name=candidate.last_name,
+                    first_name=candidate.first_name,
+                    requested_role="student",
+                    role="student",
+                    approval_status="a",
+                    is_active=True,
+                )'''
                 student = Student.objects.create(
                     admission_student=candidate,
                     semester=semester,
                     batch=batch,
                     ac_session=session,
                     admitted_by=request.user,
+                    # student_account=student_account,
                 )
                 students.append(student)
             except:
                 pass
         ctx['students'] = students
-        return render(request, 'students/list/confirm_admission.html', ctx)
+        return render(request, 'students/list/students_list.html', ctx)
     else:
         return render(request, 'students/list/confirm_admission.html', ctx)
 

@@ -7,12 +7,13 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Liste des programmes</h3>
+                <h3 class="page-title">Liste des frais de scolarité</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'result:subject_groups' %}">Liste des programmes</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'payment:read_fees' %}">>Liste des frais de
+                        scolarité</a></li>
                     <div class="col-auto text-right float-right ml-auto">
-                        <a href="{% url 'result:create_subject_group' %}" class="btn btn-primary"><i
+                        <a href="{% url 'payment:create_fees' %}" class="btn btn-primary"><i
                                 class="fas fa-plus"></i></a>
                     </div>
                 </ul>
@@ -28,34 +29,40 @@
                             <thead>
                             <tr>
                                 <th scope="col">Département</th>
-                                <th scope="col">Semestre</th>
-                                <th scope="col">Matières</th>
+                                <th scope="col">Annés académique</th>
+                                <th scope="col">Semestres</th>
+                                <th scope="col">Montant</th>
+                                <th scope="col">Description</th>
                                 <th class="text-right">Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                            {% for subject_group in subject_groups %}
+                            {% for fee in fees %}
                             <tr>
                                 <td>
-                                    {{ subject_group.department }}
+                                    {{ fee.department }}
                                 </td>
                                 <td>
-                                    {{ subject_group.semester }}
+                                    {{ fee.ac_session }}
                                 </td>
                                 <td>
-                                    {% for subject in subject_group.subjects.all %}
-                                    <p>
-                                        <i>{{ subject }}</i>
-                                    </p>
+                                    {% for sm in fee.semesters.all %}
+                                    {{ sm }}
                                     {% endfor %}
+                                </td>
+                                <td>
+                                    {{ fee.fees_amount }}
+                                </td>
+                                <td>
+                                    {{ fee.description }}
                                 </td>
                                 <td class="text-right">
                                     <div class="actions">
-                                        <a href="{% url 'result:update_subject_groups' pk=subject_group.pk%}"
+                                        <a href="{% url 'payment:update_fees' pk=fee.pk%}"
                                            class="btn btn-sm bg-success-light mr-2">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <a href=""
+                                        <a href="{% url 'payment:delete_fees' pk=fee.pk%}"
                                            class="btn btn-sm bg-danger-light">
                                             <i class="fas fa-trash"></i>
                                         </a>
