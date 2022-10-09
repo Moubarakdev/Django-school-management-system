@@ -11,6 +11,7 @@ from django.views.generic import DetailView, UpdateView, ListView
 
 from academic.models import Batch, AcademicSession, Semester, Department
 from account.models import User
+from payment.models import Invoice
 from permission_handlers.administrative import user_is_admin_su_or_ac_officer
 from permission_handlers.basic import user_is_verified
 from result.models import SubjectGroup
@@ -407,6 +408,7 @@ class StudentDetailsView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         # getting result objects
         results = student.results.all()
         context['results'] = results
+        context["payments"] = Invoice.objects.filter(student=self.object)
         return context
 
 

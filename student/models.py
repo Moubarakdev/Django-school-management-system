@@ -204,7 +204,7 @@ class Student(TimeStampedModel):
         ordering = ['semester', 'roll', 'registration_number']
 
     def __str__(self):
-        return '{} ({}) semester {} dept.'.format(
+        return '{} ({}) {} dept.{}'.format(
             self.admission_student.last_name,
             self.admission_student.first_name,
             self.semester,

@@ -393,7 +393,7 @@ class TermUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
 
     def form_valid(self, form):
         obj = self.object
-        if obj.current == False:
+        if not obj.current:
             terms = (
                 AcademicTerm.objects.filter(current=True)
                 .exclude(name=obj.name)
@@ -413,9 +413,9 @@ class TermDeleteView(LoginRequiredMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
-        if obj.current == True:
+        if obj.current:
             messages.warning(request, "Cannot delete term as it is set to current")
-            return redirect("terms")
+            return redirect("read_terms")
         messages.success(self.request, self.success_message.format(obj.name))
         return super(TermDeleteView, self).delete(request, *args, **kwargs)
 
@@ -425,7 +425,7 @@ class CurrentSessionAndTermView(LoginRequiredMixin, View):
     """Current Session and Term"""
 
     form_class = CurrentSessionForm
-    template_name = "curent/current_session.html"
+    template_name = "current/current_session.html"
 
     def get(self, request, *args, **kwargs):
         form = self.form_class(
@@ -437,7 +437,7 @@ class CurrentSessionAndTermView(LoginRequiredMixin, View):
         return render(request, self.template_name, {"form": form})
 
     def post(self, request, *args, **kwargs):
-        form = self.form_Class(request.POST)
+        form = self.form_class(request.POST)
         if form.is_valid():
             session = form.cleaned_data["current_session"]
             term = form.cleaned_data["current_term"]

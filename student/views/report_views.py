@@ -25,13 +25,13 @@ def _get_departments_record(departments_qs, applications, admissions):
     departmental_records = {}
     for department in departments_qs:
         departmental_records[department.name] = {
-            'applications_count': applications.filter(department_choice=department).count(),
+            'applications_count': applications.filter(choosen_department=department).count(),
             'admission_count': admissions.filter(choosen_department=department).count(),
-            'migrated_from_count': admissions.filter(department_choice=department,
+            'migrated_from_count': admissions.filter(choosen_department=department,
                                                      migration_status__icontains='from').count(),
             'migrated_to_count': admissions.filter(choosen_department=department,
                                                    migration_status__icontains='from').count(),
-            'missed': applications.filter(department_choice=department,
+            'missed': applications.filter(choosen_department=department,
                                           rejected=True, admitted=False,
                                           paid=False).count(),
         }

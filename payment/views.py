@@ -87,7 +87,7 @@ class InvoiceDeleteView(LoginRequiredMixin, DeleteView):
 
 class ReceiptCreateView(LoginRequiredMixin, CreateView):
     model = Receipt
-    fields = ["amount_paid", "date_paid", "comment"]
+    fields = ["amount_paid", "comment"]
     success_url = reverse_lazy("payment:read_invoices")
 
     def form_valid(self, form):

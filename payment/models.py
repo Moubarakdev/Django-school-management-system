@@ -62,9 +62,9 @@ class InvoiceItem(models.Model):
 
 class Receipt(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
-    amount_paid = models.IntegerField()
-    date_paid = models.DateField(auto_now_add=True)
-    comment = models.CharField(max_length=200, blank=True)
+    amount_paid = models.IntegerField(verbose_name="somme versée")
+    date_paid = models.DateField(auto_now_add=True, verbose_name="Date de paiement")
+    comment = models.CharField(max_length=200, blank=True, verbose_name="Commentaire")
 
     def __str__(self):
         return f"Receipt on {self.date_paid}"

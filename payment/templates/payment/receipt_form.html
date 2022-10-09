@@ -1,36 +1,36 @@
 {% extends 'layouts/base_dash.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
-
+{% load humanize %}
 
 {% block content %}
 <div class="container-fluid content">
     <div class="row">
-        <div class="col-8">
+        <div class="col-lg-8 mb-4">
             <form action="" method="POST">
                 {% csrf_token %}
 
                 {% include 'site/form_snippet.html' %}
 
-                <input type="submit" class="btn btn-primary" value="Add payment">
+                <input type="submit" class="btn btn-primary" value="Ajouter payement">
 
             </form>
         </div>
 
-        <div class="col-4">
+        <div class="col-lg-4 col-12">
             <div class="alert alert-info" role="alert">
-                <h3>INVOICE</h3>
+                <h3>FACTURE</h3>
                 <p>{{invoice | upper}}</p>
                 <hr>
                 <ul>
 
                     <li>Session: {{ invoice.session }}</li>
-                    <li>Term: {{ invoice.term }}</li>
-                    <li>Semestres: {{ invoice.semesters }}</li>
-                    <li>Total Amount Payable: {{invoice.total_amount_payable | intcomma }}
+                    <li>Tranche: {{ invoice.term }}</li>
+                    <li>Semestres: {% for semester in invoice.semesters.all %}{{ semester }} {% endfor %} </li>
+                    <li>Total Montant à payer: {{invoice.total_amount_payable | intcomma }}
                     </li>
-                    <li>Total Amount Paid: {{ invoice.total_amount_paid | intcomma }}</li>
-                    <li><strong>Balance: {{invoice.balance | intcomma }}</strong></li>
+                    <li>Total Montant payé: {{ invoice.total_amount_paid | intcomma }}</li>
+                    <li><strong>Solde: {{invoice.balance | intcomma }}</strong></li>
                 </ul>
             </div>
         </div>

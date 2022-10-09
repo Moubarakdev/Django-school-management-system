@@ -59,6 +59,41 @@
         <div class="container-fluid">
             <div class="row mt-5">
                 <div class="col-sm-12">
+                    <h3>Historique des factures/paiements</h3>
+                    {% if payments %}
+                    <div class="card card-table">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-center mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>Pour</th>
+                                        <th>Montant à payer</th>
+                                        <th>Montant payé</th>
+                                        <th>Solde</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for payment in payments %}
+                                    <tr class='clickable-row' data-href="{% url 'payment:invoice_detail' payment.id %}">
+                                        <td>{{payment.session}} - {{payment.term}} - {% for semester in payment.semesters.all %}{{ semester }} {% endfor %}
+                                        </td>
+                                        <td>{{payment.total_amount_payable}}</td>
+                                        <td>{{payment.total_amount_paid}}</td>
+                                        <td>{{payment.balance}}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p>Il n'y a pas d'historique de paiement pour {{object}}</p>
+                    {% endif %}
+
+                    <hr>
+
                     <h3>Tableau de résultats</h3>
                     <div class="card card-table">
                         <div class="card-body">

@@ -1,0 +1,69 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block content %}
+<div class="container-fluid content">
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Liste des factures/paiements</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item active">List</li>
+                </ul>
+            </div>
+            <div class="col-auto text-right float-right ml-auto">
+                <!-- <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a> -->
+                <a href="{% url 'payment:create_invoice' %}" class="btn btn-primary"><i
+                        class="fas fa-plus"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="invoicetable" class="table table-bordered table-hover datatable">
+                            <thead class="thead-light">
+                            <tr>
+                                <th>S/N</th>
+                                <th>invoice</th>
+                                <th>Session-Tranche</th>
+                                <th>Total à payer</th>
+                                <th>Total payé</th>
+                                <th>Solde</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            {% for invoice in object_list %}
+                            <tr class='clickable-row' data-href="{% url 'payment:invoice_detail' invoice.id %}">
+                                <td>{{ forloop.counter}}</td>
+                                <td>{{ invoice}}</td>
+                                <td>{{ invoice.session}}-{{ invoice.term}}</td>
+                                <td>{{ invoice.total_amount_payable | intcomma }}</td>
+                                <td>{{ invoice.total_amount_paid | intcomma }}</td>
+                                <td>{{ invoice.balance | intcomma }}</td>
+                                <td><a class="btn btn-success btn-sm"
+                                       href="{% url 'payment:create_receipt' %}?invoice={{ invoice.id }}">Nouveau payement</a></td>
+                            </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+
+{% block customjs %}
+
+{% endblock %}

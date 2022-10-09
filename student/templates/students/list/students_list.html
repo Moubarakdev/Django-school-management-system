@@ -8,11 +8,13 @@
 {% block content %}
 <div class="content container-fluid">
     <div class="page-header">
+        {% include 'students/student_list_sidebar.html' %}
         <div class="row align-items-center">
             <div class="col">
                 <h3 class="page-title">Étudiants</h3>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'dashboard:student:students_board' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:student:students_board' %}">Dashboard</a>
+                    </li>
                     <li class="breadcrumb-item active">Liste étudiants</li>
                 </ul>
             </div>
@@ -48,7 +50,8 @@
                                 </th>
                                 <td>
                                     <a href="{% url 'dashboard:student:student_details' pk=student.id %}">
-                                        <img src="{{ student.admission_student.photo.url }}" class="mr-2 rounded-circle" height=24
+                                        <img src="{{ student.admission_student.photo.url }}" class="mr-2 rounded-circle"
+                                             height=24
                                              width=24>
                                         {{ student.admission_student.last_name }}
                                     </a>
