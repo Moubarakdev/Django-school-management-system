@@ -1,11 +1,15 @@
+from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from academic.forms import DepartmentForm, SemesterForm, AcademicSessionForm, SubjectForm, BatchForm
-from academic.models import Department, Semester, Subject, AcademicSession, Batch
+from academic.forms import DepartmentForm, SemesterForm, AcademicSessionForm, SubjectForm, BatchForm, SiteConfigForm, \
+    AcademicTermForm, CurrentSessionForm
+from academic.models import Department, Semester, Subject, AcademicSession, Batch, SiteConfig, AcademicTerm
 from permission_handlers.administrative import user_is_admin_su_editor_or_ac_officer, user_editor_admin_or_su, \
     user_is_teacher_or_administrative
 from permission_handlers.basic import user_is_verified
@@ -244,6 +248,19 @@ class UpdateAcademicSession(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
     success_url = reverse_lazy('dashboard:academic:read_ac_sessions')
     template_name = 'academic/academic_form.html'
 
+    def form_valid(self, form):
+        obj = self.object
+        if obj.current == False:
+            terms = (
+                AcademicSession.objects.filter(current=True)
+                .exclude(name=obj.name)
+                .exists()
+            )
+            if not terms:
+                messages.warning(self.request, "You must set a session to current.")
+                return redirect("dashboard:academic:read_ac_sessions")
+        return super().form_valid(form)
+
 
 class DeleteAcademicSession(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = AcademicSession
@@ -254,6 +271,14 @@ class DeleteAcademicSession(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
     def test_func(self):
         user = self.request.user
         return user_is_admin_su_editor_or_ac_officer(user)
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.current == True:
+            messages.warning(request, "Cannot delete session as it is set to current")
+            return redirect("dashboard:academic:read_ac_sessions")
+        messages.success(self.request, self.success_message.format(obj.name))
+        return super(DeleteAcademicSession, self).delete(request, *args, **kwargs)
 
 
 # ########## BATCH ###################
@@ -316,4 +341,108 @@ class DeleteBatchView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         user = self.request.user
         return user_editor_admin_or_su(user)
 
+
 # #################################
+
+class SiteConfigView(LoginRequiredMixin, View):
+    """Site Config View"""
+
+    form_class = SiteConfigForm
+    template_name = "site/siteconfig.html"
+
+    def get(self, request, *args, **kwargs):
+        formset = self.form_class(queryset=SiteConfig.objects.all())
+        context = {"formset": formset}
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        formset = self.form_class(request.POST)
+        if formset.is_valid():
+            formset.save()
+            messages.success(request, "Configurations successfully updated")
+        context = {"formset": formset, "title": "Configuration"}
+        return render(request, self.template_name, context)
+
+
+# ############################## TERMS ########################
+class TermListView(LoginRequiredMixin, SuccessMessageMixin, ListView):
+    model = AcademicTerm
+    context_object_name = 'terms'
+    template_name = "term/term_list.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["form"] = AcademicTermForm()
+        return context
+
+
+class TermCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
+    model = AcademicTerm
+    form_class = AcademicTermForm
+    template_name = "term/term_form.html"
+    success_url = reverse_lazy("dashboard:academic:read_terms")
+    success_message = "New term successfully added"
+
+
+class TermUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+    model = AcademicTerm
+    form_class = AcademicTermForm
+    success_url = reverse_lazy("dashboard:academic:read_terms")
+    success_message = "Term successfully updated."
+    template_name = "term/term_form.html"
+
+    def form_valid(self, form):
+        obj = self.object
+        if obj.current == False:
+            terms = (
+                AcademicTerm.objects.filter(current=True)
+                .exclude(name=obj.name)
+                .exists()
+            )
+            if not terms:
+                messages.warning(self.request, "You must set a term to current.")
+                return redirect("term")
+        return super().form_valid(form)
+
+
+class TermDeleteView(LoginRequiredMixin, DeleteView):
+    model = AcademicTerm
+    success_url = reverse_lazy("dashboard:academic:read_terms")
+    template_name = "term/term_confirm_delete.html"
+    success_message = "The term {} has been deleted with all its attached content"
+
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()
+        if obj.current == True:
+            messages.warning(request, "Cannot delete term as it is set to current")
+            return redirect("terms")
+        messages.success(self.request, self.success_message.format(obj.name))
+        return super(TermDeleteView, self).delete(request, *args, **kwargs)
+
+
+# ####################### CURENT ##########################
+class CurrentSessionAndTermView(LoginRequiredMixin, View):
+    """Current Session and Term"""
+
+    form_class = CurrentSessionForm
+    template_name = "curent/current_session.html"
+
+    def get(self, request, *args, **kwargs):
+        form = self.form_class(
+            initial={
+                "current_session": AcademicSession.objects.get(current=True),
+                "current_term": AcademicTerm.objects.get(current=True),
+            }
+        )
+        return render(request, self.template_name, {"form": form})
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_Class(request.POST)
+        if form.is_valid():
+            session = form.cleaned_data["current_session"]
+            term = form.cleaned_data["current_term"]
+            AcademicSession.objects.filter(name=session).update(current=True)
+            AcademicSession.objects.exclude(name=session).update(current=False)
+            AcademicTerm.objects.filter(name=term).update(current=True)
+
+        return render(request, self.template_name, {"form": form})

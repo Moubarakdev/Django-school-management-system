@@ -1,0 +1,95 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="container-fluid content">
+    <div class="row">
+        <div class="col-sm-4">
+            <h3>{{ object }} </h3>
+            <h5>{{ object.session }} </h5>
+            <h5>{{ object.term }} </h5>
+            <h5>{{ object.semesters }} </h5>
+            <h6>Status: {{ object.get_status_display }} </h6>
+            <hr>
+            <div>
+                <h4>Expected Balance: {{ object.balance | intcomma }}</h4>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <table class="table table-sm table-bordered">
+                Invoice Breakdown</br>
+                <thead class="thead-light">
+                <tr>
+                    <th>S/N</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ forloop.counter }}</td>
+                    <td>{{ item.description }}</td>
+                    <td>{{ item.amount }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td></td>
+                    <td>Total Amount this term</td>
+                    <td>{{ object.amount_payable | intcomma}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Balance from previous term</td>
+                    <td>{{ object.balance_from_previous_term | intcomma }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Total Amount Payable</td>
+                    <td>{{ object.total_amount_payable | intcomma}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Total Amount Paid</td>
+                    <td>{{ object.total_amount_paid | intcomma}}</td>
+                </tr>
+
+                </tfoot>
+            </table>
+        </div>
+    </div>
+
+    <hr>
+
+    <h5>Payment History</h5>
+    <table class="table table-bordered table-sm">
+        <thead class="thead-light">
+        <tr>
+            <th>S/N</th>
+            <th>Amount Paid</th>
+            <th>Date Paid</th>
+            <th>Comment Paid</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for receipt in receipts %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ receipt.amount_paid}}</td>
+            <td>{{ receipt.date_paid}}</td>
+            <td>{{ receipt.comment}}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+</div>
+{% endblock %}
+
+
+{% block customjs %}
+
+{% endblock %}

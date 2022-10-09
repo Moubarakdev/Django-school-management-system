@@ -1,41 +1,73 @@
+from datetime import timezone
+
 from django.db import models
+from django.urls import reverse
 from model_utils.models import TimeStampedModel
 
-from academic.models import Department, Semester, AcademicSession, Batch
+from academic.models import Department, Semester, AcademicSession, Batch, AcademicTerm
 from myschool import settings
+from student.models import Student
 
 
 # Create your models here.
-class SchoolFees(TimeStampedModel):
-    department = models.ForeignKey(Department, on_delete=models.DO_NOTHING)
-    ac_session = models.ForeignKey(
-        AcademicSession, on_delete=models.CASCADE,
-        blank=True, null=True, verbose_name="Session académique"
+class Invoice(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="Étudiant")
+    session = models.ForeignKey(AcademicSession, on_delete=models.CASCADE, verbose_name="Année académique")
+    term = models.ForeignKey(AcademicTerm, on_delete=models.CASCADE, verbose_name="Tranche")
+    semesters = models.ManyToManyField(Semester, null=True, blank=False, related_name='semesters', verbose_name="Semestres")
+    balance_from_previous_term = models.IntegerField(default=0)
+    status = models.CharField(
+        max_length=20,
+        choices=[("active", "Active"), ("closed", "Closed")],
+        default="active",
     )
-    semesters = models.ManyToManyField(Semester, blank=True, verbose_name="Semestres")
-    fees_amount = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Montant des frais")
-    description = models.CharField(verbose_name="Description", max_length=50, null=True, blank=True)
-    created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        on_delete=models.DO_NOTHING, null=True)
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
+
+    class Meta:
+        ordering = ["student", "term"]
 
     def __str__(self):
-        return self.description
+        return f"{self.student}"
+
+    def balance(self):
+        payable = self.total_amount_payable()
+        paid = self.total_amount_paid()
+        return payable - paid
+
+    def amount_payable(self):
+        items = InvoiceItem.objects.filter(invoice=self)
+        total = 0
+        for item in items:
+            total += item.amount
+        return total
+
+    def total_amount_payable(self):
+        return self.balance_from_previous_term + self.amount_payable()
+
+    def total_amount_paid(self):
+        receipts = Receipt.objects.filter(invoice=self)
+        amount = 0
+        for receipt in receipts:
+            amount += receipt.amount_paid
+        return amount
+
+    def get_absolute_url(self):
+        return reverse("payment:invoice_detail", kwargs={"pk": self.pk})
 
 
-class StudentFeesInfo(TimeStampedModel):
-    student = models.OneToOneField('student.Student', on_delete=models.CASCADE,
-                                   related_name='student_fee', verbose_name="Étudiant")
-    fees = models.ForeignKey(SchoolFees, on_delete=models.DO_NOTHING, verbose_name="Montant de base")
-    fee_to_pay = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Montant à payer", blank=True)
-    paid_fee = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Montant payé", null=True, blank=True)
-    owed_fee = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Montant restant", null=True,
-                                   blank=True)
+class InvoiceItem(models.Model):
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
+    description = models.CharField(max_length=200)
+    amount = models.IntegerField()
+
+
+class Receipt(models.Model):
+    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
+    amount_paid = models.IntegerField()
+    date_paid = models.DateField(auto_now_add=True)
+    comment = models.CharField(max_length=200, blank=True)
 
     def __str__(self):
-        return f'{self.student__temporary_id} {self.student.admission_student__last_name}'
+        return f"Receipt on {self.date_paid}"
 
 
 '''  

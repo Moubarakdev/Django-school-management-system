@@ -11,7 +11,6 @@ from django.views.generic import DetailView, UpdateView, ListView
 
 from academic.models import Batch, AcademicSession, Semester, Department
 from account.models import User
-from payment.models import StudentFeesInfo, SchoolFees
 from permission_handlers.administrative import user_is_admin_su_or_ac_officer
 from permission_handlers.basic import user_is_verified
 from result.models import SubjectGroup
@@ -218,11 +217,10 @@ def admission_confirmation(request):
                     admitted_by=request.user,
                     # student_account=student_account,
                 )
-                students.append(student)
             except:
                 pass
         ctx['students'] = students
-        return render(request, 'students/list/students_list.html', ctx)
+        return render(request, 'students/list/confirm_admission.html', ctx)
     else:
         return render(request, 'students/list/confirm_admission.html', ctx)
 
@@ -280,7 +278,8 @@ def update_online_registrant(request, pk):
             instance=applicant)
         if form.is_valid():
             form.save()
-            return redirect('dashboard:student:paid_registrant_list')
+            # return redirect('dashboard:student:paid_registrant_list')
+            return redirect('dashboard:student:all_applicants')
     else:
         form = StudentRegistrantUpdateForm(instance=applicant)
         counseling_form = CounselingDataForm()

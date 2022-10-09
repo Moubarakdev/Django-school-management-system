@@ -19,6 +19,23 @@
             <input type="text" class="form-control" placeholder="Search here">
             <button class="btn" type="submit"><i class="fas fa-search"></i></button>
         </form>
+
+        <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
+              class="fas fa-bars"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="{% url 'home:home' %} " class="nav-link"><i class="fa fa-home"></i></a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="{% url 'dashboard:academic:current_session' %}" class="nav-link">Session: {{ current_session }}</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="{% url 'dashboard:academic:current_session' %}" class="nav-link">Term: {{ current_term }}</a>
+        </li>
+      </ul>
+
     </div>
     <a class="mobile_btn" id="mobile_btn">
         <i class="fas fa-bars"></i>

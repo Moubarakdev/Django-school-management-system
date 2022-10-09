@@ -1,0 +1,39 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load widget_tweaks %}
+
+{% block extra_header %}
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid content">
+    <div class="row">
+        <div class="col-sm-12">
+            <form method="POST">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag}}
+                        {{ field | add_class:"form-control" |add_error_class:"is-invalid" | attr:"required"}}
+                        {{field.help_text}}
+                        {{field.errors}}
+                    </div>
+                    {% endfor %}
+                </div>
+
+
+                <input type="submit" value="Save" class="w-25 btn btn-primary">
+
+            </form>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}
+{% block extrajs %}
+
+{% endblock %}

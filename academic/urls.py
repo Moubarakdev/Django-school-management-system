@@ -5,12 +5,18 @@ from django.urls import path, include
 from academic.views import ReadSemester, CreateSemester, DeleteSemester, UpdateSemester, SubjectListView, \
     CreateSubjectView, UpdateSubjectView, DeleteSubjectView, CreateDepartmentView, UpdateDepartmentView, \
     DeleteDepartmentView, CreateAcademicSession, AcademicSessionListView, DepartmentListView, DeleteAcademicSession, \
-    UpdateAcademicSession, CreateBatchView, DeleteBatchView, UpdateBatchView, BatchListView
+    UpdateAcademicSession, CreateBatchView, DeleteBatchView, UpdateBatchView, BatchListView, SiteConfigView, \
+    TermListView, TermUpdateView, TermDeleteView, TermCreateView, CurrentSessionAndTermView
 from myschool import settings
 
 app_name = 'academic'
 
 urlpatterns = [
+                  # Site
+                  path("site-config", SiteConfigView.as_view(), name="configs"),
+                  path(
+                      "current-session/", CurrentSessionAndTermView.as_view(), name="current_session"
+                  ),
                   # Semester
                   path('semester/', ReadSemester.as_view(), name="read_semesters"),
                   path('semester/create/', CreateSemester.as_view(), name="create_semester"),
@@ -40,4 +46,12 @@ urlpatterns = [
                   path('batch/create/', CreateBatchView.as_view(), name="create_batch"),
                   path('batch/delete/<int:pk>', DeleteBatchView.as_view(), name="delete_batch"),
                   path('batch/update/<int:pk>', UpdateBatchView.as_view(), name="update_batch"),
+
+                  # Term
+                  path("term/list/", TermListView.as_view(), name="read_terms"),
+                  path("term/create/", TermCreateView.as_view(), name="create_term"),
+                  path("term/<int:pk>/update/", TermUpdateView.as_view(), name="update_term"),
+                  path("term/<int:pk>/delete/", TermDeleteView.as_view(), name="delete_term"),
+
+
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

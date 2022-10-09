@@ -5,7 +5,6 @@ from django_countries.fields import CountryField
 
 from academic.models import Department, TempSerialID, Semester, AcademicSession, Batch
 from myschool import settings
-from payment.models import StudentFeesInfo
 from teacher.models import Teacher
 
 
@@ -39,7 +38,7 @@ class StudentBase(TimeStampedModel):
     date_of_birth = models.DateField(verbose_name="Date de naissance")
     email = models.EmailField(verbose_name="Email")
     gender = models.CharField(verbose_name="Sexe", max_length=15, choices=GENDER)
-    religion = models.CharField(verbose_name="Religion", max_length=30)
+    religion = models.CharField(verbose_name="Religion", max_length=30, choices=RELIGION)
 
     nationality = CountryField(blank=False,
                                null=True,
@@ -157,8 +156,8 @@ class AdmissionStudent(StudentBase):
         return f"{self.last_name}"
 
     def save(self, *args, **kwargs):
-        if self.department_choice != self.choosen_department:
-            status = f'From {self.department_choice} to {self.choosen_department}'
+        if self.choosen_department != self.choosen_department:
+            status = f'From {self.choosen_department} to {self.choosen_department}'
             self.migration_status = status
             super().save(*args, **kwargs)
         super().save(*args, **kwargs)

@@ -84,6 +84,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'academic.middleware.SiteWideConfigs',
 ]
 
 ROOT_URLCONF = 'myschool.urls'
@@ -204,3 +205,10 @@ GRAPH_MODELS = {
     'all_applications': True,
     'group_models': True,
 }
+
+# ############## SESSION ############
+SESSION_SAVE_EVERY_REQUEST = True
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+
+SESSION_COOKIE_AGE = 10800

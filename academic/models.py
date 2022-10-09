@@ -8,6 +8,17 @@ from teacher.models import Teacher
 
 # Create your models here.
 # Department #filiere #serie
+
+class SiteConfig(models.Model):
+    """Site Configurations"""
+
+    key = models.SlugField()
+    value = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.key
+
+
 class Department(TimeStampedModel):
     name = models.CharField(max_length=255, unique=True, verbose_name='Nom de département')
     code = models.PositiveIntegerField(verbose_name="Code department ")
@@ -29,6 +40,7 @@ class Department(TimeStampedModel):
 
 class AcademicSession(TimeStampedModel):
     year = models.PositiveIntegerField(unique=True, verbose_name="Année")
+    current = models.BooleanField(default=True, verbose_name="Marquer comme année courante")
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True, verbose_name="Créateur")
@@ -45,6 +57,19 @@ class AcademicSession(TimeStampedModel):
 
 def create_resource():
     return reverse('dashboard:academic:create_semester')
+
+
+class AcademicTerm(models.Model):
+    """Academic Term"""
+
+    name = models.CharField(max_length=20, unique=True, verbose_name="Nom")
+    current = models.BooleanField(default=True, verbose_name="Tranche courante")
+
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
 
 
 class Semester(TimeStampedModel):

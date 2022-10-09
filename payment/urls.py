@@ -1,13 +1,19 @@
 from django.urls import path
 
-from payment.views import FeesListView, FeesCreateView, FeesDeleteView, FeesUpdateView
+from payment.views import InvoiceListView, \
+    InvoiceCreateView, InvoiceDetailView, InvoiceDeleteView, ReceiptCreateView, ReceiptUpdateView, InvoiceUpdateView
 
 app_name = 'payment'
 
 urlpatterns = [
     # fees
-    path('fees/', FeesListView.as_view(), name="read_fees"),
-    path('fees/create/', FeesCreateView.as_view(), name="create_fees"),
-    path('fees/delete/<int:pk>', FeesDeleteView.as_view(), name="delete_fees"),
-    path('fees/edit/<int:pk>', FeesUpdateView.as_view(), name="update_fees"),
+    path("list/", InvoiceListView.as_view(), name="read_invoices"),
+    path("create/", InvoiceCreateView.as_view(), name="create_invoice"),
+    path("<int:pk>/detail/", InvoiceDetailView.as_view(), name="invoice_detail"),
+    path("<int:pk>/update/", InvoiceUpdateView.as_view(), name="update_invoice"),
+    path("<int:pk>/delete/", InvoiceDeleteView.as_view(), name="delete_invoice"),
+    path("receipt/create", ReceiptCreateView.as_view(), name="create_invoice"),
+    path(
+        "receipt/<int:pk>/update/", ReceiptUpdateView.as_view(), name="update_receipt"
+    ),
 ]

@@ -1,11 +1,17 @@
-from django.forms import ModelForm
+from django.forms import ModelForm, inlineformset_factory, modelformset_factory
 
-from payment.models import SchoolFees
+from payment.models import InvoiceItem, Invoice, Receipt
 
+InvoiceItemFormset = inlineformset_factory(
+    Invoice, InvoiceItem, fields=["description", "amount"], extra=1, can_delete=True
+)
 
-class SchoolFeesForm(ModelForm):
-    class Meta:
-        model = SchoolFees
-        fields = '__all__'
-        exclude = ['created_by', 'created_at', 'updated_at']
+InvoiceReceiptFormSet = inlineformset_factory(
+    Invoice,
+    Receipt,
+    fields=("amount_paid", "comment"),
+    extra=0,
+    can_delete=True,
+)
 
+Invoices = modelformset_factory(Invoice, exclude=(), extra=4)
