@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'django_file_form',
     'verify_email.apps.VerifyEmailConfig',  # verify email
     "django_extensions",
+    "phonenumber_field",
 
 ]
 CRISPY_TEMPLATE_PACK = 'bootstrap4'

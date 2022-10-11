@@ -2,6 +2,7 @@ from django.core.validators import FileExtensionValidator
 from django.db import models, IntegrityError, transaction, OperationalError
 from model_utils.models import TimeStampedModel
 from django_countries.fields import CountryField
+from phonenumber_field.modelfields import PhoneNumberField
 
 from academic.models import Department, TempSerialID, Semester, AcademicSession, Batch
 from myschool import settings
@@ -29,11 +30,11 @@ class StudentBase(TimeStampedModel):
 
     fathers_last_name = models.CharField(verbose_name="Nom du père", max_length=100)
     fathers_first_name = models.CharField(verbose_name="Prénom du père", max_length=100)
-    fathers_mobile_number = models.CharField(verbose_name="Numéro de téléphone du père", max_length=20)
+    fathers_mobile_number = PhoneNumberField(verbose_name="Numéro de téléphone du père")
 
     mothers_last_name = models.CharField(verbose_name="Nom de la mère", max_length=100)
     mothers_first_name = models.CharField(verbose_name="Prénom de la mère", max_length=100)
-    mothers_mobile_number = models.CharField(verbose_name="Numéro de téléphone de la mère", max_length=100)
+    mothers_mobile_number = PhoneNumberField(verbose_name="Numéro de téléphone de la mère")
 
     date_of_birth = models.DateField(verbose_name="Date de naissance")
     email = models.EmailField(verbose_name="Email")
@@ -46,8 +47,8 @@ class StudentBase(TimeStampedModel):
 
     current_address = models.TextField(verbose_name='Adresse courante')
     permanent_address = models.TextField(verbose_name='Adresse permanente', blank=True, null=True)
-    mobile_number = models.CharField('Numéro de téléphone', max_length=11)
-    guardian_mobile_number = models.CharField('Numéro Personne à prévenir', max_length=20)
+    mobile_number = PhoneNumberField('Numéro de téléphone')
+    guardian_mobile_number = PhoneNumberField('Numéro Personne à prévenir')
 
     choosen_department = models.ForeignKey(
         Department,

@@ -33,7 +33,7 @@ class InvoiceCreateView(LoginRequiredMixin, CreateView):
         context = self.get_context_data()
         formset = context["items"]
         self.object = form.save()
-        if self.object.id != None:
+        if self.object.id is not None:
             if form.is_valid() and formset.is_valid():
                 formset.instance = self.object
                 formset.save()

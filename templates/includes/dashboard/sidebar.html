@@ -165,10 +165,12 @@
                 <li class="menu-title">
                     <span>Administrative</span>
                 </li>
+                {% comment %}
                 <li class="{% active_link  'dashboard:read_requests' 'active' strict=True%}">
                     <a href="{% url 'dashboard:read_requests' %}"><i
                             class="fas fa-users"></i><span>Demandes d'approbation</span></a>
                 </li>
+                {% endcomment %}
                 <li class="{% active_link  'read_accounts' 'active' strict=True%}">
                     <a href="{% url 'read_accounts' %}"> <i
                             class="fas fa-users"></i><span>Liste des utilisateurs</span></a>
