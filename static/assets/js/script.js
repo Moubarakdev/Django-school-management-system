@@ -317,9 +317,12 @@ Version      : 1.0
   // Preloader
 
   $(window).on("load", function () {
-    if ($("#loader").length > 0) {
-      $("#loader").delay(350).fadeOut("slow");
-      $("body").delay(350).css({ overflow: "visible" });
-    }
+  $('#preloader').fadeOut('slow', function() {
+            $(this).remove();
+        });
+    //if ($("#loader").length > 0) {
+    //  $("#loader").delay(350).fadeOut("slow");
+    //  $("body").delay(350).css({ overflow: "visible" });
+    //}
   });
 })(jQuery);

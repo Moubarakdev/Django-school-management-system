@@ -1,6 +1,7 @@
 {% extends 'layouts/base_dash.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load humanize %}
 
 {% block content %}
 <div class="container-fluid content">
@@ -9,21 +10,21 @@
             <h3>{{ object }} </h3>
             <h5>{{ object.session }} </h5>
             <h5>{{ object.term }} </h5>
-            <h5>{{ object.semesters }} </h5>
-            <h6>Status: {{ object.get_status_display }} </h6>
+            <h5>{% for semester in object.semesters.all %}{{ semester }} {% endfor %} </h5>
+            <h6>Statut: {{ object.get_status_display }} </h6>
             <hr>
             <div>
-                <h4>Expected Balance: {{ object.balance | intcomma }}</h4>
+                <h4>Montant restant: {{ object.balance | intcomma }}</h4>
             </div>
         </div>
         <div class="col-sm-8">
             <table class="table table-sm table-bordered">
-                Invoice Breakdown</br>
+                Récapitulatif de la Facture</br>
                 <thead class="thead-light">
                 <tr>
                     <th>S/N</th>
                     <th>Description</th>
-                    <th>Amount</th>
+                    <th>Montant</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,22 +39,22 @@
                 <tfoot>
                 <tr>
                     <td></td>
-                    <td>Total Amount this term</td>
+                    <td>Montant total cette période</td>
                     <td>{{ object.amount_payable | intcomma}}</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>Balance from previous term</td>
+                    <td>Solde de la période précédente</td>
                     <td>{{ object.balance_from_previous_term | intcomma }}</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>Total Amount Payable</td>
+                    <td>Montant total a payer</td>
                     <td>{{ object.total_amount_payable | intcomma}}</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>Total Amount Paid</td>
+                    <td>Montant total payé</td>
                     <td>{{ object.total_amount_paid | intcomma}}</td>
                 </tr>
 
@@ -64,21 +65,21 @@
 
     <hr>
 
-    <h5>Payment History</h5>
+    <h5>Historique de paiement</h5>
     <table class="table table-bordered table-sm">
         <thead class="thead-light">
         <tr>
             <th>S/N</th>
-            <th>Amount Paid</th>
-            <th>Date Paid</th>
-            <th>Comment Paid</th>
+            <th>Le montant payé</th>
+            <th>Date de paiement</th>
+            <th>Commentaire </th>
         </tr>
         </thead>
         <tbody>
         {% for receipt in receipts %}
         <tr>
             <td>{{ forloop.counter }}</td>
-            <td>{{ receipt.amount_paid}}</td>
+            <td>{{ receipt.amount_paid | intcomma }}</td>
             <td>{{ receipt.date_paid}}</td>
             <td>{{ receipt.comment}}</td>
         </tr>

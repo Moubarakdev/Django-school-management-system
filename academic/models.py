@@ -63,7 +63,7 @@ class AcademicTerm(models.Model):
     """Academic Term"""
 
     name = models.CharField(max_length=20, unique=True, verbose_name="Nom")
-    current = models.BooleanField(default=True, verbose_name="Tranche courante")
+    current = models.BooleanField(default=True, verbose_name="Période courante")
 
     class Meta:
         ordering = ["name"]

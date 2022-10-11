@@ -107,13 +107,12 @@
                             class="menu-arrow"></span></a>
                     <ul>
                         <li><a href="{% url 'dashboard:academic:read_ac_sessions' %}">Sessions académiques</a></li>
-                        <li><a href="{% url 'dashboard:academic:read_terms' %}">Tranches</a></li>
+                        <li><a href="{% url 'dashboard:academic:read_terms' %}">Périodes</a></li>
                         <li><a href="{% url 'dashboard:academic:read_departments' %}">Départements</a></li>
                         <li><a href="{% url 'dashboard:academic:read_batches' %}">Promotions</a></li>
                         <li><a href="{% url 'dashboard:academic:read_semesters' %}">Semestres</a></li>
                         <li><a href="{% url 'dashboard:academic:read_subjects' %}">Matières</a></li>
                         <li><a href="{% url 'result:subject_groups' %}"><span>Programmes</span></a>
-                        <li><a href="{% url 'payment:read_invoices' %}"><span>Frais de scolarité</span></a>
                 </li>
                     </ul>
                 </li>
@@ -182,7 +181,7 @@
                 </li>
                 <li class="{% active_link  'payement:read_invoices' 'active' strict=True%}">
                     <a href="{% url 'payment:read_invoices' %}"><i
-                            class="fas fa-users"></i><span>Factures/Paiement</span></a>
+                            class="fas fa-comment-dollar"></i><span>Factures/Paiement</span></a>
                 </li>
 
                 <!--

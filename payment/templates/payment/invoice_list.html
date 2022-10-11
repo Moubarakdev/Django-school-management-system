@@ -10,7 +10,7 @@
                 <h3 class="page-title">Liste des factures/paiements</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">List</li>
+                    <li class="breadcrumb-item active">Liste</li>
                 </ul>
             </div>
             <div class="col-auto text-right float-right ml-auto">
@@ -42,13 +42,14 @@
                             {% for invoice in object_list %}
                             <tr class='clickable-row' data-href="{% url 'payment:invoice_detail' invoice.id %}">
                                 <td>{{ forloop.counter}}</td>
-                                <td>{{ invoice}}</td>
+                                <td><a href="{% url 'payment:invoice_detail' invoice.id %}">{{ invoice}}</a></td>
                                 <td>{{ invoice.session}}-{{ invoice.term}}</td>
                                 <td>{{ invoice.total_amount_payable | intcomma }}</td>
                                 <td>{{ invoice.total_amount_paid | intcomma }}</td>
                                 <td>{{ invoice.balance | intcomma }}</td>
                                 <td><a class="btn btn-success btn-sm"
-                                       href="{% url 'payment:create_receipt' %}?invoice={{ invoice.id }}">Nouveau payement</a></td>
+                                       href="{% url 'payment:create_receipt' %}?invoice={{ invoice.id }}">Nouveau
+                                    payement</a></td>
                             </tr>
                             {% endfor %}
 

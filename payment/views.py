@@ -107,12 +107,12 @@ class ReceiptCreateView(LoginRequiredMixin, CreateView):
 class ReceiptUpdateView(LoginRequiredMixin, UpdateView):
     model = Receipt
     fields = ["amount_paid", "date_paid", "comment"]
-    success_url = reverse_lazy("invoice-list")
+    success_url = reverse_lazy("payment:read_invoices")
 
 
 class ReceiptDeleteView(LoginRequiredMixin, DeleteView):
     model = Receipt
-    success_url = reverse_lazy("invoice-list")
+    success_url = reverse_lazy("payment:read_invoices")
 
 
 '''class FeesCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):

@@ -13,7 +13,7 @@ from student.models import Student
 class Invoice(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="Étudiant")
     session = models.ForeignKey(AcademicSession, on_delete=models.CASCADE, verbose_name="Année académique")
-    term = models.ForeignKey(AcademicTerm, on_delete=models.CASCADE, verbose_name="Tranche")
+    term = models.ForeignKey(AcademicTerm, on_delete=models.CASCADE, verbose_name="Période")
     semesters = models.ManyToManyField(Semester, null=True, blank=False, related_name='semesters', verbose_name="Semestres")
     balance_from_previous_term = models.IntegerField(default=0)
     status = models.CharField(

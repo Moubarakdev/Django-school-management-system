@@ -25,7 +25,7 @@
                 <ul>
 
                     <li>Session: {{ invoice.session }}</li>
-                    <li>Tranche: {{ invoice.term }}</li>
+                    <li>Période: {{ invoice.term }}</li>
                     <li>Semestres: {% for semester in invoice.semesters.all %}{{ semester }} {% endfor %} </li>
                     <li>Total Montant à payer: {{invoice.total_amount_payable | intcomma }}
                     </li>
