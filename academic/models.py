@@ -20,22 +20,36 @@ class SiteConfig(models.Model):
 
 
 class Department(TimeStampedModel):
+    LEVEL_CHOICES = (
+        ('lp1', 'LP1'),
+        ('lp2', 'LP2'),
+        ('lp3', 'LP3'),
+        ('m1', 'M1'),
+        ('m2', 'M2'),
+    )
     name = models.CharField(max_length=255, unique=True, verbose_name='Nom de département')
     code = models.PositiveIntegerField(verbose_name="Code department ")
     description = models.TextField(help_text='Ecriver une simple description a propos du département', blank=True,
                                    null=True, verbose_name='Description')
-    current_batch = models.ForeignKey('Batch', on_delete=models.CASCADE, blank=True, null=True,
-                                      related_name='current_batches',
-                                      verbose_name='Promotion actuelle')
-    batches = models.ManyToManyField('Batch', related_name='department_batches', blank=True, verbose_name="Promotions")
+    level = models.CharField(max_length=3, choices=LEVEL_CHOICES, default='LP1', verbose_name="Niveau")
     establish_date = models.DateField(auto_now_add=True, verbose_name='Date de création')
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING,
                                    null=True, verbose_name="Créateur")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
+    fee = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Frais de scolarité", default=0)
+
+    '''
+    current_batch = models.ForeignKey('Batch', on_delete=models.CASCADE, blank=True, null=True,related_name='current_batches',verbose_name='Promotion actuelle')
+    batches = models.ManyToManyField('Batch', related_name='department_batches', blank=True, verbose_name="Promotions")
+    '''
+
+    class Meta:
+        verbose_name_plural = 'Promotions'
+        unique_together = ['name', 'code', 'level']
 
     def __str__(self):
-        return str(self.name)
+        return f"{str(self.name)} - {str(self.level).upper()}"
 
 
 class AcademicSession(TimeStampedModel):
@@ -72,6 +86,7 @@ class AcademicTerm(models.Model):
         return self.name
 
 
+"""
 class Semester(TimeStampedModel):
     number = models.PositiveIntegerField(unique=True, verbose_name='Numéro semestre')
     '''
@@ -104,6 +119,8 @@ class Semester(TimeStampedModel):
     def active_or_not(self):
         return "Oui" if self.active else "Non"
 
+"""
+
 
 class Subject(TimeStampedModel):
     name = models.CharField(max_length=50, verbose_name="Titre du cours")
@@ -122,6 +139,7 @@ class Subject(TimeStampedModel):
         return "{} ({})".format(self.name, self.subject_code)
 
 
+"""
 class Batch(TimeStampedModel):
     year = models.ForeignKey(AcademicSession, on_delete=models.CASCADE, verbose_name="Année scolaire")
     number = models.PositiveIntegerField('Numéro promotion')
@@ -138,6 +156,8 @@ class Batch(TimeStampedModel):
 
     def __str__(self):
         return f'{self.department.name} Batch {self.number} ({self.year})'
+
+"""
 
 
 class TempSerialID(TimeStampedModel):
@@ -166,14 +186,15 @@ class TempSerialID(TimeStampedModel):
         # Get current year last two digit
         yf = str(self.student.ac_session)[-2:]
         # Get current batch of student's department
-        bn = self.student.batch.number
+        # bn = self.student.batch.number
         # Get department code
         dc = self.department.code
         # Get admission serial of student by department
         syl = self.serial
 
         # return something like: 21-15-666-15
-        return f'{yf}-{bn}-{dc}-{syl}'
+        # return f'{yf}-{bn}-{dc}-{syl}'
+        return f'{yf}-{dc}-{syl}'
 
 
 '''

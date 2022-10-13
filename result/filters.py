@@ -14,7 +14,6 @@ class ResultFilter(django_filters.FilterSet):
         model = Result
         fields = [
             'student__admission_student__choosen_department',
-            'semester',
             'subject',
             'student__temporary_id',
         ]
@@ -29,5 +28,4 @@ class SubjectGroupFilter(django_filters.FilterSet):
         model = SubjectGroup
         fields = [
             'department',
-            'semester',
         ]

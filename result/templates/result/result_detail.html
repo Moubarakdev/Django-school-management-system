@@ -29,10 +29,6 @@
                         <th scope="row">Département</th>
                         <td>{{ student.admission_student.choosen_department }}</td>
                     </tr>
-                    <tr>
-                        <th scope="row">Promotion</th>
-                        <td colspan="2">{{ student.batch }}</td>
-                    </tr>
                     </tbody>
                 </table>
             </div>
@@ -40,9 +36,9 @@
 
         <!-- Result Right bar -->
         <div class="col-md-8">
-            {% for semester, results in semester_results.items %}
+            {% for department, results in department_results.items %}
             <div class="result-box mb-5">
-                <h4 class="mb-3">Résultats du semestre {{ semester }} : </h4>
+                <h4 class="mb-3">Résultats du semestre {{ department }} : </h4>
                 <table
                         class='{% cycle "table table-striped table-bordered datatable" "table table-striped table-bordered datatable" %}'>
                     <thead>

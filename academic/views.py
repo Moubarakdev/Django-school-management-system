@@ -7,17 +7,18 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from academic.forms import DepartmentForm, SemesterForm, AcademicSessionForm, SubjectForm, BatchForm, SiteConfigForm, \
+from academic.forms import DepartmentForm, AcademicSessionForm, SubjectForm, SiteConfigForm, \
     AcademicTermForm, CurrentSessionForm
-from academic.models import Department, Semester, Subject, AcademicSession, Batch, SiteConfig, AcademicTerm
+from academic.models import Department, Subject, AcademicSession, SiteConfig, AcademicTerm
 from permission_handlers.administrative import user_is_admin_su_editor_or_ac_officer, user_editor_admin_or_su, \
     user_is_teacher_or_administrative
 from permission_handlers.basic import user_is_verified
 
-
 # Create your views here.
 
 # #### SEMESTER #############################################
+
+'''
 class ReadSemester(LoginRequiredMixin, UserPassesTestMixin, ListView):
     model = Semester
     context_object_name = 'semesters'
@@ -74,6 +75,7 @@ class DeleteSemester(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         user = self.request.user
         return user_editor_admin_or_su(user)
+'''
 
 
 # #### SUBJECT #############################################
@@ -250,7 +252,7 @@ class UpdateAcademicSession(LoginRequiredMixin, UserPassesTestMixin, UpdateView)
 
     def form_valid(self, form):
         obj = self.object
-        if obj.current == False:
+        if not obj.current:
             terms = (
                 AcademicSession.objects.filter(current=True)
                 .exclude(name=obj.name)
@@ -274,7 +276,7 @@ class DeleteAcademicSession(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
 
     def delete(self, request, *args, **kwargs):
         obj = self.get_object()
-        if obj.current == True:
+        if obj.current:
             messages.warning(request, "Cannot delete session as it is set to current")
             return redirect("dashboard:academic:read_ac_sessions")
         messages.success(self.request, self.success_message.format(obj.name))
@@ -282,7 +284,7 @@ class DeleteAcademicSession(LoginRequiredMixin, UserPassesTestMixin, DeleteView)
 
 
 # ########## BATCH ###################
-class CreateBatchView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+'''class CreateBatchView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Batch
     form_class = BatchForm
 
@@ -340,6 +342,7 @@ class DeleteBatchView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     def test_func(self):
         user = self.request.user
         return user_editor_admin_or_su(user)
+'''
 
 
 # #################################

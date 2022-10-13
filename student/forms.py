@@ -98,7 +98,6 @@ class StudentUpdateForm(forms.ModelForm):
         fields = (
             'roll',
             'registration_number',
-            'semester',
             'guardian_mobile',
             'is_alumni', 'is_dropped'
         )

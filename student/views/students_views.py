@@ -9,7 +9,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, UpdateView, ListView
 
-from academic.models import Batch, AcademicSession, Semester, Department
+from academic.models import AcademicSession, Department
 from account.models import User
 from payment.models import Invoice
 from permission_handlers.administrative import user_is_admin_su_or_ac_officer
@@ -115,12 +115,14 @@ def rejected_registrants(request):
     return render(request, 'students/list/rejected_registrants.html', ctx)
 
 
+'''
 def get_json_batch_data(request, *args, **kwargs):
     selected_department_code = kwargs.get('department_code')
     department_batches = list(
         Batch.objects.filter(department__code=selected_department_code).values()
     )
     return JsonResponse({'data': department_batches})
+'''
 
 
 @user_passes_test(user_is_admin_su_or_ac_officer)
@@ -135,18 +137,15 @@ def admission_confirmation(request):
         rejected=False,
         assigned_as_student=False)
     departments = Department.objects.order_by('name')
-    batches = Batch.objects.all()
     sessions = AcademicSession.objects.all()
     ctx = {
         'selected_registrants': selected_registrants,
         'departments': departments,
         'sessions': sessions,
-        'batches': batches
     }
 
     if request.method == 'POST':
         dept_code = request.POST.get('department_code')
-        batch_id = request.POST.get('batch_id')
         session_id = request.POST.get('session_id')
         # If confirmation processes is followed by checkmarks,
         # then we confirm admission for only selected candidates.
@@ -168,24 +167,6 @@ def admission_confirmation(request):
             )
             to_be_admitted = []
 
-        try:
-            # get first semester to admit in first semester.
-            semester_number = 1
-            semester = Semester.objects.get(number=semester_number)
-            batch = Batch.objects.get(id=batch_id)
-        except Semester.DoesNotExist:
-            messages.add_message(
-                request,
-                messages.ERROR,
-                f'Numéro de semestre  {semester_number} non trouvé!'
-            )
-        except Batch.DoesNotExist:
-            messages.add_message(
-                request,
-                messages.ERROR,
-                'Veuillez d\'abord sélectionner/créer une promotion.'
-            )
-
         students = []
         for candidate in to_be_admitted:
             try:
@@ -199,25 +180,13 @@ def admission_confirmation(request):
             # If student.save() doesn't raise any exceptions,
             # we save student, except, we skip making student object.
             try:
-                '''student_account = User.objects.create_user(
-                    username=candidate.first_name,
-                    email=candidate.email,
-                    password="etudiant1234",
-                    last_name=candidate.last_name,
-                    first_name=candidate.first_name,
-                    requested_role="student",
-                    role="student",
-                    approval_status="a",
-                    is_active=True,
-                )'''
                 student = Student.objects.create(
                     admission_student=candidate,
-                    semester=semester,
-                    batch=batch,
                     ac_session=session,
                     admitted_by=request.user,
                     # student_account=student_account,
                 )
+                students.append(student)
             except:
                 pass
         ctx['students'] = students
@@ -334,7 +303,7 @@ def students_view(request):
     and semesters list.
     """
     all_students = Student.objects.select_related(
-        'admission_student', 'semester', 'ac_session').all()
+        'admission_student', 'ac_session').all()
     context = {
         'students': all_students,
     }
@@ -345,7 +314,7 @@ def students_view(request):
 def students_by_department_view(request, pk):
     dept_name = Department.objects.get(pk=pk)
     students = Student.objects.select_related(
-        'department', 'semester', 'ac_session').filter(department=dept_name)
+        'department', 'ac_session').filter(department=dept_name)
     context = {'students': students, }
     return render(request, 'students/students_by_department.html', context)
 
@@ -402,7 +371,6 @@ class StudentDetailsView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         # for showing subjects in option form
         student_subject_qs = SubjectGroup.objects.filter(
             department=student.admission_student.choosen_department,
-            semester=student.semester
         )
         context['subjects'] = student_subject_qs
         # getting result objects

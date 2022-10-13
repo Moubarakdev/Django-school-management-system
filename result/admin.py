@@ -5,7 +5,7 @@ from .models import Result, Exam, SubjectGroup
 
 class ResutlAdmin(admin.ModelAdmin):
     list_display = (
-        'student', 'semester', 'exam',
+        'student', 'exam',
         'subject', 'class_marks',
         'exam_marks', 'extra_marks', 'total_marks', 'average', 'validated',
     )
@@ -17,7 +17,7 @@ class ExamAdmin(admin.ModelAdmin):
 
 
 class SubjectGroupAdmin(admin.ModelAdmin):
-    list_display = ('department', 'semester', 'get_subjects')
+    list_display = ('department', 'get_subjects')
 
 
 admin.site.register(Result, ResutlAdmin)

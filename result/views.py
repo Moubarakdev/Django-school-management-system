@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView, DeleteView
 
-from academic.models import Semester, Subject, Department
+from academic.models import Subject, Department
 from permission_handlers.administrative import user_is_teacher_or_administrative
 from permission_handlers.basic import user_is_verified
 from result.filters import ResultFilter, SubjectGroupFilter
@@ -32,21 +32,21 @@ def result_view(request):
 def result_detail_view(request, student_pk):
     student = get_object_or_404(Student, pk=student_pk)
     student_results = student.results.all()
-    semesters = list(Semester.objects.all())
-    semester_results = {}
-    active_semesters = []
+    departments = list(Department.objects.all())
+    department_results = {}
+    active_departments = []
 
-    for semester in semesters:
-        results = student_results.filter(semester=semester)
+    for department in departments:
+        results = student_results.filter(choosen_department=department)
         if results:
-            active_semesters.append(semester)
-            semester_results.update(
-                {f'{semester}': results}
+            active_departments.append(department)
+            department_results.update(
+                {f'{department}': results}
             )
     ctx = {
         'student': student,
-        'semester_results': semester_results,
-        'active_semesters': active_semesters
+        'department_results': department_results,
+        'active_departments': active_departments
     }
     return render(request, 'result/result_detail.html', ctx)
 
@@ -59,7 +59,7 @@ def find_student(request, student_id):
     ctx = {
         'student_name': student.admission_student.last_name,
         'student_first_name': student.admission_student.first_name,
-        'student_batch': student.batch.number,
+        'student_department': student.admission_student.choosen_department,
         'image_url': student.admission_student.photo.url
     }
     return JsonResponse({'data': ctx})
@@ -82,7 +82,6 @@ def result_entry(request):
         # get student from pk
         student_temp_id = request.POST.get('student_id')
         student = Student.objects.get(temporary_id=student_temp_id)
-        semester = Semester.objects.get(pk=int(request.POST.get('semester')))
 
         result_created = {}
         for key, value in data_items:
@@ -104,7 +103,6 @@ def result_entry(request):
                         )
                         result = Result(
                             student=student,
-                            semester=semester,
                             subject=subject,
                             class_marks=class_marks,
                             exam_marks=exam_marks,
@@ -131,20 +129,16 @@ def result_entry(request):
 @user_passes_test(user_is_teacher_or_administrative)
 def create_subject_group(request):
     departments = Department.objects.all()
-    semesters = Semester.objects.all()
     subjects = Subject.objects.all()
 
     if request.method == 'POST':
         dept_pk = int(request.POST.get('department'))
         subject_list = request.POST.getlist('subject')
-        semester_pk = int(request.POST.get('semester'))
 
         dept = Department.objects.get(pk=dept_pk)
-        semester = Semester.objects.get(pk=semester_pk)
 
         subject_group = SubjectGroup.objects.create(
             department=dept,
-            semester=semester
         )
 
         subject_objects = []
@@ -157,7 +151,6 @@ def create_subject_group(request):
         return redirect('result:subject_groups')
     ctx = {
         'departments': departments,
-        'semesters': semesters,
         'subjects': subjects,
     }
     return render(request, 'result/create_subject_groups.html', ctx)

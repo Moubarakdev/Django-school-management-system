@@ -4,7 +4,7 @@ from django.urls import path, register_converter
 
 from student.views.report_views import yearly_graph_api, counsel_monthly_report
 from student.views.students_views import all_applicants, students_board, admitted_students_list, paid_registrants, \
-    unpaid_registrants, rejected_registrants, get_json_batch_data, admission_confirmation, admit_student, \
+    unpaid_registrants, rejected_registrants, admission_confirmation, admit_student, \
     mark_as_paid_or_unpaid, update_online_registrant, add_counseling_data, add_student_view, students_view, \
     StudentDetailsView, StudentUpdateView, student_delete_view, students_by_department_view, AlumnusListView
 
@@ -43,8 +43,6 @@ urlpatterns = [
          name='rejected_registrant_list'),
     path('update-registrant/<int:pk>/', update_online_registrant,
          name='update_online_registrant'),
-    path('api/batches/<int:department_code>/', get_json_batch_data,
-         name='get_json_batch_data'),
     path('admission-confirm/', admission_confirmation,
          name='admission_confirmation'),
     path('online-applicants/<int:pk>/admit/', admit_student,

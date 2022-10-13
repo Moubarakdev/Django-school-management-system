@@ -28,15 +28,7 @@
                         <select name="department" class="form-control mb-2 mr-sm-2" id="department">
                             <option value="" selected disabled>Choisir un département</option>
                             {% for dept in departments %}
-                            <option value="{{ dept.pk }}">{{ dept.name }}</option>
-                            {% endfor %}
-                        </select>
-
-                        <label class="sr-only" for="semester">Semestre</label>
-                        <select name="semester" class="form-control mb-2 mr-sm-2" id="semester">
-                            <option value="" selected disabled>Choisir un semestre</option>
-                            {% for semester in semesters %}
-                            <option value="{{ semester.pk }}">{{ semester }}</option>
+                            <option value="{{ dept.pk }}">{{ dept }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -104,12 +96,10 @@
 <script>
     const subjectsContainer = document.getElementById('subjects-container');
     const dept = document.getElementById('department');
-    const semester = document.getElementById('semester');
     const subjectGroupForm = document.getElementById('subjectGroupCreateForm');
     const hiddenInputs = document.getElementById('hiddenInputs');
-    const semesterPk = parseInt(semester.value);
     const deptPk = parseInt(dept.value);
-    const url = `{% url 'result:create_subject_group' dept_pk=${deptPk} semester_pk=${semesterPk}`;
+    const url = `{% url 'result:create_subject_group' dept_pk=${deptPk}}`;
     const selectedCounterContainer = document.getElementById('subjectCounter');
     const selectedCounter = document.getElementById('subjectCounterN');
     

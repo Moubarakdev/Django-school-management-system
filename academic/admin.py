@@ -1,8 +1,5 @@
 from django.contrib import admin
-from .models import (AcademicSession,
-                     Semester, Department,
-                     Batch,
-                     Subject)
+from .models import (AcademicSession, Department, Subject)
 
 
 class AcademicSessionAdmin(admin.ModelAdmin):
@@ -18,8 +15,8 @@ class TempSerialIDAdmin(admin.ModelAdmin):
 
 
 admin.site.register(AcademicSession, AcademicSessionAdmin)
-admin.site.register(Batch, BatchAdmin)
-#admin.site.register(TempSerialID, TempSerialIDAdmin)
-admin.site.register(Semester)
+# admin.site.register(Batch, BatchAdmin)
+# admin.site.register(TempSerialID, TempSerialIDAdmin)
+# admin.site.register(Semester)
 admin.site.register(Department)
 admin.site.register(Subject)

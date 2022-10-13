@@ -12,7 +12,6 @@ class AlumniFilter(django_filters.FilterSet):
             'admission_student__choosen_department',
             'roll',
             'ac_session',
-            'batch'
         ]
 
     def __init__(self, *args, **kwargs):

@@ -8,7 +8,7 @@ from django.conf import settings
 from django.urls import reverse
 
 from student.models import Student
-from academic.models import Subject, Semester, Department
+from academic.models import Subject, Department
 
 
 class Exam(TimeStampedModel):
@@ -35,10 +35,6 @@ class Result(TimeStampedModel):
         Student,
         on_delete=models.CASCADE,
         related_name='results'
-    )
-    semester = models.ForeignKey(
-        Semester,
-        on_delete=models.CASCADE
     )
     subject = models.ForeignKey(
         Subject,
@@ -77,7 +73,7 @@ class Result(TimeStampedModel):
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     class Meta:
-        unique_together = ('student', 'semester', 'subject')
+        unique_together = ('student', 'subject')
 
     def __str__(self):
         return f'{self.student} | {self.subject} | {self.total_marks}'
@@ -118,20 +114,15 @@ class SubjectGroup(TimeStampedModel):
         related_name='subjects',
         on_delete=models.DO_NOTHING, verbose_name='département'
     )
-    semester = models.ForeignKey(
-        Semester,
-        related_name='subjects',
-        on_delete=models.CASCADE, verbose_name='semestre'
-    )
     subjects = models.ManyToManyField(Subject, blank=True, verbose_name='matières')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     def __str__(self):
-        return f'{self.department} - {self.semester}'
+        return f'{self.department}'
 
     def get_subjects(self):
         return " | ".join([str(sg) for sg in self.subjects.all()])
 
     class Meta:
-        unique_together = ['department', 'semester']
+        unique_together = ['department']

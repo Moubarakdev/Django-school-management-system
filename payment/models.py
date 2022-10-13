@@ -4,7 +4,7 @@ from django.db import models
 from django.urls import reverse
 from model_utils.models import TimeStampedModel
 
-from academic.models import Department, Semester, AcademicSession, Batch, AcademicTerm
+from academic.models import Department, AcademicSession, AcademicTerm
 from myschool import settings
 from student.models import Student
 
@@ -14,7 +14,6 @@ class Invoice(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="Étudiant")
     session = models.ForeignKey(AcademicSession, on_delete=models.CASCADE, verbose_name="Année académique")
     term = models.ForeignKey(AcademicTerm, on_delete=models.CASCADE, verbose_name="Période")
-    semesters = models.ManyToManyField(Semester, null=True, blank=False, related_name='semesters', verbose_name="Semestres")
     balance_from_previous_term = models.IntegerField(default=0)
     status = models.CharField(
         max_length=20,

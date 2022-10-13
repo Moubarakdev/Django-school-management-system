@@ -4,7 +4,7 @@ from model_utils.models import TimeStampedModel
 from django_countries.fields import CountryField
 from phonenumber_field.modelfields import PhoneNumberField
 
-from academic.models import Department, TempSerialID, Semester, AcademicSession, Batch
+from academic.models import Department, TempSerialID, AcademicSession
 from myschool import settings
 from teacher.models import Teacher
 
@@ -174,15 +174,9 @@ class Student(TimeStampedModel):
                                            verbose_name="Numéro d'enregistrement")
     temp_serial = models.CharField(max_length=50, blank=True, null=True, verbose_name="Numéro de série")
     temporary_id = models.CharField(max_length=50, blank=True, null=True, verbose_name="Id")
-    semester = models.ForeignKey(
-        Semester, on_delete=models.CASCADE, verbose_name="Semestre")
     ac_session = models.ForeignKey(
         AcademicSession, on_delete=models.CASCADE,
         blank=True, null=True, verbose_name="Session académique"
-    )
-    batch = models.ForeignKey(
-        Batch, on_delete=models.CASCADE,
-        blank=True, null=True, related_name='students', verbose_name="Promotion"
     )
     guardian_mobile = models.CharField(max_length=11, blank=True, null=True,
                                        verbose_name="Numéro de personne à prévenir")
@@ -202,14 +196,14 @@ class Student(TimeStampedModel):
     alumnus = AlumniManager()
 
     class Meta:
-        ordering = ['semester', 'roll', 'registration_number']
+        ordering = ['roll', 'registration_number']
 
     def __str__(self):
         return '{} ({}) {} dept.{}'.format(
             self.admission_student.last_name,
             self.admission_student.first_name,
-            self.semester,
-            self.admission_student.choosen_department
+            self.admission_student.choosen_department.level,
+            self.admission_student.choosen_department,
         )
 
     def _find_last_admitted_student_serial(self):
@@ -232,18 +226,19 @@ class Student(TimeStampedModel):
         # Get current year (academic) last two digit
         year_digits = str(self.ac_session.year)[-2:]
         # Get batch of student's department
-        batch_digits = self.batch.number
+        # batch_digits = self.batch.number
         # Get department code
         department_code = self.admission_student.choosen_department.code
         # Get admission serial of student by department
         temp_serial_key = self.temp_serial
         # return something like: 21-15-666-15
-        temp_id = f'{year_digits}-{batch_digits}-' \
+        temp_id = f'{year_digits}-' \
                   f'{department_code}-{temp_serial_key}'
         return temp_id
 
     def save(self, *args, **kwargs):
         # Check if chosen_dept == batch.dept is same or not.
+        '''
         if self.admission_student.choosen_department != self.batch.department:
             raise OperationalError(
                 f'Cannot assign {self.admission_student.choosen_department} '
@@ -252,7 +247,7 @@ class Student(TimeStampedModel):
             # Set AdmissionStudent assigned_as_student=True
             self.admission_student.assigned_as_student = True
             self.admission_student.save()
-
+        '''
         # Create temporary id for student id if temporary_id is not set yet.
         if not self.temp_serial or not self.temporary_id:
             last_temp_id = self._find_last_admitted_student_serial()
@@ -287,8 +282,6 @@ class RegularStudent(TimeStampedModel):
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE
     )
-    semester = models.ForeignKey(
-        Semester, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f"{self.student.name} {self.semester}"
+        return f"{self.student.name} {self.student.admission_student.choosen_department.level}"

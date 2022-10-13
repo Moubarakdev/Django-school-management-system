@@ -30,9 +30,6 @@
                             {{ subject_group_filter.form.department|as_crispy_field }}
                         </div>
                         <div class="col">
-                            {{ subject_group_filter.form.semester|as_crispy_field }}
-                        </div>
-                        <div class="col">
                             <div class="form-group">
                                 <div class="">
                                     <input type="submit" value="Filter" class="btn btn-primary">
@@ -80,7 +77,7 @@
                                 <tbody>
                                 {% for subject_group in subject_group_filter.qs %}
 
-                                <input type="hidden" name="semester" value="{{ subject_group.semester.pk }}">
+                                <input type="hidden" name="department" value="{{ subject_group.department.pk }}">
 
                                 {% for subject in subject_group.subjects.all %}
                                 <tr>
@@ -145,7 +142,7 @@
                                     <p class="card-text">
                                         <b>Nom : </b> <span id="studentName"></span> <br>
                                         <b>Prénom : </b> <span id="studentFirstName"></span><br>
-                                        <b>Promotion : </b> <span id="studentBatch"></span>
+                                        <b>Département : </b> <span id="studentDepartment"></span>
                                     </p>
                                 </div>
                             </div>
@@ -177,7 +174,6 @@
             const studentCardImage = document.getElementById('studentImg');
             const studentCardName = document.getElementById('studentName');
             const studentCardFirstName = document.getElementById('studentFirstName');
-            const studentCardBatch = document.getElementById('studentBatch');
 
             const studentId = document.getElementById('student_id').value;
 
@@ -197,7 +193,6 @@
                     studentCardImage.src = student.image_url;
                     studentCardName.innerHTML = student.student_name;
                     studentCardFirstName.innerHTML = student.student_first_name;
-                    studentCardBatch.innerHTML = student.student_batch;
                 },
                 error: function(error) {
                     prevCard.classList.add('d-none');

@@ -1,7 +1,7 @@
 from django import forms
 from django.forms import ModelForm, modelformset_factory
 
-from .models import Department, Semester, AcademicSession, Subject, Batch, SiteConfig, AcademicTerm
+from .models import Department, AcademicSession, Subject, SiteConfig, AcademicTerm
 
 SiteConfigForm = modelformset_factory(
     SiteConfig,
@@ -20,11 +20,13 @@ class DepartmentForm(ModelForm):
         exclude = ['created_by', 'created_at', 'updated_at']
 
 
+'''
 class SemesterForm(ModelForm):
     class Meta:
         model = Semester
         fields = '__all__'
         exclude = ['created_by', 'created_at', 'updated_at']
+'''
 
 
 class AcademicSessionForm(ModelForm):
@@ -60,8 +62,10 @@ class SubjectForm(ModelForm):
         exclude = ['created_by', 'created_at', 'updated_at']
 
 
+'''
 class BatchForm(ModelForm):
     class Meta:
         model = Batch
         fields = '__all__'
         exclude = ['created_by', 'created_at', 'updated_at']
+'''

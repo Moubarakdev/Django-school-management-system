@@ -12,7 +12,6 @@
                     <th scope="col">Numéro d'enregistrement</th>
                     <th scope="col">Name</th>
                     <th scope="col">Département</th>
-                    <th scope="col">Semestre</th>
                     <th scope="col">Action</th>
                 </tr>
                 </thead>
@@ -35,10 +34,6 @@
                     <td>
                         <a href="{% url 'students:student_details' pk=student.id %}">
                             {{ student.department.name }} </a>
-                    </td>
-                    <td>
-                        <a href="{% url 'students:student_details' pk=student.id %}">
-                            {{ student.semester }} </a>
                     </td>
                     <td>
                         <div class="btn-group" role="group" aria-label="Basic example">

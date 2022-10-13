@@ -47,21 +47,12 @@
                                 <select id="dept" class="form-control" name="department_code">
                                     <option selected>Choisir...</option>
                                     {% for dept in departments %}
-                                    <option value="{{ dept.code }}">{{ dept.name }}</option>
+                                    <option value="{{ dept.code }}">{{ dept }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group col-md-3">
-                                <label for="batch">Promotion/Lot</label>
-                                <select id="batch" class="form-control" name="batch_id">
-                                    <option selected id="default-chosen-batch">Choisir...</option>
-                                    {% for batch in batches %}
-                                    <option value="{{ batch.id }}">{{ batch }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="form-group col-md-3">
-                                <label for="batch">Session</label>
+                                <label for="session">Session</label>
                                 <select id="session" class="form-control" name="session_id">
                                     <option selected id="default-chosen-session">Choisir...</option>
                                     {% for session in sessions %}
@@ -110,7 +101,6 @@
                                                 <th scope="col">Prénom</th>
                                                 <th scope="col">Département</th>
                                                 <th scope="col">Promotion</th>
-                                                <th scope="col">Semestre</th>
                                                 <td scope="col">Action</td>
                                             </tr>
                                             </thead>
@@ -126,8 +116,6 @@
                                                 <td>{{ student.last_name }}</td>
                                                 <td>{{ student.first_name }}</td>
                                                 <td>{{ student.choosen_department }}</td>
-                                                <td> {{ student.batch }}</td>
-                                                <td> {{ student.semester }}</td>
                                                 <td>
                                                     --
                                                 </td>
@@ -143,8 +131,6 @@
                                                 <td>{{ student.admission_student.last_name }}</td>
                                                 <td>{{ student.admission_student.first_name }}</td>
                                                 <td>{{ student.admission_student.choosen_department }}</td>
-                                                <td> {{ student.batch }}</td>
-                                                <td> {{ student.semester }}</td>
                                                 <td>
                                                     --
                                                 </td>
@@ -171,8 +157,6 @@
 <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
 <script>
         const departmentDropdown = document.getElementById('dept');
-        let batchesDropdown = document.getElementById('batch');
-        const defaultChosenBatch = document.getElementById('default-chosen-batch');
 
         const actionToggler = document.getElementById('toggle-action');
         const actionChecks = document.querySelectorAll('check-mark');
@@ -180,28 +164,9 @@
         departmentDropdown.addEventListener('change', event => {
             const deptCode = parseInt(event.target.value);
 
-            batchesDropdown.length = 0;
-            batchesDropdown.appendChild(defaultChosenBatch);
-
             // Used to get host name
             let uri = window.location.origin;
 
-            $.ajax({
-                type: 'GET',
-                url: `${uri}/dashboard/students/api/batches/${deptCode}/`,
-                success: function (response) {
-                    const batches = response.data;
-                    batches.forEach(batch => {
-                        let option = document.createElement('option');
-                        option.value = batch.id;
-                        option.innerText = batch.number;
-                        batchesDropdown.appendChild(option);
-                    });
-                },
-                error: function (error) {
-                    console.log(error);
-                }
-            });
         });
 
         $('#toggle-check').click(function () {
@@ -211,13 +176,6 @@
         $('#toggle-uncheck').click(function () {
             $('input:checkbox').removeAttr('checked');
         })
-        
-
-
-
-
-
-
 
 </script>
 {% endblock %}

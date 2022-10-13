@@ -18,7 +18,6 @@ class AdmissionStudentAdmin(admin.ModelAdmin):
 class StudentAdmin(admin.ModelAdmin):
     list_display = ('admission_student',
                     'ac_session',
-                    'batch',
                     'temp_serial',
                     'temporary_id')
 
