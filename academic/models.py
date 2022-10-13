@@ -27,9 +27,9 @@ class Department(TimeStampedModel):
         ('m1', 'M1'),
         ('m2', 'M2'),
     )
-    name = models.CharField(max_length=255, unique=True, verbose_name='Nom de département')
-    code = models.PositiveIntegerField(verbose_name="Code department ")
-    description = models.TextField(help_text='Ecriver une simple description a propos du département', blank=True,
+    name = models.CharField(max_length=255, unique=True, verbose_name='Nom de la filière')
+    code = models.PositiveIntegerField(verbose_name="Code filière ")
+    description = models.TextField(help_text='Ecriver une simple description a propos de la filière', blank=True,
                                    null=True, verbose_name='Description')
     level = models.CharField(max_length=3, choices=LEVEL_CHOICES, default='LP1', verbose_name="Niveau")
     establish_date = models.DateField(auto_now_add=True, verbose_name='Date de création')
@@ -37,15 +37,15 @@ class Department(TimeStampedModel):
                                    null=True, verbose_name="Créateur")
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
-    fee = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Frais de scolarité", default=0)
-
+    fee = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Frais de scolarité")
+    is_active = models.BooleanField(verbose_name="Actif", default="True")
     '''
     current_batch = models.ForeignKey('Batch', on_delete=models.CASCADE, blank=True, null=True,related_name='current_batches',verbose_name='Promotion actuelle')
     batches = models.ManyToManyField('Batch', related_name='department_batches', blank=True, verbose_name="Promotions")
     '''
 
     class Meta:
-        verbose_name_plural = 'Promotions'
+        verbose_name_plural = 'Filières'
         unique_together = ['name', 'code', 'level']
 
     def __str__(self):

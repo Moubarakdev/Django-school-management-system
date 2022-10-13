@@ -136,8 +136,8 @@ def admission_confirmation(request):
         paid=True,
         rejected=False,
         assigned_as_student=False)
-    departments = Department.objects.order_by('name')
-    sessions = AcademicSession.objects.all()
+    departments = Department.objects.filter(is_active=True).order_by('name')
+    sessions = AcademicSession.objects.filter(current=True)
     ctx = {
         'selected_registrants': selected_registrants,
         'departments': departments,

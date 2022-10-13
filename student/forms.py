@@ -28,7 +28,7 @@ class StudentForm(forms.ModelForm):
             'mobile_number',
             'guardian_mobile_number',
             'email',
-            'choosen_department',
+            'department_choice',
             'bac_passing_year',
             'last_exam_name',
             'photo',

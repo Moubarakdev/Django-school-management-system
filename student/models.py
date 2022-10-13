@@ -50,7 +50,7 @@ class StudentBase(TimeStampedModel):
     mobile_number = PhoneNumberField('Numéro de téléphone')
     guardian_mobile_number = PhoneNumberField('Numéro Personne à prévenir')
 
-    choosen_department = models.ForeignKey(
+    department_choice = models.ForeignKey(
         Department,
         on_delete=models.CASCADE, verbose_name="Choix du département"
     )
@@ -157,8 +157,8 @@ class AdmissionStudent(StudentBase):
         return f"{self.last_name}"
 
     def save(self, *args, **kwargs):
-        if self.choosen_department != self.choosen_department:
-            status = f'From {self.choosen_department} to {self.choosen_department}'
+        if self.department_choice != self.choosen_department:
+            status = f'From {self.department_choice} to {self.choosen_department}'
             self.migration_status = status
             super().save(*args, **kwargs)
         super().save(*args, **kwargs)
@@ -167,7 +167,7 @@ class AdmissionStudent(StudentBase):
 class Student(TimeStampedModel):
     admission_student = models.ForeignKey(
         AdmissionStudent,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE, unique_for_year=True
     )
     roll = models.CharField(max_length=6, unique=True, blank=True, null=True)
     registration_number = models.CharField(max_length=6, unique=True, blank=True, null=True,
@@ -238,16 +238,15 @@ class Student(TimeStampedModel):
 
     def save(self, *args, **kwargs):
         # Check if chosen_dept == batch.dept is same or not.
-        '''
-        if self.admission_student.choosen_department != self.batch.department:
+        if not self.admission_student.choosen_department.is_active:
             raise OperationalError(
-                f'Cannot assign {self.admission_student.choosen_department} '
-                f'departments student to {self.batch.department} department.')
-        elif self.admission_student.choosen_department == self.batch.department:
+                f'Impossible d\'assigner la filière {self.admission_student.choosen_department} '
+                f'à l\'étudiant, vérifier si la filière est active')
+        elif self.admission_student.choosen_department.is_active:
             # Set AdmissionStudent assigned_as_student=True
             self.admission_student.assigned_as_student = True
             self.admission_student.save()
-        '''
+
         # Create temporary id for student id if temporary_id is not set yet.
         if not self.temp_serial or not self.temporary_id:
             last_temp_id = self._find_last_admitted_student_serial()

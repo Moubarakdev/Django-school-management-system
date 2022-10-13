@@ -18,19 +18,19 @@
       <div class="row py-4">
           <div class="text-center col-sm-12 col-md-12">
               <h2 style="text-transform: uppercase;">Admission Report for {{ report_month }} {{ date.year }}</h2>
-              <h4>Report Verified By: {{ request.user.get_full_name }}</h4>
+              <h4>Report Verified By: {{ request.user.lastname }}</h4>
               <h4>Date: {{ date|date:"d/m/Y" }}</h4>
           </div>
           <div class="col-sm-12 col-md-12 mt-3">
               <!-- Applications -->
               <div class="mb-5">
-                  <p class="bg-info text-light pl-4 py-1 mb-0">Total Application</p>
+                  <p class="bg-info text-light pl-4 py-1 mb-0">Total Inscriptions</p>
                   <table class="table table-striped">
                       <thead>
                           <tr>
                               <th scope="col">TOTAL</th>
-                              <th scope="col">Online</th>
-                              <th scope="col">On-visit/Call</th>
+                              <th scope="col">En ligne</th>
+                              <th scope="col">Hors-ligne/Par appel</th>
                           </tr>
                       </thead>
                       <tbody>
@@ -45,13 +45,13 @@
 
               <!-- Admissions -->
               <div class="mb-5">
-                  <p class="bg-info text-light pl-4 py-1 mb-0">Total Admission</p>
+                  <p class="bg-info text-light pl-4 py-1 mb-0">Total Admissions</p>
                   <table class="table table-striped">
                       <thead>
                           <tr>
                               <th scope="col">TOTAL</th>
-                              <th scope="col">Online</th>
-                              <th scope="col">On-visit/Call</th>
+                              <th scope="col">En ligne</th>
+                              <th scope="col">Hors-ligne/Par appel</th>
                           </tr>
                       </thead>
                       <tbody>
@@ -66,16 +66,16 @@
 
               <!-- By Department -->
               <div class="mb-5">
-                  <p class="bg-info text-light pl-4 py-1 mb-0">Admission/Migration/NA By Department</p>
+                  <p class="bg-info text-light pl-4 py-1 mb-0">Admission/Migration/NA Par Filière</p>
                   <table class="table table-striped">
                       <thead>
                           <tr>
-                              <th scope="col">Department</th>
-                              <th scope="col">Applications</th>
+                              <th scope="col">Filières</th>
+                              <th scope="col">Demandes d'inscriptions</th>
                               <th scope="col">Admission</th>
                               <th scope="col">Migrated From</th>
                               <th scope="col">Migrated To</th>
-                              <th scope="col">Missed</th>
+                              <th scope="col">Rejetés</th>
                           </tr>
                       </thead>
                       <tbody>

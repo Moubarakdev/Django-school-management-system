@@ -94,7 +94,7 @@ class Result(TimeStampedModel):
             if self.average < self.extra_marks:
                 self.average = self.extra_marks
 
-        if self.average > 10:
+        if self.average >= 10:
             self.validated = True
         else:
             self.validated = False

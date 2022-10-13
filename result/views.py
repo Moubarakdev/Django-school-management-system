@@ -59,8 +59,9 @@ def find_student(request, student_id):
     ctx = {
         'student_name': student.admission_student.last_name,
         'student_first_name': student.admission_student.first_name,
-        'student_department': student.admission_student.choosen_department,
-        'image_url': student.admission_student.photo.url
+        'student_department': student.admission_student.choosen_department.name,
+        'image_url': student.admission_student.photo.url,
+        'student_level': student.admission_student.choosen_department.level,
     }
     return JsonResponse({'data': ctx})
 
@@ -190,7 +191,7 @@ class UpdateResultView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Result
     form_class = ResultForm
     template_name = 'result/result_form.html'
-    success_url = reverse_lazy('result:result_filter')
+    success_url = reverse_lazy('result:index')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -211,7 +212,7 @@ class DeleteResultView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Result
     form_class = ResultForm
     template_name = 'result/result_form.html'
-    success_url = reverse_lazy('result:result_filter')
+    success_url = reverse_lazy('result:index')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()

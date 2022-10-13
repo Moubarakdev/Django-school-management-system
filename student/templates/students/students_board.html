@@ -234,7 +234,7 @@
         <div class="col-md-12">
             <div class="dashboard-section-title mb-3">
                 <div class="title-v-line"></div>
-                <h4>Monthly Report <span class="color-2">Analysis</span></h4>
+                <h4><span class="text-warning">Analyse</span> du rapport mensuel</h4>
             </div>
         </div>
 
@@ -256,7 +256,6 @@
                                 <a
                                         href="{% url 'dashboard:student:counsel_monthly_report' %}"
                                         target="_blank"
-                                        class="text-light"
                                 >
                                     <i class="fas fa-external-link-alt"></i>
                                 </a>
@@ -268,13 +267,12 @@
                                 >
                                     <input type="hidden" name="download" value="yes"/>
                                     <button type="submit" class="btn p-0">
-                                        <i class="fas fa-cloud-download-alt text-light"></i>
+                                        <i class="fas fa-cloud-download-alt"></i>
                                     </button>
                                 </form>
                             </div>
                             <div class="card-actions-action">
                                 <a
-                                        class="text-light"
                                         href="{% url 'dashboard:student:counsel_monthly_report_typed' response_type='pdf' %}"
                                         target="_blank"
                                 >
@@ -322,13 +320,13 @@
                 <div class="col-sm-12 col-md-12 m-0 p-0" id="monthly-report-table">
                     <!-- Applications -->
                     <div class="">
-                        <p class="bg-info text-light pl-4 py-1 mb-0">Total Application</p>
+                        <p class="bg-info text-light pl-4 py-1 mb-0">Total Demandes d'inscription</p>
                         <table class="table table-striped table-bordered">
                             <thead>
                             <tr>
                                 <th scope="col">TOTAL</th>
-                                <th scope="col">Online</th>
-                                <th scope="col">On-visit/Call</th>
+                                <th scope="col">En ligne</th>
+                                <th scope="col">Hors-ligne/Par appel</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -343,13 +341,13 @@
 
                     <!-- Admissions -->
                     <div class="">
-                        <p class="bg-info text-light pl-4 py-1 mb-0">Total Admission</p>
+                        <p class="bg-info text-light pl-4 py-1 mb-0">Total Admissions</p>
                         <table class="table table-striped table-bordered">
                             <thead>
                             <tr>
                                 <th scope="col">TOTAL</th>
-                                <th scope="col">Online</th>
-                                <th scope="col">On-visit/Call</th>
+                                <th scope="col">En ligne</th>
+                                <th scope="col">Hors-ligne/Par appel</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -365,17 +363,17 @@
                     <!-- By Department -->
                     <div class="">
                         <p class="bg-info text-light pl-4 py-1 mb-0">
-                            Admission/Migration/NA By Department
+                            Admission/Migration/NA Par Filière
                         </p>
                         <table class="table table-striped table-bordered">
                             <thead>
                             <tr>
-                                <th scope="col">Department</th>
-                                <th scope="col">Applications</th>
-                                <th scope="col">Admission</th>
+                                <th scope="col">Filières</th>
+                                <th scope="col">Demandes</th>
+                                <th scope="col">Admissions</th>
                                 <th scope="col">Migrated From</th>
                                 <th scope="col">Migrated To</th>
-                                <th scope="col">Missed</th>
+                                <th scope="col">Rejetées</th>
                             </tr>
                             </thead>
                             <tbody id="departmental_report_tbody">
@@ -446,11 +444,7 @@
     const dept_report_tbody_elem = document.getElementById(
       "departmental_report_tbody"
     );
-    {% comment%}
-    const cities_report_tbody_elem = document.getElementById(
-      "cities_report_tbody"
-    );
-    {% endcomment%}
+
 
     // Update UI From Data Records
     reporting_month_elem.innerHTML = record.report_month;
@@ -603,11 +597,11 @@
           },
         ],
         labels: [
-          "Online Application",
-          "Offline Application",
-          "Admitted",
-          "Pending",
-          "Rejected",
+          "Demandes En ligne",
+          "Demandes Hors-ligne",
+          "Acceptées",
+          "En attente",
+          "Rejetées",
         ],
       },
       options: {
@@ -687,13 +681,13 @@
     const departmentsBarChartData = {
       labels: dept_names_array,
       datasets: [{
-        label: 'Applications',
+        label: 'Demandes',
         backgroundColor: color('#F70000').alpha(0.5).rgbString(),
         borderColor: '#F70000',
         borderWidth: 1,
         data: applications_arr
       }, {
-        label: 'Admitted',
+        label: 'Acceptées',
         backgroundColor: color("#006eff").alpha(0.5).rgbString(),
         borderColor: "#006eff",
         borderWidth: 1,
@@ -743,7 +737,7 @@
     monthlyReportByDepartmentsBarChartAPICall(url);
   });
 
-  // Event on Select monthly report month from monthly report bar chart by deartments
+  // Event on Select monthly report month from monthly report bar chart by departments
   function monthlyReportByDepartmentsBarChartByMonth(yearMonth) {
     const dateOptionValue = yearMonth.split("-");
     const optionMonth = dateOptionValue[0];
@@ -803,10 +797,10 @@
     const config = {
       type: 'line',
       data: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July',
-          'August', 'September', 'October', 'November', 'December'],
+        labels: ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet',
+          'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'],
         datasets: [{
-          label: 'Applications',
+          label: 'Demandes',
           data: application_data_arr,
           backgroundColor: "#0000F7",
           borderColor: "#0000F7",
@@ -823,14 +817,14 @@
           borderDash: [5, 5],
           pointRadius: [2, 4, 6, 18, 0, 12, 20],
         }, {
-          label: 'Pendings',
+          label: 'EnAttente',
           data: pending_data_arr,
           backgroundColor: "#F76300",
           borderColor: "#F76300",
           fill: false,
           pointHoverRadius: 30,
         }, {
-          label: 'Rejections',
+          label: 'Rejetées',
           data: rejection_data_arr,
           backgroundColor: "#F70000",
           borderColor: "#F70000",
@@ -858,20 +852,20 @@
             display: true,
             scaleLabel: {
               display: true,
-              labelString: 'Month'
+              labelString: 'Mois'
             }
           }],
           yAxes: [{
             display: true,
             scaleLabel: {
               display: true,
-              labelString: 'Value'
+              labelString: 'Valeur'
             }
           }]
         },
         title: {
           display: true,
-          text: 'Last 12 Months Counsel Chart'
+          text: 'Statistique des 12 derniers mois'
         }
       }
     };

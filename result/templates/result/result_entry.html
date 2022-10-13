@@ -142,7 +142,8 @@
                                     <p class="card-text">
                                         <b>Nom : </b> <span id="studentName"></span> <br>
                                         <b>Prénom : </b> <span id="studentFirstName"></span><br>
-                                        <b>Département : </b> <span id="studentDepartment"></span>
+                                        <b>Filière : </b> <span id="studentDepartment"></span><br>
+                                        <b>Niveau : </b> <span id="studentLevel"></span>
                                     </p>
                                 </div>
                             </div>
@@ -174,6 +175,8 @@
             const studentCardImage = document.getElementById('studentImg');
             const studentCardName = document.getElementById('studentName');
             const studentCardFirstName = document.getElementById('studentFirstName');
+            const studentCardLevel = document.getElementById('studentLevel');
+            const studentCardDepartment = document.getElementById('studentDepartment');
 
             const studentId = document.getElementById('student_id').value;
 
@@ -193,6 +196,8 @@
                     studentCardImage.src = student.image_url;
                     studentCardName.innerHTML = student.student_name;
                     studentCardFirstName.innerHTML = student.student_first_name;
+                    studentCardDepartment.innerHTML = student.student_department;
+                    studentCardLevel.innerHTML = student.student_level.toUpperCase();
                 },
                 error: function(error) {
                     prevCard.classList.add('d-none');
