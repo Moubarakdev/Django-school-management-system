@@ -110,6 +110,8 @@ TEMPLATES = [
 WSGI_APPLICATION = 'myschool.wsgi.application'
 
 AUTH_USER_MODEL = 'account.USER'
+AUTHENTICATION_BACKENDS = ['account.backends.EmailBackend']
+
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = ''  # Route defined in dashboard/urls.py
 LOGOUT_REDIRECT_URL = 'home:home'  # Route defined in home/urls.py

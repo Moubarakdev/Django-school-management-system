@@ -205,8 +205,6 @@
                                 {% if not profile_not_found %}
                                 {{ profile_edit_form|crispy }}
                                 <hr>
-                                <div class="card-header bg-light">Social Links</div>
-                                {{ social_links_form|crispy }}
                                 {% else %}
                                 <div class="alert alert-warning" role="alert">
                                     {{ profile_not_found }}

@@ -20,7 +20,7 @@ class ResultFilter(django_filters.FilterSet):
 
     def __init__(self, *args, **kwargs):
         super(ResultFilter, self).__init__(*args, **kwargs)
-        self.filters['student__admission_student__choosen_department'].label = 'Département'
+        self.filters['student__admission_student__choosen_department'].label = 'Filière'
 
 
 class SubjectGroupFilter(django_filters.FilterSet):

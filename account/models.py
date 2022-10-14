@@ -46,7 +46,6 @@ class User(AbstractUser):
     approval_extra_note = models.TextField(
         blank=True, null=True, verbose_name='message'
     )
-    address = models.TextField(blank=True, null=True, verbose_name='Adresse')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
@@ -74,22 +73,6 @@ class CustomGroup(Group):
         return f'{self.name} created by {self.group_creator}'
 
 
-class SocialLink(models.Model):
-    user_profile = models.ForeignKey(
-        'CommonUserProfile',
-        on_delete=models.CASCADE
-    )
-    media_name = models.CharField(
-        max_length=50, verbose_name='Nom'
-    )
-    url = models.URLField()
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
-
-    def __str__(self):
-        return self.media_name
-
-
 class CommonUserProfile(models.Model):
     user = models.OneToOneField(
         User,
@@ -110,18 +93,7 @@ class CommonUserProfile(models.Model):
         null=True,
         verbose_name="Photo de couverture"
     )
-    headline = models.CharField(
-        max_length=255,
-        blank=True,
-        null=True,
-        verbose_name="Titre"
-    )
-
-    show_headline_in_bio = models.BooleanField(
-        help_text='je veux utilisé ceci comme ma bio',
-        default=False,
-        verbose_name="Titre comme bio"
-    )
+    address = models.TextField(blank=True, null=True, verbose_name='Adresse')
     summary = RichTextUploadingField(
         help_text='un petit résumé de votre profil',
         blank=True,
@@ -132,11 +104,6 @@ class CommonUserProfile(models.Model):
         blank=True,
         null=True,
         verbose_name="Pays"
-    )
-    social_links = models.ManyToManyField(
-        SocialLink,
-        related_name='social_links',
-        blank=True, verbose_name='Réseau social'
     )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
     updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")

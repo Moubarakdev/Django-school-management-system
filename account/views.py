@@ -11,7 +11,7 @@ from django.views.generic import ListView, UpdateView, CreateView
 from rolepermissions.roles import assign_role
 from verify_email.email_handler import send_verification_email
 
-from account.forms import CommonUserProfileForm, UserProfileSocialLinksFormSet, ProfileCompleteForm, LoginForm, \
+from account.forms import CommonUserProfileForm, ProfileCompleteForm, LoginForm, \
     UserRegistrationForm, ApprovalProfileUpdateForm, UserChangeFormDashboard, UpdateUserForm
 from account.models import User, CustomGroup
 from permission_handlers.administrative import user_is_admin_or_su
@@ -37,7 +37,7 @@ def login_view(request):
                 messages.add_message(
                     request,
                     messages.ERROR,
-                    'nom d\'utilisateur ou mot de passe incorrect'
+                    'Email ou mot de passe incorrect'
                 )
         else:
             messages.add_message(
@@ -65,7 +65,6 @@ def register(request):
                 username=username,
                 password=raw_password,
                 email=email,
-                address=address
             )
 
             if auth_user is not None:
@@ -104,12 +103,9 @@ def profile_complete(request):
         profile_edit_form = CommonUserProfileForm(
             instance=user.profile
         )
-        social_links_form = UserProfileSocialLinksFormSet(
-            instance=user.profile
-        )
+
         ctx.update({
             'profile_edit_form': profile_edit_form,
-            'social_links_form': social_links_form,
         })
     except:
         messages.add_message(
@@ -132,15 +128,9 @@ def profile_complete(request):
                 request.FILES,
                 instance=user.profile
             )
-            social_links_form = UserProfileSocialLinksFormSet(
-                request.POST,
-                instance=user.profile
-            )
+
             if profile_edit_form.is_valid():
                 profile_edit_form.save()
-
-            if social_links_form.is_valid():
-                social_links_form.save()
 
             if user_form.is_valid():
                 user_form.save()

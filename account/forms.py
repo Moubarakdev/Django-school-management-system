@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model, forms
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
-from .models import CommonUserProfile, SocialLink
+from .models import CommonUserProfile
 
 User = get_user_model()
 
@@ -80,14 +80,6 @@ class UserRegistrationForm(forms.UserCreationForm):
                 "class": "form-control"
             }
         ))
-    address = djform.CharField(
-        widget=djform.TextInput(
-            attrs={
-                "placeholder": "Adresse",
-                "class": "form-control"
-            }
-        )
-    )
     password1 = djform.CharField(
         widget=djform.PasswordInput(
             attrs={
@@ -105,7 +97,7 @@ class UserRegistrationForm(forms.UserCreationForm):
 
     class Meta:
         model = User
-        fields = ('last_name', 'first_name', 'username', 'email', 'address', 'password1', 'password2')
+        fields = ('last_name', 'first_name', 'username', 'email', 'password1', 'password2')
 
     '''
     def clean_username(self):
@@ -144,20 +136,11 @@ class ApprovalProfileUpdateForm(djform.ModelForm):
         fields = ['requested_role']
 
 
-UserProfileSocialLinksFormSet = inlineformset_factory(
-    CommonUserProfile, SocialLink,
-    fields=('media_name', 'url'),
-    extra=2,
-    max_num=2
-)
-
-
 class CommonUserProfileForm(djform.ModelForm):
     class Meta:
         model = CommonUserProfile
         fields = [
-            'headline',
-            'show_headline_in_bio',
+            'address',
             'country',
             'summary'
         ]
@@ -167,7 +150,7 @@ class LoginForm(djform.Form):
     username = djform.CharField(
         widget=djform.TextInput(
             attrs={
-                "placeholder": "Nom d'utilisateur",
+                "placeholder": "Nom d'utilisateur ou Email",
                 "class": "form-control"
             }
         ))
@@ -182,10 +165,10 @@ class LoginForm(djform.Form):
 
 class UpdateUserForm(djform.ModelForm):
     username = djform.CharField(max_length=100,
-                               required=True,
-                               widget=djform.TextInput(attrs={'class': 'form-control'}))
+                                required=True,
+                                widget=djform.TextInput(attrs={'class': 'form-control'}))
     email = djform.EmailField(required=True, disabled=True,
-                             widget=djform.TextInput(attrs={'class': 'form-control'}))
+                              widget=djform.TextInput(attrs={'class': 'form-control'}))
 
     class Meta:
         model = User
