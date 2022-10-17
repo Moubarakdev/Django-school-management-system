@@ -9,8 +9,6 @@
         <div class="col-sm-4">
             <h3>{{ object }} </h3>
             <h5>{{ object.session }} </h5>
-            <h5>{{ object.term }} </h5>
-            <h5>{% for semester in object.semesters.all %}{{ semester }} {% endfor %} </h5>
             <h6>Statut: {{ object.get_status_display }} </h6>
             <hr>
             <div>
@@ -37,16 +35,28 @@
                 {% endfor %}
                 </tbody>
                 <tfoot>
+                {% for item in items %}
                 <tr>
                     <td></td>
-                    <td>Montant total cette période</td>
-                    <td>{{ object.amount_payable | intcomma}}</td>
+                    <td>Solde de la première tranche</td>
+                    <td>{{ item.term1 | intcomma }}</td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td>Solde de la période précédente</td>
-                    <td>{{ object.balance_from_previous_term | intcomma }}</td>
+                    <td>Solde de la seconde tranche</td>
+                    <td>{{ item.term2 | intcomma }}</td>
                 </tr>
+                <tr>
+                    <td></td>
+                    <td>Solde de la troisième tranche</td>
+                    <td>{{ item.term3 | intcomma }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>Solde de la quatrième tranche</td>
+                    <td>{{ item.term4 | intcomma }}</td>
+                </tr>
+                {% endfor %}
                 <tr>
                     <td></td>
                     <td>Montant total a payer</td>
@@ -72,7 +82,7 @@
             <th>S/N</th>
             <th>Le montant payé</th>
             <th>Date de paiement</th>
-            <th>Commentaire </th>
+            <th>Commentaire</th>
         </tr>
         </thead>
         <tbody>

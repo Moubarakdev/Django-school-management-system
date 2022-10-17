@@ -32,6 +32,7 @@
                             <thead>
                             <tr>
                                 <th>Année-Scolaire</th>
+                                <th>Status</th>
                                 <th class="text-right">Action</th>
                             </tr>
                             </thead>
@@ -39,6 +40,7 @@
                             {% for ac_session in ac_sessions%}
                             <tr>
                                 <td>{{ac_session.academic_year}}</td>
+                                <td>{{ac_session.current}}</td>
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="{% url 'dashboard:academic:update_ac_session' pk=ac_session.pk%}" class="btn btn-sm bg-success-light mr-2">

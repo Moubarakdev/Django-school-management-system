@@ -150,7 +150,6 @@ def admission_confirmation(request):
         # If confirmation processes is followed by checkmarks,
         # then we confirm admission for only selected candidates.
         checked_registrant_ids = request.POST.getlist('registrant_choice')
-
         try:
             to_be_admitted = selected_registrants.filter(
                 choosen_department__code=int(dept_code)

@@ -11,14 +11,13 @@
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Départements</h3>
+                <h3 class="page-title">Filières</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
-                    <li class="breadcrumb-item active">Départements</li>
+                    <li class="breadcrumb-item active">Filières</li>
                 </ul>
             </div>
             <div class="col-auto text-right float-right ml-auto">
-                <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
                 <a href="{% url 'dashboard:academic:create_department'%}" class="btn btn-primary"><i
                         class="fas fa-plus"></i></a>
             </div>
@@ -33,10 +32,9 @@
                             <thead>
                             <tr>
                                 <th>Nom</th>
-                                <th>Code</th>
+                                <th>Niveau</th>
                                 <th>Description</th>
                                 <th>Date de création</th>
-                                <th>Créer par</th>
                                 <th class="text-right">Action</th>
                             </tr>
                             </thead>
@@ -44,10 +42,9 @@
                             {% for department in departments%}
                             <tr>
                                 <td>{{department.name}}</td>
-                                <td>{{department.code}}</td>
+                                <td>{{department.level|upper}}</td>
                                 <td>{{department.description}}</td>
                                 <td>{{department.establish_date}}</td>
-                                <td>{{department.created_by}}</td>
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="{% url 'dashboard:academic:update_department' pk=department.pk%}"

@@ -140,9 +140,9 @@ class CommonUserProfileForm(djform.ModelForm):
     class Meta:
         model = CommonUserProfile
         fields = [
-            'address',
             'country',
-            'summary'
+            'address',
+            'summary',
         ]
 
 

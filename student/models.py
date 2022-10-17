@@ -1,3 +1,5 @@
+import requests
+from django.contrib import messages
 from django.core.validators import FileExtensionValidator
 from django.db import models, IntegrityError, transaction, OperationalError
 from model_utils.models import TimeStampedModel
@@ -6,6 +8,7 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 from academic.models import Department, TempSerialID, AcademicSession
 from myschool import settings
+from payment.models import Invoice, InvoiceItem
 from teacher.models import Teacher
 
 
@@ -52,7 +55,7 @@ class StudentBase(TimeStampedModel):
 
     department_choice = models.ForeignKey(
         Department,
-        on_delete=models.CASCADE, verbose_name="Choix du département"
+        on_delete=models.CASCADE, verbose_name="Choix de la filière"
     )
 
     class Meta:
@@ -117,7 +120,7 @@ class AdmissionStudent(StudentBase):
     choosen_department = models.ForeignKey(
         Department, related_name='admission_students',
         on_delete=models.CASCADE,
-        blank=True, null=True, verbose_name="Département choisi"
+        blank=True, null=True, verbose_name="Filière choisie"
     )
     bac_passing_year = models.CharField(max_length=4, verbose_name="Année d'obtention du BAC")
     bac_marksheet = models.FileField(
@@ -190,6 +193,7 @@ class Student(TimeStampedModel):
         on_delete=models.DO_NOTHING, null=True)
     is_alumni = models.BooleanField(default=False, verbose_name="Ancien élève ?")
     is_dropped = models.BooleanField(default=False, verbose_name="A quitté l'école ?")
+    assign_payment = models.BooleanField(default=False)
 
     # Managers
     objects = StudentManager()
@@ -199,7 +203,7 @@ class Student(TimeStampedModel):
         ordering = ['roll', 'registration_number']
 
     def __str__(self):
-        return '{} ({}) {} dept.{}'.format(
+        return '{} ({}) {} filière.{}'.format(
             self.admission_student.last_name,
             self.admission_student.first_name,
             self.admission_student.choosen_department.level,
@@ -263,6 +267,25 @@ class Student(TimeStampedModel):
                         serial=current_temp_id
                     )
                     temp_serial_id.save()
+            except IntegrityError:
+                pass
+
+        if not self.assign_payment:
+            try:
+                with transaction.atomic():
+                    invoice = Invoice.objects.create(
+                        student=self,
+                        session=self.ac_session
+                    )
+                    invoiceItem = InvoiceItem.objects.create(
+                        invoice=invoice,
+                        description="Frais de scolarité",
+                        amount=self.admission_student.choosen_department.fee
+                    )
+                    invoice.save()
+                    invoiceItem.save()
+                self.assign_payment = True
+
             except IntegrityError:
                 pass
         super().save(*args, **kwargs)

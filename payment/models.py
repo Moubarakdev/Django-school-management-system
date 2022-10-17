@@ -1,20 +1,17 @@
 from datetime import timezone
 
-from django.db import models
+from django.db import models, transaction
 from django.urls import reverse
 from model_utils.models import TimeStampedModel
 
 from academic.models import Department, AcademicSession, AcademicTerm
 from myschool import settings
-from student.models import Student
 
 
 # Create your models here.
 class Invoice(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="Étudiant")
+    student = models.ForeignKey("student.Student", on_delete=models.CASCADE, verbose_name="Étudiant")
     session = models.ForeignKey(AcademicSession, on_delete=models.CASCADE, verbose_name="Année académique")
-    term = models.ForeignKey(AcademicTerm, on_delete=models.CASCADE, verbose_name="Période")
-    balance_from_previous_term = models.IntegerField(default=0)
     status = models.CharField(
         max_length=20,
         choices=[("active", "Active"), ("closed", "Closed")],
@@ -22,10 +19,13 @@ class Invoice(models.Model):
     )
 
     class Meta:
-        ordering = ["student", "term"]
+        ordering = ["student", "session"]
 
     def __str__(self):
         return f"{self.student}"
+
+    def total_amount_payable(self):
+        return self.amount_payable()
 
     def balance(self):
         payable = self.total_amount_payable()
@@ -38,9 +38,6 @@ class Invoice(models.Model):
         for item in items:
             total += item.amount
         return total
-
-    def total_amount_payable(self):
-        return self.balance_from_previous_term + self.amount_payable()
 
     def total_amount_paid(self):
         receipts = Receipt.objects.filter(invoice=self)
@@ -56,7 +53,19 @@ class Invoice(models.Model):
 class InvoiceItem(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     description = models.CharField(max_length=200)
-    amount = models.IntegerField()
+    amount = models.IntegerField(verbose_name="Montant")
+    term1 = models.IntegerField(verbose_name="Première tranche")
+    term2 = models.IntegerField(verbose_name="Deuxième tranche")
+    term3 = models.IntegerField(verbose_name="Troisième tranche")
+    term4 = models.IntegerField(verbose_name="Quatrième tranche")
+
+    def save(self, *args, **kwargs):
+        self.term1 = (self.amount * 30) / 100
+        self.term2 = (self.amount * 30) / 100
+        self.term3 = (self.amount * 20) / 100
+        self.term4 = (self.amount * 20) / 100
+
+        super().save(*args, **kwargs)
 
 
 class Receipt(models.Model):
@@ -68,17 +77,29 @@ class Receipt(models.Model):
     def __str__(self):
         return f"Receipt on {self.date_paid}"
 
+    def save(self, *args, **kwargs):
+        # TODO: update terms after a payment
+        item = InvoiceItem.objects.get(invoice=self.invoice)
+        #  Algo de gestion des tranches
+        if item.term1 >= self.amount_paid:
+            item.term1 -= self.amount_paid
+        elif item.term1 < self.amount_paid:
+            rest = self.amount_paid - item.term1
+            item.term1 = 0
+            if rest <= item.term2:
+                item.term2 -= rest
+            elif rest > item.term2:
+                rest2 = rest - item.term2
+                item.term2 = 0
+                if rest2 <= item.term3:
+                    item.term3 -= rest2
+                elif rest2 > item.term3:
+                    rest3 = rest2 - item.term3
+                    item.term3 = 0
+                    if rest3 <= item.term4:
+                        item.term4 -= rest3
+                    else:
+                        item.term4 = 0
 
-'''  
-def save(self, *args, **kwargs):
-      self.fee_to_pay = self.fees.fees_amount
-      super().save(*args, **kwargs)
-'''
-
-'''class Payment(TimeStampedModel):
-    student = models.ForeignKey(StudentFeesInfo, on_delete=models.DO_NOTHING, verbose_name="Etudiant")
-    payment_amount = models.DecimalField(
-        max_digits=8,
-        decimal_places=2
-    )
-    payement_date = models.DateTimeField(verbose_name="Date de paiement", auto_now_add=True)'''
+        item.save()
+        super().save(*args, **kwargs)

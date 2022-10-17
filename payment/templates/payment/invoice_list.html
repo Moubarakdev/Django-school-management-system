@@ -30,7 +30,7 @@
                             <tr>
                                 <th>S/N</th>
                                 <th>invoice</th>
-                                <th>Session-Tranche</th>
+                                <th>Session</th>
                                 <th>Total à payer</th>
                                 <th>Total payé</th>
                                 <th>Solde</th>
@@ -43,7 +43,7 @@
                             <tr class='clickable-row' data-href="{% url 'payment:invoice_detail' invoice.id %}">
                                 <td>{{ forloop.counter}}</td>
                                 <td><a href="{% url 'payment:invoice_detail' invoice.id %}">{{ invoice}}</a></td>
-                                <td>{{ invoice.session}}-{{ invoice.term}}</td>
+                                <td>{{ invoice.session}}</td>
                                 <td>{{ invoice.total_amount_payable | intcomma }}</td>
                                 <td>{{ invoice.total_amount_paid | intcomma }}</td>
                                 <td>{{ invoice.balance | intcomma }}</td>

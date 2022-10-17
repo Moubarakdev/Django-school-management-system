@@ -51,6 +51,10 @@ class Department(TimeStampedModel):
     def __str__(self):
         return f"{str(self.name)} - {str(self.level).upper()}"
 
+    def save(self, *args, **kwargs):
+        last_dept = Department.objects.last()
+        self.code = last_dept + 1
+
 
 class AcademicSession(TimeStampedModel):
     year = models.PositiveIntegerField(unique=True, verbose_name="Année")

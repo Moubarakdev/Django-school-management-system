@@ -24,9 +24,9 @@
                 <!-- Inputs -->
                 <div id="subjectGroupInputs">
                     <div class="form-inline">
-                        <label class="sr-only" for="department">Département</label>
+                        <label class="sr-only" for="department">Filière</label>
                         <select name="department" class="form-control mb-2 mr-sm-2" id="department">
-                            <option value="" selected disabled>Choisir un département</option>
+                            <option value="" selected disabled>Choisir une filière</option>
                             {% for dept in departments %}
                             <option value="{{ dept.pk }}">{{ dept }}</option>
                             {% endfor %}

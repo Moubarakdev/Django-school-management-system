@@ -21,6 +21,7 @@ class ResultFilter(django_filters.FilterSet):
     def __init__(self, *args, **kwargs):
         super(ResultFilter, self).__init__(*args, **kwargs)
         self.filters['student__admission_student__choosen_department'].label = 'Filière'
+        self.filters['subject'].label = 'Matière'
 
 
 class SubjectGroupFilter(django_filters.FilterSet):
