@@ -2,11 +2,13 @@ from datetime import datetime
 
 from django.urls import path, register_converter
 
+from student.forms import ApplicationForm1, ApplicationForm2, ApplicationForm3
 from student.views.report_views import yearly_graph_api, counsel_monthly_report
 from student.views.students_views import all_applicants, students_board, admitted_students_list, paid_registrants, \
     unpaid_registrants, rejected_registrants, admission_confirmation, admit_student, \
     mark_as_paid_or_unpaid, update_online_registrant, add_counseling_data, add_student_view, students_view, \
-    StudentDetailsView, StudentUpdateView, student_delete_view, students_by_department_view, AlumnusListView
+    StudentDetailsView, StudentUpdateView, student_delete_view, students_by_department_view, AlumnusListView, \
+    ApplicationWizard
 
 app_name = 'student'
 
@@ -70,4 +72,6 @@ urlpatterns = [
 
     path('<int:pk>/students/', students_by_department_view,
          name='students_by_dept'),
+    #
+    path('application/', ApplicationWizard.as_view([ApplicationForm1, ApplicationForm2, ApplicationForm3]), name="application"),
 ]

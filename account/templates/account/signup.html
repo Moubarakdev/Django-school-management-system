@@ -5,6 +5,11 @@
 
 {% block extra_header %}
 {% endblock %}
+
+{% block title %}
+Signup
+{% endblock %}
+
 {% block content %}
 
 <div class="main-wrapper login-body">
@@ -32,7 +37,7 @@
                             <h1>Créer un compte</h1>
                             <p class="account-subtitle"></p>
 
-                            <form action="" method="POST">
+                            <form action="" method="POST" autocomplete="off">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     {{user_form.last_name}}
@@ -58,22 +63,14 @@
                                     {{user_form.password2}}
                                 </div>
                                 <span class="text-error" style="color:red;">{{ user_form.password2.errors }}</span>
+                                <div class="form-group">
+                                    {{user_form.requested_role|as_crispy_field}}
+                                </div>
+                                <span class="text-error" style="color:red;">{{ user_form.requested_role.errors }}</span>
                                 <div class="form-group mb-0">
                                     <button class="btn btn-primary btn-block">créer le compte</button>
                                 </div>
                             </form>
-
-                            <div class="login-or">
-                                <span class="or-line"></span>
-                                <span class="span-or">ou</span>
-                            </div>
-
-                            <div class="social-login">
-                                <span>Se connecter avec</span>
-                                <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a><a href="#"
-                                                                                                     class="google"><i
-                                    class="fab fa-google"></i></a>
-                            </div>
 
                             <div class="text-center dont-have">Already have an account? <a
                                     href="{% url 'login' %}">Se connecter</a>

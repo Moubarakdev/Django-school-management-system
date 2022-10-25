@@ -1,16 +1,21 @@
+import os
 from collections import OrderedDict
 from datetime import datetime, timedelta, date
 
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
-from django.http import JsonResponse
+from django.core.files.storage import FileSystemStorage, DefaultStorage
+from django.forms.models import construct_instance
+from django.http import JsonResponse, request
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, UpdateView, ListView
+from formtools.wizard.views import SessionWizardView
 
 from academic.models import AcademicSession, Department
 from account.models import User
+from myschool import settings
 from payment.models import Invoice
 from permission_handlers.administrative import user_is_admin_su_or_ac_officer
 from permission_handlers.basic import user_is_verified
@@ -183,8 +188,11 @@ def admission_confirmation(request):
                     admission_student=candidate,
                     ac_session=session,
                     admitted_by=request.user,
-                    # student_account=student_account,
                 )
+                ac_user = User.objects.get(pk=student.admission_student.student_account.pk)
+                ac_user.approval_status = 'a'
+                ac_user.save()
+
                 students.append(student)
             except:
                 pass
@@ -207,6 +215,7 @@ def admit_student(request, pk):
             student.admitted = True
             student.paid = True
             student.admission_date = date.today()
+            student.save()
             # prévoir l'envoi de l'email de confirmation
             # send_admission_confirmation_email.delay(student.id)
             return redirect('dashboard:student:admitted_student_list')
@@ -410,3 +419,40 @@ class AlumnusListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         f = AlumniFilter(self.request.GET, queryset=alumnus)
         ctx['filter'] = f
         return ctx
+
+
+# APPLICATION
+class ApplicationWizard(LoginRequiredMixin, SessionWizardView):
+
+    def get_context_data(self, form, **kwargs):
+        context = super().get_context_data(form=form)
+        try:
+            student = AdmissionStudent.objects.get(student_account=self.request.user)
+        except:
+            student = None
+        if student:
+            if student.assigned_as_student:
+                ac_st = self.request.user
+                ac_st.approval_status = 'a'
+                ac_st.save()
+
+        print(student)
+        context['student'] = student
+        return context
+
+    template_name = 'applications/application_form.html'
+    file_storage = DefaultStorage()
+
+    def done(self, form_list, **kwargs):
+        form_data = {}
+        for form in form_list:
+            form_data.update(form.cleaned_data)
+
+        if self.request.user.is_authenticated:
+            form_data['student_account'] = self.request.user
+
+        AdmissionStudent.objects.create(**form_data)
+
+        return render(self.request, 'applications/done.html', {
+            'form_data': [form.cleaned_data for form in form_list],
+        })

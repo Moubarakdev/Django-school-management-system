@@ -12,7 +12,7 @@
             <div class="col">
                 <h3 class="page-title">Inscriptions payées</h3>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:student:students_board' %}">Dashboard</a></li>
                     <li class="breadcrumb-item active">Listes des inscriptions payées</li>
                 </ul>
             </div>
@@ -36,7 +36,7 @@
                                 <th scope="col">Nom</th>
                                 <th scope="col">Prénoms</th>
                                 <th scope="col">Adresse</th>
-                                <th scope="col">Departement</th>
+                                <th scope="col">Filière</th>
                                 <th scope="col">Date Admission</th>
                                 <th class="text-right">Actions</th>
                             </tr>
@@ -55,11 +55,11 @@
                                 <td>{{ applicant.created }}</td>
                                 <td>
                                     <a href="" class="btn btn-sm btn-primary">More</a>
-                                    <a href="{% url 'students:admit_student' pk=applicant.id %}"
+                                    <a href="{% url 'dashboard:student:admit_student' pk=applicant.id %}"
                                        class="btn btn-sm btn-success">
                                         Admission
                                     </a>
-                                    <a href="{% url 'students:update_online_registrant' pk=applicant.id %}"
+                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}"
                                        class="btn btn-sm btn-info">
                                         Update
                                     </a>

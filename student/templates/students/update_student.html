@@ -26,9 +26,6 @@
                                     <li class="list-group-item">
                                         Session: {{ object.ac_session }}
                                     </li>
-                                    <li class="list-group-item">
-                                        Promotion/Lot: {{ object.batch.number }}
-                                    </li>
                                 </ul>
                                 <div class="card-footer">
                                     <a href="{% url 'dashboard:student:student_details' pk=student.id %}"

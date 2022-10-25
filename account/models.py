@@ -52,8 +52,15 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+    def save(self, *args, **kwargs):
+        self.username = self.username.lower()
+        self.first_name = self.first_name.lower()
+        self.last_name = self.first_name.upper()
+        return super(User, self).save(*args, **kwargs)
+
 
 User._meta.get_field('email')._unique = True
+
 
 '''
     def get_author_url(self):
@@ -77,7 +84,7 @@ class CommonUserProfile(models.Model):
     user = models.OneToOneField(
         User,
         related_name='profile',
-        on_delete=models.SET_NULL,
+        on_delete=models.CASCADE,
         null=True,
         verbose_name="Utilisateur"
     )

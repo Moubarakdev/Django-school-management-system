@@ -33,11 +33,11 @@ class StudentBase(TimeStampedModel):
 
     fathers_last_name = models.CharField(verbose_name="Nom du père", max_length=100)
     fathers_first_name = models.CharField(verbose_name="Prénom du père", max_length=100)
-    fathers_mobile_number = PhoneNumberField(verbose_name="Numéro de téléphone du père")
+    fathers_mobile_number = PhoneNumberField(verbose_name="Numéro de téléphone du père", null=True, blank=True)
 
     mothers_last_name = models.CharField(verbose_name="Nom de la mère", max_length=100)
     mothers_first_name = models.CharField(verbose_name="Prénom de la mère", max_length=100)
-    mothers_mobile_number = PhoneNumberField(verbose_name="Numéro de téléphone de la mère")
+    mothers_mobile_number = PhoneNumberField(verbose_name="Numéro de téléphone de la mère", null=True, blank=True)
 
     date_of_birth = models.DateField(verbose_name="Date de naissance")
     email = models.EmailField(verbose_name="Email")
@@ -138,7 +138,8 @@ class AdmissionStudent(StudentBase):
     admission_policy_agreement = models.BooleanField(
         """
         Accepter les conditions
-        """
+        """,
+        blank=False
     )
     admitted = models.BooleanField(default=False, verbose_name="Accepté")
     admission_date = models.DateField(auto_now=True)
@@ -155,6 +156,12 @@ class AdmissionStudent(StudentBase):
     )
     rejected = models.BooleanField(default=False, verbose_name="Rejeté")
     assigned_as_student = models.BooleanField(default=False, verbose_name="Assigné comme étudiant")
+
+    # TODO: Generate account for any student
+
+    student_account = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name="student_account",
+        on_delete=models.DO_NOTHING, null=True)
 
     def __str__(self):
         return f"{self.last_name}"
@@ -187,10 +194,6 @@ class Student(TimeStampedModel):
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True
     )
-    # TODO: Generate account for any student
-    student_account = models.OneToOneField(
-        settings.AUTH_USER_MODEL, related_name="student_account",
-        on_delete=models.DO_NOTHING, null=True)
     is_alumni = models.BooleanField(default=False, verbose_name="Ancien élève ?")
     is_dropped = models.BooleanField(default=False, verbose_name="A quitté l'école ?")
     assign_payment = models.BooleanField(default=False)

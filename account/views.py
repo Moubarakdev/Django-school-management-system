@@ -34,6 +34,7 @@ def login_view(request):
                 login(request, user)
                 return redirect("home:home")
             else:
+                print(user)
                 messages.add_message(
                     request,
                     messages.ERROR,

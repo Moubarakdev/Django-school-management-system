@@ -12,6 +12,7 @@ from myschool import settings
 class Invoice(models.Model):
     student = models.ForeignKey("student.Student", on_delete=models.CASCADE, verbose_name="Étudiant")
     session = models.ForeignKey(AcademicSession, on_delete=models.CASCADE, verbose_name="Année académique")
+    balance_from_previous_term = models.IntegerField(default=0)
     status = models.CharField(
         max_length=20,
         choices=[("active", "Active"), ("closed", "Closed")],
@@ -25,7 +26,7 @@ class Invoice(models.Model):
         return f"{self.student}"
 
     def total_amount_payable(self):
-        return self.amount_payable()
+        return self.balance_from_previous_term + self.amount_payable()
 
     def balance(self):
         payable = self.total_amount_payable()
@@ -100,6 +101,5 @@ class Receipt(models.Model):
                         item.term4 -= rest3
                     else:
                         item.term4 = 0
-
         item.save()
-        super().save(*args, **kwargs)
+        return super().save(*args, **kwargs)

@@ -38,6 +38,7 @@
                                 <th scope="col">Status payement</th>
                                 <th scope="col">Admission</th>
                                 <th scope="col">Contact</th>
+                                <th class="text-right">Action</th>
 
                             </tr>
                             </thead>
@@ -88,7 +89,18 @@
                                         {{ applicant.mobile_number }}
                                     </a>
                                 </td>
+                                <td class="text-right">
+                                    <div class="actions">
+                                        {% if not applicant.admitted %}
+                                        <a href="{% url 'dashboard:student:admit_student' pk=applicant.id %}"
+                                           class="btn btn-sm btn-success">
+                                            <i class="fas fa-check"></i>
+                                        </a>
+                                        {% endif %}
+                                    </div>
+                                </td>
                             </tr>
+
                             {% endfor %}
                             </tbody>
                         </table>

@@ -27,7 +27,7 @@ class Department(TimeStampedModel):
         ('m1', 'M1'),
         ('m2', 'M2'),
     )
-    name = models.CharField(max_length=255, unique=True, verbose_name='Nom de la filière')
+    name = models.CharField(max_length=255, verbose_name='Nom de la filière')
     code = models.PositiveIntegerField(verbose_name="Code filière ")
     description = models.TextField(help_text='Ecriver une simple description a propos de la filière', blank=True,
                                    null=True, verbose_name='Description')
@@ -53,7 +53,8 @@ class Department(TimeStampedModel):
 
     def save(self, *args, **kwargs):
         last_dept = Department.objects.last()
-        self.code = last_dept + 1
+        self.code = last_dept.code + 1
+        super().save(*args, **kwargs)
 
 
 class AcademicSession(TimeStampedModel):

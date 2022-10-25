@@ -17,7 +17,7 @@ class DepartmentForm(ModelForm):
     class Meta:
         model = Department
         fields = '__all__'
-        exclude = ['created_by', 'created_at', 'updated_at']
+        exclude = ['created_by', 'created_at', 'updated_at', 'code']
 
 
 '''

@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+    'formtools',
     'account',
     'home',
     'teacher',
@@ -113,7 +114,7 @@ AUTH_USER_MODEL = 'account.USER'
 AUTHENTICATION_BACKENDS = ['account.backends.EmailBackend']
 
 LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = ''  # Route defined in dashboard/urls.py
+# LOGIN_REDIRECT_URL = ''  # Route defined in dashboard/urls.py
 LOGOUT_REDIRECT_URL = 'home:home'  # Route defined in home/urls.py
 
 # for permission management

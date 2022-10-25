@@ -10,7 +10,14 @@
             <form action="" method="POST" enctype="multipart/form-data">
                 {{ form|crispy }}
                 <div>
-                    <input type="submit" value="UPDATE" class="btn btn-success">
+                    <input type="submit" value="Valider les modifications" class="btn btn-success">
+                    {% if not applicant.admitted %}
+                    <a href="{% url 'dashboard:student:admit_student' pk=applicant.id %}"
+                       class="btn btn-success">
+                        Accepter<i class="fas fa-check"></i>
+                    </a>
+                    {% endif %}
+
                 </div>
                 {% csrf_token %}
             </form>
@@ -22,7 +29,7 @@
                     {{ counseling_form|crispy }}
                     {% csrf_token %}
                     <input type="submit" class="btn btn-primary" value="Sauvegarder">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
                 </form>
             </div>
             <!-- Display Counseling Data -->
@@ -56,5 +63,8 @@
             const fileName = e.target.files[0].name;
         $('.custom-file-label').html(fileName);
         });
+
+
+
 </script>
 {% endblock %}

@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render
 
 from academic.models import Department, AcademicSession, AcademicTerm
@@ -8,7 +8,8 @@ from teacher.models import Teacher
 
 
 # Create your views here.
-@user_passes_test(user_is_verified, login_url='permission_error')
+# @user_passes_test(user_is_verified, login_url='permission_error')
+@login_required
 def index(request):
     total_teachers = Teacher.objects.count()
     total_departments = Department.objects.count()

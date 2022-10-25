@@ -17,6 +17,12 @@
             </div>
         </div>
     </div>
+    {% if request.user.requested_role == "student" %}
+    <div class="row">
+
+    </div>
+    {% else %}
+
     <div class="row">
         <div class="col-xl-3 col-sm-6 col-12 d-flex">
             <div class="card bg-one w-100">
@@ -286,6 +292,7 @@
               </div>
            </div> -->
     </div>
+    {% endif %}
 </div>
 
 {% endblock %}
