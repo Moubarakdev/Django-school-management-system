@@ -21,7 +21,8 @@ from permission_handlers.administrative import user_is_admin_su_or_ac_officer
 from permission_handlers.basic import user_is_verified
 from result.models import SubjectGroup
 from student.filters import AlumniFilter
-from student.forms import AdmissionForm, StudentRegistrantUpdateForm, CounselingDataForm, StudentForm, StudentUpdateForm
+from student.forms import AdmissionForm, StudentRegistrantUpdateForm, CounselingDataForm, StudentForm, \
+    StudentUpdateForm, AdmissionForm2
 from student.models import AdmissionStudent, Student, CounselingComment
 
 
@@ -223,6 +224,22 @@ def admit_student(request, pk):
         form = AdmissionForm()
         context = {'form': form, 'applicant': applicant}
     return render(request, 'students/dashboard_admit_student.html', context)
+
+
+def new_admission(request, pk):
+    student = get_object_or_404(Student, pk=pk)
+    if request.method == 'POST':
+        form = AdmissionForm2(request.POST, request.FILES, instance=student.admission_student)
+        if form.is_valid():
+            new = AdmissionStudent.objects.create(**form.cleaned_data)
+            student.admission_student = new
+            student.assign_payment = False
+            student.save()
+            return redirect('dashboard:student:all_student')
+    else:
+        form = AdmissionForm2(instance=student.admission_student)
+    context = {'form': form, 'student': student}
+    return render(request, 'students/new_admission.html', context)
 
 
 @user_passes_test(user_is_admin_su_or_ac_officer)

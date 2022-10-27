@@ -27,6 +27,12 @@ class StudentBase(TimeStampedModel):
         ('athéisme', 'athéisme'),
         ('autre', 'autre'),
     )
+    EXAM_NAMES = (
+        ('L', 'Licence'),
+        ('M', 'Master'),
+        ('D', 'Doctorat'),
+        ('', 'Aucun'),
+    )
     last_name = models.CharField(verbose_name="Nom", max_length=100)
     first_name = models.CharField(verbose_name="Prénom", max_length=100)
     photo = models.ImageField(upload_to='students/applicant/')
@@ -56,6 +62,19 @@ class StudentBase(TimeStampedModel):
     department_choice = models.ForeignKey(
         Department,
         on_delete=models.CASCADE, verbose_name="Choix de la filière"
+    )
+    bac_passing_year = models.CharField(max_length=4, verbose_name="Année d'obtention du BAC")
+    bac_marksheet = models.FileField(
+        upload_to='students/applicants/bac_marksheets/%d/%m/%Y', verbose_name="Uploader votre relevé de BAC",
+        validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
+        help_text="Le fichier doit être scanner sous format pdf"
+    )
+    last_exam_name = models.CharField(max_length=1, choices=EXAM_NAMES, verbose_name="Nom du dernier diplôme obtenu",
+                                      help_text="Concerne les diplômes après le BAC", blank=True, null=True)
+    last_exam_marksheet = models.FileField(
+        upload_to='students/applicants/last_marksheets/%d/%m/%Y', verbose_name="Uploader votre dernier diplôme",
+        validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
+        help_text="Le fichier doit être scanner sous format pdf", blank=True, null=True
     )
 
     class Meta:
@@ -104,12 +123,6 @@ class AdmissionStudent(StudentBase):
         ('1', 'En ligne'),
         ('2', 'Hors ligne')
     )
-    EXAM_NAMES = (
-        ('L', 'Licence'),
-        ('M', 'Master'),
-        ('D', 'Doctorat'),
-        ('', 'Aucun'),
-    )
     counseling_by = models.ForeignKey(
         Teacher, related_name='counselors',
         on_delete=models.CASCADE, null=True, verbose_name="Conseiller par"
@@ -121,19 +134,6 @@ class AdmissionStudent(StudentBase):
         Department, related_name='admission_students',
         on_delete=models.CASCADE,
         blank=True, null=True, verbose_name="Filière choisie"
-    )
-    bac_passing_year = models.CharField(max_length=4, verbose_name="Année d'obtention du BAC")
-    bac_marksheet = models.FileField(
-        upload_to='students/applicants/bac_marksheets/%d/%m/%Y', verbose_name="Uploader votre relevé de BAC",
-        validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
-        help_text="Le fichier doit être scanner sous format pdf"
-    )
-    last_exam_name = models.CharField(max_length=1, choices=EXAM_NAMES, verbose_name="Nom du dernier diplôme obtenu",
-                                      help_text="Concerne les diplômes après le BAC", blank=True, null=True)
-    last_exam_marksheet = models.FileField(
-        upload_to='students/applicants/last_marksheets/%d/%m/%Y', verbose_name="Uploader votre dernier diplôme",
-        validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
-        help_text="Le fichier doit être scanner sous format pdf", blank=True, null=True
     )
     admission_policy_agreement = models.BooleanField(
         """
@@ -170,7 +170,6 @@ class AdmissionStudent(StudentBase):
         if self.department_choice != self.choosen_department:
             status = f'From {self.department_choice} to {self.choosen_department}'
             self.migration_status = status
-            super().save(*args, **kwargs)
         super().save(*args, **kwargs)
 
 
@@ -326,4 +325,4 @@ class RegularStudent(TimeStampedModel):
     )
 
     def __str__(self):
-        return f"{self.student.name} {self.student.admission_student.choosen_department.level}"
+        return f"{self.student.admission_student.last_name} {self.student.admission_student.choosen_department.level}"

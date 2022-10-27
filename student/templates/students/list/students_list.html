@@ -35,7 +35,8 @@
                                 <th scope="col">Matricule</th>
                                 <th scope="col">Nom</th>
                                 <th scope="col">Prénoms</th>
-                                <th scope="col">Département</th>
+                                <th scope="col">Filière</th>
+                                <th scope="col">Niveau</th>
                                 <th class="text-right">Action</th>
                             </tr>
                             </thead>
@@ -63,6 +64,11 @@
                                 <td>
                                     <a href="{% url 'dashboard:student:student_details' pk=student.id %}">
                                         {{ student.admission_student.choosen_department.name }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="{% url 'dashboard:student:student_details' pk=student.id %}">
+                                        {{ student.admission_student.choosen_department.level }}
                                     </a>
                                 </td>
                                 <td class="text-right">

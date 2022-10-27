@@ -54,6 +54,8 @@ class Department(TimeStampedModel):
     def save(self, *args, **kwargs):
         last_dept = Department.objects.last()
         self.code = last_dept.code + 1
+        self.code = self.code.upper()
+        self.code = self.code.capitalize()
         super().save(*args, **kwargs)
 
 

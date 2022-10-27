@@ -13,8 +13,11 @@
                 <a href="{% url 'dashboard:student:delete_student' pk=student.pk %}" class="btn btn-danger">
                     <i class="fas fa-trash-alt"></i>
                 </a>
-                <a href="{% url 'dashboard:student:update_student' pk=student.id %}" class="btn btn-secondary">
+                <a href="{% url 'dashboard:student:update_student' pk=student.pk %}" class="btn btn-secondary">
                     <i class="fas fa-edit"></i>
+                </a>
+                <a href="{% url 'dashboard:student:new_admission' pk=student.pk %}" class="btn btn-secondary">
+                    <i class="fas fa-edit">Réinscription</i>
                 </a>
                 <div class="row py-5">
                     <div class="col-3">
