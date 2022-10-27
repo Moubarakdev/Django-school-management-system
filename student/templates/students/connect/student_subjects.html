@@ -1,0 +1,51 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load student_tags %}
+
+{% block content %}
+<div class="container-fluid content">
+    <section id="student-results">
+        <div class="container-fluid">
+            <div class="row mt-5">
+                <div class="col-sm-12">
+                    {% if subjects %}
+                    <h3>Mes matières</h3>
+                    <div class="card card-table">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-center mb-0">
+                                    {% for subject_group in subjects %}
+                                    <thead>
+                                    <tr>
+                                        <th>Libellé</th>
+                                        <th>Code</th>
+                                    </tr>
+                                    </thead>
+                                    {% for subject in subject_group.subjects.all %}
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <i>{{ subject.name }}</i>
+                                        </td>
+                                        <td><i>{{ subject.subject_code }}</i></td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+{% endblock %}
+
+{% block customjs %}
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+{% endblock %}

@@ -145,6 +145,10 @@ class CommonUserProfileForm(djform.ModelForm):
             'summary',
         ]
 
+    widgets = {
+        'address': djform.Textarea(attrs={"rows": 2}),
+    }
+
 
 class LoginForm(djform.Form):
     username = djform.CharField(

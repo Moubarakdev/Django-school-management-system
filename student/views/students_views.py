@@ -456,3 +456,31 @@ class ApplicationWizard(LoginRequiredMixin, SessionWizardView):
         return render(self.request, 'applications/done.html', {
             'form_data': [form.cleaned_data for form in form_list],
         })
+
+
+def studentSubjectView(request):
+    student = Student.objects.get(admission_student__student_account=request.user)
+    # get student object
+    # for showing subjects in option form
+    student_subject_qs = SubjectGroup.objects.filter(
+        department=student.admission_student.choosen_department,
+    )
+    subjects = student_subject_qs
+    context = {
+        'student': student,
+        'subjects': subjects,
+    }
+    return render(request, 'students/connect/student_subjects.html', context)
+
+
+def studentResultView(request):
+    student = Student.objects.get(admission_student__student_account=request.user)
+    # get student object
+    # for showing subjects in option form
+    # getting result objects
+    results = student.results.all()
+    context = {
+        'student': student,
+        'results': results
+    }
+    return render(request, 'students/connect/student_results.html', context)

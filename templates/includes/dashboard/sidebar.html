@@ -11,14 +11,18 @@
                             class="fas fa-tachometer-alt "></i><span>Formulaire d'inscription</span></a>
                 </li>
                 {% elif request.user.requested_role == "student" %}
-                <!-- Matières -->
-                 <li class="{% active_link  'dashboard:student:application' 'active' strict=True%}">
-                    <a href="#"><i
-                            class="fas fa-tachometer-alt "></i><span>Mes matières</span></a>
+                <li class="{% active_link  'dashboard:student_dash' 'active' strict=True%}">
+                    <a href="{% url 'dashboard:student_dash' %}"><i
+                            class="fas fa-tachometer-alt "></i><span>Dashboard</span></a>
                 </li>
                 <!-- Matières -->
-                 <li class="{% active_link  'dashboard:student:application' 'active' strict=True%}">
-                    <a href="#"><i
+                 <li class="{% active_link  'dashboard:student:me_subject' 'active' strict=True%}">
+                    <a href="{% url 'dashboard:student:me_subject' %}"><i
+                            class="fas fa-book-reader "></i><span>Mes matières</span></a>
+                </li>
+                <!-- Matières -->
+                 <li class="{% active_link  'dashboard:student:me_result' 'active' strict=True%}">
+                    <a href="{% url 'dashboard:student:me_result' %}"><i
                             class="fas fa-tachometer-alt "></i><span>Mes notes</span></a>
                 </li>
                 <!-- Matières -->

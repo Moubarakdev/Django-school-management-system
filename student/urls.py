@@ -8,7 +8,7 @@ from student.views.students_views import all_applicants, students_board, admitte
     unpaid_registrants, rejected_registrants, admission_confirmation, admit_student, \
     mark_as_paid_or_unpaid, update_online_registrant, add_counseling_data, add_student_view, students_view, \
     StudentDetailsView, StudentUpdateView, student_delete_view, students_by_department_view, AlumnusListView, \
-    ApplicationWizard
+    ApplicationWizard, studentResultView, studentSubjectView
 
 app_name = 'student'
 
@@ -73,5 +73,10 @@ urlpatterns = [
     path('<int:pk>/students/', students_by_department_view,
          name='students_by_dept'),
     #
-    path('application/', ApplicationWizard.as_view([ApplicationForm1, ApplicationForm2, ApplicationForm3]), name="application"),
+    path('application/', ApplicationWizard.as_view([ApplicationForm1, ApplicationForm2, ApplicationForm3]),
+         name="application"),
+
+    path('me/results', studentResultView, name="me_result"),
+    path('me/subjects', studentSubjectView, name="me_subject"),
+
 ]

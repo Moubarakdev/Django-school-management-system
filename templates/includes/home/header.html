@@ -23,14 +23,22 @@
               <ul class="d-flex">
                 {% if request.user.is_authenticated %}
                  <li class="nav-item">
-                  <a
-                    href="{% url 'dashboard:index' %}"
+                   {% if request.user.requested_role == 'student' %}
+                   <a
+                    href="{% url 'dashboard:student_dash' %}"
                     class="nav-link sign-in js-modal-show"
                     ><i
                       class="flaticon-dashboard"
                     ></i
                     >Dashboard</a
                   >
+                   {% else %}
+                  <a
+                    href="{% url 'dashboard:index' %}"
+                    class="nav-link sign-in js-modal-show"
+                    ><i class="flaticon-dashboard"></i>Dashboard</a
+                  >
+                   {% endif %}
                 </li>
                 {% else %}
 

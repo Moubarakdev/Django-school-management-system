@@ -1,0 +1,58 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load student_tags %}
+
+{% block content %}
+<div class="container-fluid content">
+    <section id="student-results">
+        <div class="container-fluid">
+            <div class="row mt-5">
+                <div class="col-sm-12">
+                    <div class="row mt-5">
+                        <div class="col-sm-12">
+                            <h3>Tableau de résultats</h3>
+                            <div class="card card-table">
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover table-center mb-0">
+                                            <thead>
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">Matière</th>
+                                                <th scope="col">Note de classe</th>
+                                                <th scope="col">Note d'examen</th>
+                                                <th scope="col">Note de rattrapage</th>
+                                                <th scope="col">Total</th>
+                                                <th scope="col">Moyenne</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            {% for result in results %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ result.subject }}</td>
+                                                <td>{{ result.class_marks }}</td>
+                                                <td>{{ result.exam_marks }}</td>
+                                                <td>{{ result.extra_marks }}</td>
+                                                <td>{{ result.total_marks }}</td>
+                                                <td>{{ result.average }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+{% endblock %}
+
+{% block customjs %}
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+{% endblock %}

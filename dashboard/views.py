@@ -26,11 +26,6 @@ def index(request):
     return render(request, 'dashboard/index.html', context)
 
 
-def header(request):
-    current_session = AcademicSession.objects.get(current=True)
-    current_term = AcademicTerm.objects.get(current=True)
-    context = {
-        'current_session': current_session,
-        'current_term': current_term,
-    }
-    return render(request, 'includes/dashboard/navbar.html', context)
+@login_required
+def studentIndex(request):
+    return render(request, 'dashboard/student_dashboard.html')

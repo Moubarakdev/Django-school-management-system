@@ -12,7 +12,7 @@ from myschool import settings
 class Invoice(models.Model):
     student = models.ForeignKey("student.Student", on_delete=models.CASCADE, verbose_name="Étudiant")
     session = models.ForeignKey(AcademicSession, on_delete=models.CASCADE, verbose_name="Année académique")
-    balance_from_previous_term = models.IntegerField(default=0)
+    balance_from_previous_session = models.IntegerField(default=0)
     status = models.CharField(
         max_length=20,
         choices=[("active", "Active"), ("closed", "Closed")],
@@ -21,12 +21,13 @@ class Invoice(models.Model):
 
     class Meta:
         ordering = ["student", "session"]
+        unique_together = ['student', 'session']
 
     def __str__(self):
         return f"{self.student}"
 
     def total_amount_payable(self):
-        return self.balance_from_previous_term + self.amount_payable()
+        return self.balance_from_previous_session + self.amount_payable()
 
     def balance(self):
         payable = self.total_amount_payable()

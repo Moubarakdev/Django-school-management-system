@@ -291,6 +291,23 @@ class Student(TimeStampedModel):
 
             except IntegrityError:
                 pass
+        if self.assign_payment:
+            old_invoice = Invoice.objects.filter(student=self).last()
+            if self.admission_student.choosen_department != old_invoice.student.admission_student.choosen_department and self.ac_session != old_invoice.student.ac_session:
+                with transaction.atomic():
+                    invoice = Invoice.objects.create(
+                        student=self,
+                        session=self.ac_session,
+                    )
+                    invoiceItem = InvoiceItem.objects.create(
+                        invoice=invoice,
+                        description="Frais de scolarité",
+                        amount=self.admission_student.choosen_department.fee
+                    )
+                    invoice.save()
+                    invoiceItem.save()
+                self.assign_payment = True
+
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):

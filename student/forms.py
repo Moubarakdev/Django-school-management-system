@@ -85,6 +85,8 @@ class StudentRegistrantUpdateForm(forms.ModelForm):
         widgets = {
             'date_of_birth': forms.TextInput({'type': 'date'}),
             'mobile_number': PhoneNumberPrefixWidget(initial='IN'),
+            'current_address': forms.Textarea(attrs={"rows": 2}),
+            'permanent_address': forms.Textarea(attrs={"rows": 2}),
         }
 
 

@@ -10,18 +10,16 @@
     <div class="page-header">
         <div class="row">
             <div class="col-sm-12">
-                <h3 class="page-title">Welcome {{request.user.first_name}}!</h3>
+                <h3 class="page-title">Bienvenue {{request.user.first_name}}!</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item active">Dashboard</li>
                 </ul>
             </div>
         </div>
     </div>
-    {% if request.user.requested_role == "student" %}
     <div class="row">
 
     </div>
-    {% else %}
 
     <div class="row">
         <div class="col-xl-3 col-sm-6 col-12 d-flex">
@@ -292,12 +290,12 @@
               </div>
            </div> -->
     </div>
-    {% endif %}
 </div>
 
 {% endblock %}
 
 {% block customjs %}
+<script src="{% static 'assets/js/calander.js' %}"></script>
 <script src="{% static 'assets/plugins/apexchart/apexcharts.min.js' %}"></script>
 <script src="{% static 'assets/plugins/apexchart/chart-data.js'%}"></script>
 {% endblock %}
