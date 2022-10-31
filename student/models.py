@@ -133,7 +133,7 @@ class AdmissionStudent(StudentBase):
     choosen_department = models.ForeignKey(
         Department, related_name='admission_students',
         on_delete=models.CASCADE,
-        blank=True, null=True, verbose_name="Filière choisie"
+        blank=True, null=True, verbose_name="Filière courante"
     )
     admission_policy_agreement = models.BooleanField(
         """
@@ -167,6 +167,13 @@ class AdmissionStudent(StudentBase):
         return f"{self.last_name}"
 
     def save(self, *args, **kwargs):
+        self.fathers_last_name = self.fathers_last_name.upper()
+        self.mothers_last_name = self.mothers_last_name.upper()
+        self.fathers_first_name = self.fathers_first_name.capitalize()
+        self.mothers_first_name = self.mothers_first_name.capitalize()
+        self.mothers_last_name = self.mothers_last_name.upper()
+        self.last_name = self.last_name.upper()
+        self.first_name = self.first_name.capitalize()
         if self.department_choice != self.choosen_department:
             status = f'From {self.department_choice} to {self.choosen_department}'
             self.migration_status = status
@@ -290,6 +297,7 @@ class Student(TimeStampedModel):
 
             except IntegrityError:
                 pass
+        # Must review
         if self.assign_payment:
             old_invoice = Invoice.objects.filter(student=self).last()
             if self.admission_student.choosen_department != old_invoice.student.admission_student.choosen_department and self.ac_session != old_invoice.student.ac_session:
