@@ -6,19 +6,21 @@ from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.files.storage import FileSystemStorage, DefaultStorage
+from django.db import IntegrityError
 from django.forms.models import construct_instance
 from django.http import JsonResponse, request
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import DetailView, UpdateView, ListView
 from formtools.wizard.views import SessionWizardView
+from rolepermissions.roles import assign_role
 
 from academic.models import AcademicSession, Department
 from account.models import User
 from myschool import settings
 from payment.models import Invoice
 from permission_handlers.administrative import user_is_admin_su_or_ac_officer
-from permission_handlers.basic import user_is_verified
+from permission_handlers.basic import user_is_verified, user_is_student
 from result.models import SubjectGroup
 from student.filters import AlumniFilter
 from student.forms import AdmissionForm, StudentRegistrantUpdateForm, CounselingDataForm, StudentForm, \
@@ -226,7 +228,7 @@ def admit_student(request, pk):
     return render(request, 'students/dashboard_admit_student.html', context)
 
 
-def new_admission(request, pk):
+def renew_admission(request, pk):
     student = get_object_or_404(Student, pk=pk)
     if request.method == 'POST':
         form = AdmissionForm2(request.POST, request.FILES, instance=student.admission_student)
@@ -440,17 +442,20 @@ class AlumnusListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 # APPLICATION
 class ApplicationWizard(LoginRequiredMixin, SessionWizardView):
-
     def get_context_data(self, form, **kwargs):
         context = super().get_context_data(form=form)
+        # check if the student have an account
         try:
             student = AdmissionStudent.objects.get(student_account=self.request.user)
         except:
             student = None
         if student:
+            # check if the student is admitted and confirmed
             if student.assigned_as_student:
                 ac_st = self.request.user
+                # approuve the account of the student an assign him his role
                 ac_st.approval_status = 'a'
+                assign_role(ac_st, 'student')
                 ac_st.save()
 
         print(student)
@@ -467,14 +472,17 @@ class ApplicationWizard(LoginRequiredMixin, SessionWizardView):
 
         if self.request.user.is_authenticated:
             form_data['student_account'] = self.request.user
-
-        AdmissionStudent.objects.create(**form_data)
+        try:
+            AdmissionStudent.objects.create(**form_data)
+        except IntegrityError:
+            pass
 
         return render(self.request, 'applications/done.html', {
             'form_data': [form.cleaned_data for form in form_list],
         })
 
 
+@user_passes_test(user_is_student)
 def studentSubjectView(request):
     student = Student.objects.get(admission_student__student_account=request.user)
     # get student object
@@ -490,6 +498,7 @@ def studentSubjectView(request):
     return render(request, 'students/connect/student_subjects.html', context)
 
 
+@user_passes_test(user_is_student)
 def studentResultView(request):
     student = Student.objects.get(admission_student__student_account=request.user)
     # get student object

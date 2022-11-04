@@ -8,8 +8,8 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from academic.forms import DepartmentForm, AcademicSessionForm, SubjectForm, SiteConfigForm, \
-    AcademicTermForm, CurrentSessionForm
-from academic.models import Department, Subject, AcademicSession, SiteConfig, AcademicTerm
+    CurrentSessionForm
+from academic.models import Department, Subject, AcademicSession, SiteConfig
 from permission_handlers.administrative import user_is_admin_su_editor_or_ac_officer, user_editor_admin_or_su, \
     user_is_teacher_or_administrative
 from permission_handlers.basic import user_is_verified
@@ -368,7 +368,7 @@ class SiteConfigView(LoginRequiredMixin, View):
 
 
 # ############################## TERMS ########################
-class TermListView(LoginRequiredMixin, SuccessMessageMixin, ListView):
+'''class TermListView(LoginRequiredMixin, SuccessMessageMixin, ListView):
     model = AcademicTerm
     context_object_name = 'terms'
     template_name = "term/term_list.html"
@@ -385,9 +385,9 @@ class TermCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     template_name = "term/term_form.html"
     success_url = reverse_lazy("dashboard:academic:read_terms")
     success_message = "New term successfully added"
+'''
 
-
-class TermUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
+'''class TermUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
     model = AcademicTerm
     form_class = AcademicTermForm
     success_url = reverse_lazy("dashboard:academic:read_terms")
@@ -405,10 +405,10 @@ class TermUpdateView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             if not terms:
                 messages.warning(self.request, "You must set a term to current.")
                 return redirect("term")
-        return super().form_valid(form)
+        return super().form_valid(form)'''
 
 
-class TermDeleteView(LoginRequiredMixin, DeleteView):
+"""class TermDeleteView(LoginRequiredMixin, DeleteView):
     model = AcademicTerm
     success_url = reverse_lazy("dashboard:academic:read_terms")
     template_name = "term/term_confirm_delete.html"
@@ -422,7 +422,7 @@ class TermDeleteView(LoginRequiredMixin, DeleteView):
         messages.success(self.request, self.success_message.format(obj.name))
         return super(TermDeleteView, self).delete(request, *args, **kwargs)
 
-
+"""
 # ####################### CURENT ##########################
 class CurrentSessionAndTermView(LoginRequiredMixin, View):
     """Current Session and Term"""
@@ -434,7 +434,7 @@ class CurrentSessionAndTermView(LoginRequiredMixin, View):
         form = self.form_class(
             initial={
                 "current_session": AcademicSession.objects.get(current=True),
-                "current_term": AcademicTerm.objects.get(current=True),
+                # "current_term": AcademicTerm.objects.get(current=True),
             }
         )
         return render(request, self.template_name, {"form": form})
@@ -446,7 +446,7 @@ class CurrentSessionAndTermView(LoginRequiredMixin, View):
             term = form.cleaned_data["current_term"]
             AcademicSession.objects.filter(year=session).update(current=True)
             AcademicSession.objects.exclude(year=session).update(current=False)
-            AcademicTerm.objects.filter(name=term).update(current=True)
-            AcademicTerm.objects.exclude(name=term).update(current=False)
+            '''AcademicTerm.objects.filter(name=term).update(current=True)
+            AcademicTerm.objects.exclude(name=term).update(current=False)'''
 
         return render(request, self.template_name, {"form": form})

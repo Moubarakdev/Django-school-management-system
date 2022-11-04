@@ -1,0 +1,65 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extra_header %}
+
+{% endblock %}
+
+{% block customcss %}
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid content">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    {% if teacher %}
+                    <div class="container fluid">
+                        <div class="card-title">
+                            <h4>Demande d'inscription</h4>
+                        </div>
+                        <div>
+                            <div class="card p-3">
+                                <p><i>Nom:</i> {{ teacher.last_name }}</p>
+                                <p><i>Prénom:</i> {{ teacher.first_name }}</p>
+                                <p><i>date d'inscription : </i>{{ teacher.created }}</p>
+                                <p>
+                                    <i>Status: </i>{% if request.user.approval_status == 'p' %}
+                                    <span class="text-primary">Demande d’approbation en attente</span>
+                                    {% elif request.user.approval_status == 'd' %}
+                                    <span class="text-danger">Demande d’approbation refusée</span>
+                                    {% elif request.user.approval_status == 'a' %}
+                                    <span class="text-success">Votre compte est en cours d'activation</span>
+                                    {% endif %}
+                                </p>
+
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{ form|crispy }}
+                        <input type="submit" class="btn btn-success" value="Valider"/>
+                    </form>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+
+{% endblock %}
+{% block customjs %}
+<script>
+
+</script>
+{% endblock %}

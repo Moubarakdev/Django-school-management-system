@@ -29,7 +29,7 @@
                         </ul>
                         {% endif %}
 
-                        <h1>Login</h1>
+                        <h1>Connexion</h1>
                         <p class="account-subtitle"></p>
                         <form action="" method="post">
                             {% csrf_token %}
@@ -42,23 +42,13 @@
                                 <span class="text-error" style="color:red;">{{ user_form.password.errors }}</span>
                             </div>
                             <div class="form-group">
-                                <button class="btn btn-primary btn-block" type="submit">Login</button>
+                                <button class="btn btn-primary btn-block" type="submit">Se connecter</button>
                             </div>
                         </form>
                         <div class="text-center forgotpass"><a href="{% url 'reset_password' %}">Mot de passe oublié?</a>
                         </div>
-                        <div class="login-or">
-                            <span class="or-line"></span>
-                            <span class="span-or">or</span>
-                        </div>
-                        <div class="social-login">
-                            <span>Login with</span>
-                            <a href="#" class="facebook"><i class="fab fa-facebook-f"></i></a><a href="#"
-                                                                                                 class="google"><i
-                                class="fab fa-google"></i></a>
-                        </div>
-                        <div class="text-center dont-have">Don’t have an account?
-                            <a href="{% url 'register' %}">Register</a>
+                        <div class="text-center dont-have">Vous n'avez pas de compte?
+                            <a href="{% url 'register' %}">Créer un compte</a>
                         </div>
                     </div>
                 </div>

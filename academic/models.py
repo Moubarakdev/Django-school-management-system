@@ -35,14 +35,8 @@ class Department(TimeStampedModel):
     establish_date = models.DateField(auto_now_add=True, verbose_name='Date de création')
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING,
                                    null=True, verbose_name="Créateur")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
     fee = models.DecimalField(max_digits=8, decimal_places=2, verbose_name="Frais de scolarité")
     is_active = models.BooleanField(verbose_name="Actif", default="True")
-    '''
-    current_batch = models.ForeignKey('Batch', on_delete=models.CASCADE, blank=True, null=True,related_name='current_batches',verbose_name='Promotion actuelle')
-    batches = models.ManyToManyField('Batch', related_name='department_batches', blank=True, verbose_name="Promotions")
-    '''
 
     class Meta:
         verbose_name_plural = 'Filières'
@@ -80,7 +74,7 @@ def create_resource():
     return reverse('dashboard:academic:create_semester')
 
 
-class AcademicTerm(models.Model):
+'''class AcademicTerm(models.Model):
     """Academic Term"""
 
     name = models.CharField(max_length=20, unique=True, verbose_name="Nom")
@@ -92,7 +86,7 @@ class AcademicTerm(models.Model):
     def __str__(self):
         return self.name
 
-
+'''
 """
 class Semester(TimeStampedModel):
     number = models.PositiveIntegerField(unique=True, verbose_name='Numéro semestre')

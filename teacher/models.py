@@ -1,5 +1,6 @@
 from django.db import models
 from model_utils.models import TimeStampedModel
+from phonenumber_field.modelfields import PhoneNumberField
 from taggit.managers import TaggableManager
 
 from myschool import settings
@@ -22,12 +23,14 @@ class Teacher(TimeStampedModel):
                               default='teacheravatar.jpg')
     date_of_birth = models.DateField(blank=True, null=True)
     expertise = TaggableManager(blank=True)
-    mobile = models.CharField(max_length=11, blank=True, null=True)
+    mobile_number = PhoneNumberField('Numéro de téléphone')
     email = models.CharField(max_length=255, blank=True, null=True)
     joining_date = models.DateField(auto_now=True)
     teacher_account = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name="teacher_accounts",
+        settings.AUTH_USER_MODEL, related_name="teacher_account",
         on_delete=models.DO_NOTHING, null=True)
+    assigned_as_teacher = models.BooleanField(default=False, verbose_name="Assigné comme professeur")
+    admission_date = models.DateField(auto_now=True)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True)

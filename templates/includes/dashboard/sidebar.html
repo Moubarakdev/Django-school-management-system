@@ -32,6 +32,12 @@
                 </li>
 
                 {% else %}
+                 {% if request.user.requested_role == "teacher" and request.user.approval_status != "a" %}
+                <li class="{% active_link  'dashboard:teacher:teacher_application' 'active' strict=True%}">
+                    <a href="{% url 'dashboard:teacher:teacher_application' %}"><i
+                            class="fas fa-tachometer-alt "></i><span>Formulaire d'inscription</span></a>
+                </li>
+                {% else %}
 
                 <li class="{% active_link  'dashboard:index' 'active' strict=True%}">
                     <a href="{% url 'dashboard:index' %}"><i
@@ -55,7 +61,6 @@
                             class="menu-arrow"></span></a>
                     <ul>
                         <li><a href="{% url 'dashboard:academic:read_ac_sessions' %}">Sessions académiques</a></li>
-                        <li><a href="{% url 'dashboard:academic:read_terms' %}">Périodes</a></li>
                         <li><a href="{% url 'dashboard:academic:read_departments' %}">Filières</a></li>
                         <li><a href="{% url 'dashboard:academic:read_subjects' %}">Matières</a></li>
                         <li><a href="{% url 'result:subject_groups' %}"><span>Programmes</span></a>
@@ -90,6 +95,10 @@
 
                 <li class="menu-title">
                     <span>Professeurs</span>
+                </li>
+                <li class="{% active_link  'dashboard:teacher:teacher_applicants' 'active' strict=True%}">
+                    <a href="{% url 'dashboard:teacher:teacher_applicants' %}"> <i
+                            class="fas fa-chalkboard-teacher"></i><span>Listes des demandes</span></a>
                 </li>
                 <li class="{% active_link  'dashboard:teacher:read_teachers' 'active' strict=True%}">
                     <a href="{% url 'dashboard:teacher:read_teachers' %}"> <i
@@ -132,6 +141,7 @@
                             class="fas fa-comment-dollar"></i><span>Factures/Paiement</span></a>
                 </li>
 
+                {% endif %}
                 {% endif %}
 
                 <!--

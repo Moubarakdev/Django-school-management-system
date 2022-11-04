@@ -20,7 +20,7 @@ class UserChangeForm(forms.UserChangeForm):
 class UserCreateFormDashboard(forms.UserCreationForm):
     class Meta:
         model = User
-        fields = fields = (
+        fields = (
             'username', 'email', 'password1', 'password2',
             'requested_role', 'approval_status', 'is_staff')
 
@@ -39,6 +39,11 @@ class UserChangeFormDashboard(forms.UserChangeForm):
 
 
 class UserRegistrationForm(forms.UserCreationForm):
+    REQUESTED_CHOICES = (
+        ('student', 'Etudiant'),
+        ('teacher', 'Professeur'),
+    )
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
@@ -94,10 +99,11 @@ class UserRegistrationForm(forms.UserCreationForm):
                 "class": "form-control"
             }
         ))
+    requested = djform.ChoiceField(choices=REQUESTED_CHOICES)
 
     class Meta:
         model = User
-        fields = ('last_name', 'first_name', 'username', 'email', 'password1', 'password2', 'requested_role')
+        fields = ('last_name', 'first_name', 'username', 'email', 'password1', 'password2', 'requested')
 
     '''
     def clean_username(self):

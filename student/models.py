@@ -156,12 +156,9 @@ class AdmissionStudent(StudentBase):
     )
     rejected = models.BooleanField(default=False, verbose_name="Rejeté")
     assigned_as_student = models.BooleanField(default=False, verbose_name="Assigné comme étudiant")
-
-    # TODO: Generate account for any student
-
     student_account = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name="student_account",
-        on_delete=models.DO_NOTHING, null=True)
+        on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return f"{self.last_name}"

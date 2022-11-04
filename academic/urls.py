@@ -6,7 +6,7 @@ from academic.views import SubjectListView, \
     CreateSubjectView, UpdateSubjectView, DeleteSubjectView, CreateDepartmentView, UpdateDepartmentView, \
     DeleteDepartmentView, CreateAcademicSession, AcademicSessionListView, DepartmentListView, DeleteAcademicSession, \
     UpdateAcademicSession, SiteConfigView, \
-    TermListView, TermUpdateView, TermDeleteView, TermCreateView, CurrentSessionAndTermView
+    CurrentSessionAndTermView
 from myschool import settings
 
 app_name = 'academic'
@@ -33,11 +33,5 @@ urlpatterns = [
                   path('academicsession/create/', CreateAcademicSession.as_view(), name="create_ac_session"),
                   path('academicsession/delete/<int:pk>', DeleteAcademicSession.as_view(), name="delete_ac_session"),
                   path('academicsession/update/<int:pk>', UpdateAcademicSession.as_view(), name="update_ac_session"),
-
-                  # Term
-                  path("term/list/", TermListView.as_view(), name="read_terms"),
-                  path("term/create/", TermCreateView.as_view(), name="create_term"),
-                  path("term/<int:pk>/update/", TermUpdateView.as_view(), name="update_term"),
-                  path("term/<int:pk>/delete/", TermDeleteView.as_view(), name="delete_term"),
 
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

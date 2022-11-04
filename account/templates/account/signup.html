@@ -64,15 +64,18 @@ Signup
                                 </div>
                                 <span class="text-error" style="color:red;">{{ user_form.password2.errors }}</span>
                                 <div class="form-group">
-                                    {{user_form.requested_role|as_crispy_field}}
+                                    <label >
+                                        Type de compte demandé<span class="asteriskField">*</span>
+                                    </label>
+                                     {{user_form.requested}}
                                 </div>
-                                <span class="text-error" style="color:red;">{{ user_form.requested_role.errors }}</span>
+                                <span class="text-error" style="color:red;">{{ user_form.requested.errors }}</span>
                                 <div class="form-group mb-0">
                                     <button class="btn btn-primary btn-block">créer le compte</button>
                                 </div>
                             </form>
 
-                            <div class="text-center dont-have">Already have an account? <a
+                            <div class="text-center dont-have">Vous avez déjà un compte? <a
                                     href="{% url 'login' %}">Se connecter</a>
                             </div>
                         </div>
@@ -98,5 +101,10 @@ Signup
           password2.type = "password";
         }
       }
+
+      let inpt = document.getElementById("id_requested");
+      inpt.classList.add('form-control');
+
+
 </script>
 {% endblock  %}

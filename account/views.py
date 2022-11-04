@@ -57,8 +57,12 @@ def register(request):
             lastname = user_form.cleaned_data.get("last_name")
             username = user_form.cleaned_data.get("username")
             email = user_form.cleaned_data.get("email")
-            address = user_form.cleaned_data.get("address")
+            requested = user_form.cleaned_data.get("requested")
             raw_password = user_form.cleaned_data.get("password1")
+
+            print(requested)
+
+            user_form.instance.requested_role = requested
 
             auth_user = authenticate(
                 first_name=first_name,
@@ -66,6 +70,7 @@ def register(request):
                 username=username,
                 password=raw_password,
                 email=email,
+                requested_role=requested
             )
 
             if auth_user is not None:

@@ -44,7 +44,7 @@
                                     {{teacher.last_name}}</a></td>
                                 <td><a href="{% url 'dashboard:teacher:teacher_detail' pk=teacher.pk %}">
                                     {{teacher.first_name}}</a></td>
-                                <td>{{ teacher.mobile|default_if_none:"" }}</td>
+                                <td>{{ teacher.mobile_number|default_if_none:"" }}</td>
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="{% url 'dashboard:teacher:update_teacher'  pk=teacher.pk %}"

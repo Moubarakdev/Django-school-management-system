@@ -4,7 +4,7 @@ from django.db import models, transaction
 from django.urls import reverse
 from model_utils.models import TimeStampedModel
 
-from academic.models import Department, AcademicSession, AcademicTerm
+from academic.models import Department, AcademicSession
 from myschool import settings
 
 

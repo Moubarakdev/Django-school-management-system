@@ -196,27 +196,16 @@
                         <table>
                             {{ wizard.management_form|crispy }}
                             {% if wizard.form.forms %}
-                            {{ wizard.form.management_form|crispy }}
+                                {{ wizard.form.management_form|crispy }}
                             {% for form in wizard.form.forms %}
-                            {{ form|crispy }}
+                                {{ form|crispy }}
                             {% endfor %}
                             {% else %}
                             {% for field in wizard.form %}
-                            {% comment %}
-                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
-                            {% endcomment %}
-                            {{ field|as_crispy_field }}
+                                {{ field|as_crispy_field }}
                             {% endfor %}
                             {% endif %}
                         </table>
-                        {% comment %}
-                        {% if wizard.steps.prev %}
-                        <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}">first step
-                        </button>
-                        <button name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}">prev step</button>
-                        {% endif %}
-                        <input type="submit" class="card-text rounded align-center" value="submit"/>
-                        {% endcomment %}
                         {% if wizard.steps.prev %}
                         <input type="submit" name="wizard_goto_step" class="previous action-button text-center"
                                value="page {{ wizard.steps.first }}"/>
