@@ -8,7 +8,7 @@ from student.views.students_views import all_applicants, students_board, admitte
     unpaid_registrants, rejected_registrants, admission_confirmation, admit_student, \
     mark_as_paid_or_unpaid, update_online_registrant, add_counseling_data, add_student_view, students_view, \
     StudentDetailsView, StudentUpdateView, student_delete_view, students_by_department_view, AlumnusListView, \
-    ApplicationWizard, studentResultView, studentSubjectView, renew_admission
+    ApplicationWizard, studentResultView, studentSubjectView, renew_admission, RegistrationDetails, reject_student
 
 app_name = 'student'
 
@@ -32,6 +32,7 @@ urlpatterns = [
     path('all/', students_view, name='all_student'),
     path('alumnus/', AlumnusListView.as_view(), name='alumnus'),
     path('applicants/', all_applicants, name='all_applicants'),
+    path('applicants/<int:pk>/detail', RegistrationDetails.as_view(), name='registration_details'),
     path('admitted-students/', admitted_students_list,
          name='admitted_student_list'),
     path('applicants/paid/', paid_registrants,
@@ -49,6 +50,8 @@ urlpatterns = [
          name='admission_confirmation'),
     path('online-applicants/<int:pk>/admit/', admit_student,
          name='admit_student'),
+    path('online-applicants/<int:pk>/reject/', reject_student,
+         name='reject_student'),
 
     path('new-admission/<int:pk>/admit/', renew_admission,
          name='new_admission'),

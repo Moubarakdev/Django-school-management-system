@@ -47,27 +47,27 @@
                             <tr>
 
                                 <th scope="row">
-                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                    <a href="{% url 'dashboard:student:registration_details' pk=applicant.id %}">
                                         {{ forloop.counter }}
                                     </a>
                                 </th>
                                 <td>
-                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                    <a href="{% url 'dashboard:student:registration_details' pk=applicant.id %}">
                                         {{ applicant.last_name|upper }}
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                    <a href="{% url 'dashboard:student:registration_details' pk=applicant.id %}">
                                         {{ applicant.first_name|capfirst }}
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                    <a href="{% url 'dashboard:student:registration_details' pk=applicant.id %}">
                                         {{ applicant.created }}
                                     </a>
                                 </td>
                                 <td style="text-align: center;">
-                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                    <a href="{% url 'dashboard:student:registration_details' pk=applicant.id %}">
                                         {% if applicant.paid %}
                                         <img src="{% static 'images/checked.png' %}" width="16" alt="">
                                         {% else %}
@@ -76,7 +76,7 @@
                                     </a>
                                 </td>
                                 <td style="text-align: center;">
-                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                    <a href="{% url 'dashboard:student:registration_details' pk=applicant.id %}">
                                         {% if applicant.admitted %}
                                         <img src="{% static 'images/checked.png' %}" width="16" alt="">
                                         {% else %}
@@ -85,7 +85,7 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                    <a href="{% url 'dashboard:student:registration_details' pk=applicant.id %}">
                                         {{ applicant.mobile_number }}
                                     </a>
                                 </td>

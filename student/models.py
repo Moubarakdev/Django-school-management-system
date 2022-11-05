@@ -69,10 +69,8 @@ class StudentBase(TimeStampedModel):
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         help_text="Le fichier doit être scanner sous format pdf"
     )
-    last_exam_name = models.CharField(max_length=1, choices=EXAM_NAMES, verbose_name="Nom du dernier diplôme obtenu",
-                                      help_text="Concerne les diplômes après le BAC", blank=True, null=True)
     last_exam_marksheet = models.FileField(
-        upload_to='students/applicants/last_marksheets/%d/%m/%Y', verbose_name="Uploader votre dernier diplôme",
+        upload_to='students/applicants/last_marksheets/%d/%m/%Y', verbose_name="Autre document",
         validators=[FileExtensionValidator(allowed_extensions=["pdf"])],
         help_text="Le fichier doit être scanner sous format pdf", blank=True, null=True
     )

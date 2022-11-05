@@ -8,6 +8,7 @@
     <div class="row justify-content-between">
         <div class="col-md-7">
             <form action="" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
                 {{ form|crispy }}
                 <div>
                     <input type="submit" value="Valider les modifications" class="btn btn-success">
@@ -17,9 +18,7 @@
                         Accepter<i class="fas fa-check"></i>
                     </a>
                     {% endif %}
-
                 </div>
-                {% csrf_token %}
             </form>
         </div>
         <div class="col-md-4">
@@ -39,7 +38,7 @@
                 <li class="list-group-item">
                     {{ record }} <br>
                     <span class="badge badge-dark mr-1">
-                        <strong>Comment by:</strong>
+                        <strong>Commenter par:</strong>
                         {{ record.counselor }}
                     </span>
                     <span class="badge badge-info text-light">
@@ -63,6 +62,7 @@
             const fileName = e.target.files[0].name;
         $('.custom-file-label').html(fileName);
         });
+
 
 
 

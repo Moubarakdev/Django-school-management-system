@@ -228,6 +228,27 @@ def admit_student(request, pk):
     return render(request, 'students/dashboard_admit_student.html', context)
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
+def reject_student(request, pk):
+    """
+    reject applicant found by id/pk into chosen department
+    """
+    applicant = get_object_or_404(AdmissionStudent, pk=pk)
+    if request.method == 'POST':
+        form = AdmissionForm(request.POST, instance=applicant)
+        if form.is_valid():
+            student = form.save(commit=False)
+            student.rejected = True
+            student.save()
+            # prévoir l'envoi de l'email de confirmation
+            # send_admission_confirmation_email.delay(student.id)
+            return redirect('dashboard:student:rejected_registrant_list')
+    else:
+        form = AdmissionForm()
+        context = {'form': form, 'applicant': applicant}
+    return render(request, 'students/list/rejected_registrants.html', context)
+
+
 def renew_admission(request, pk):
     student = get_object_or_404(Student, pk=pk)
     if request.method == 'POST':
@@ -288,6 +309,20 @@ def update_online_registrant(request, pk):
     return render(request, 'students/dashboard_update_online_applicant.html', context)
 
 
+class RegistrationDetails(DetailView):
+    model = AdmissionStudent
+    template_name = 'students/registration_details.html'
+    context_object_name = 'applicant'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        applicant_id = self.kwargs['pk']
+        applicant = get_object_or_404(AdmissionStudent, pk=applicant_id)
+        context['counseling_records'] = CounselingComment.objects.filter(registrant_student=applicant)
+        context['counseling_form'] = CounselingDataForm()
+        return context
+
+
 @user_passes_test(user_is_admin_su_or_ac_officer)
 def add_counseling_data(request, student_id):
     registrant = get_object_or_404(AdmissionStudent, id=student_id)
@@ -298,7 +333,7 @@ def add_counseling_data(request, student_id):
             counseling_comment.counselor = request.user
             counseling_comment.registrant_student = registrant
             counseling_comment.save()
-            return redirect('dashboard:student:update_online_registrant', pk=student_id)
+            return redirect('dashboard:student:registration_details', pk=student_id)
 
 
 @user_passes_test(user_is_admin_su_or_ac_officer)

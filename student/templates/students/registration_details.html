@@ -1,0 +1,156 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="page-title"> Details de la demande</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:student:all_applicants' %}">Liste des demandes</a></li>
+                    <li class="breadcrumb-item active">Détails de la demande
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}"
+                           class="btn btn-primary">Modifier</a>
+                        {% if not applicant.admitted %}
+                        <a href="{% url 'dashboard:student:admit_student' pk=applicant.id %}"
+                           class="btn btn-success">
+                            Accepter<i class="fas fa-check"></i>
+                        </a>
+                        {% endif %}
+                        {% if not applicant.admitted %}
+                        <a href="{% url 'dashboard:student:reject_student' pk=applicant.id %}"
+                           class="btn btn-success">
+                            Rejeter<i class="fas fa-check"></i>
+                        </a>
+                        {% endif %}
+                    </div>
+                    <div class="about-info">
+                        <div class="media mt-3">
+                            <img src="{{ applicant.photo.url }}" class="mr-3" alt="...">
+                            <div class="media-body">
+                                <ul>
+                                    <li><span class="title-span">Nom : </span><span class="info-span">{{ applicant.last_name }} {{ applicant.first_name }}</span>
+                                    </li>
+                                    <li>
+                                        <span class="title-span">Filière choisie: </span> <strong><span
+                                            class="info-span badge badge-dark">{{ applicant.department_choice }}</span></strong>
+                                    </li>
+                                    <li><span class="title-span">Mobile: </span><span class="info-span">{{ applicant.mobile_number }}</span>
+                                    </li>
+                                    <li><span class="title-span">Email: </span><span class="info-span">{{ applicant.email }}</span>
+                                    </li>
+                                    <li><span class="title-span">Sexe : </span><span class="info-span">{{ applicant.gender }}</span>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <ul>
+                                    <hr>
+                                    <li><span class="mr-4">Date de naissance : </span><span class="info-span">{{ applicant.date_of_birth }}</span>
+                                    </li>
+                                    <li><span class="title-span">Nationalité : </span><span class="info-span">{{ applicant.nationality }}</span>
+                                    </li>
+                                    <li><span class="mr-4">Année d'obtention du BAC : </span><span
+                                            class="info-span">{{ applicant.bac_passing_year }}</span>
+                                    </li>
+                                    <hr>
+                                    <li>
+                                        <span class="mr-4">Nom du père : </span> <span class="info-span">{{ applicant.fathers_last_name }} {{ applicant.fathers_first_name }}</span>
+                                    </li>
+                                    <li><span class="mr-4">Nom de la mère : </span><span class="info-span">{{ applicant.mothers_last_name }} {{ applicant.mothers_first_name }}</span>
+                                    </li>
+                                    <li><span class="mr-4">Numéro du père : </span><span class="info-span">{{ applicant.fathers_mobile_number }}</span>
+                                    </li>
+                                    <li><span class="mr-4">Numéro de la mère : </span><span class="info-span">{{ applicant.mothers_mobile_number }}</span>
+                                    </li>
+                                    <li><span class="mr-4">Numéro de la personne à prévenir : </span><span
+                                            class="info-span">{{ applicant.guardian_mobile_number }}</span>
+                                    </li>
+                                    <hr>
+                                    <li><span class="mr-3">Adresse permanente : </span><span class="info-span">{{ applicant.permanent_address }}</span>
+                                    </li>
+                                    <li><span class="mr-3">Adresse courante : </span><span class="info-span">{{ applicant.current_address }}</span>
+                                    </li>
+                                    <hr>
+
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <a href="/media/{{ applicant.bac_marksheet }}">
+                                    <div class="blue-box">
+                                        <h5>Relevé du BAC</h5>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <div class="col-md-4 mb-3">
+                                {% if applicant.last_exam_marksheet %}
+                                <a href="/media/{{ applicant.bac_marksheet }}">
+                                    <div class="blue-box">
+                                        <h6>Autre document</h6>
+                                    </div>
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <!-- Update Counseling Data -->
+                    <div class="card p-3 mb-5">
+                        <form action="{% url 'dashboard:student:add_counseling_data' student_id=applicant.id %}"
+                              method="post">
+                            {{ counseling_form|crispy }}
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-primary" value="Sauvegarder">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
+                        </form>
+                    </div>
+                    <!-- Display Counseling Data -->
+                    <ul class="list-group card">
+                        <li class="list-group-item active">Informations relatives au conseil</li>
+                        {% for record in counseling_records.all %}
+                        <li class="list-group-item">
+                            {{ record }} <br>
+                            <span class="badge badge-dark mr-1">
+                        <strong>Commenter par:</strong>
+                        {{ record.counselor }}
+                    </span>
+                            <span class="badge badge-info text-light">
+                        <strong>Date:</strong>
+                        {{ record.created|date:"d b Y "}}
+                    </span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block customjs %}
+{% endblock %}
