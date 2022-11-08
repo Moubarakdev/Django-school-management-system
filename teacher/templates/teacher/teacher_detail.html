@@ -2,30 +2,103 @@
 {% load static %}
 
 {% block content %}
-<div class="container-fluid content">
-    <section id="teacher-detail-section">
-        <div id="teacher-detail-section--inner">
-            <div class="container">
-                <div class="row py-5">
-                    <div class="col-4">
-                        <img class="teacher-profile-img"
-                             {% if teacher.photo %}
-                             src="{{ teacher.photo.url }}"
-                             {% else %}
-                             {% static 'images/money.jpg' %}
-                        {% endif %}
-                        alt="" width="300" height="200">
+
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="page-title">Détails Professeur</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:teacher:read_teachers' %}">Professeurs</a></li>
+                    <li class="breadcrumb-item active">Détails
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <a href="{% url 'dashboard:teacher:delete_teacher' pk=teacher.id %}"
+                           class="btn btn-danger">Supprimer le profil</a>
                     </div>
-                    <div class="col-8">
-                        <h2>{{ teacher.name}}</h2>
-                        <p></p>
-                        <a href="{% url 'dashboard:teacher:delete_teacher' pk=teacher.pk %}" class="btn btn-danger">Delete
-                            Profile</a>
+                    <div class="about-info">
+                        <div class="media mt-3">
+                            <img class="mr-3" alt="..."
+                                 {% if teacher.photo %}
+                                 src="{{ teacher.photo.url }}"
+                                 {% else %}
+                                 src="{% static '/assets/img/user.png' %}"
+                                 {% endif %}
+                            >
+                            <div class="media-body">
+                                <ul>
+                                    <li>
+                                        <span class="title-span">Nom: </span>
+                                        <span class="info-span">{{ teacher.last_name }} {{ teacher.first_name }}</span>
+                                    </li>
+                                    <li>
+                                                    <span class="title-span">Department
+                                                        : </span>
+                                        <span class="info-span">Computer
+                                                        Science</span>
+                                    </li>
+                                    <li><span class="title-span">Mobile: </span>
+                                        <span class="info-span">{{ teacher.mobile_number }}</span>
+                                    </li>
+                                    <li><span class="title-span">Email: </span>
+                                        <span class="info-span">{{ teacher.email }}</span>
+                                    </li>
+                                    <li>
+                                                    <span class="title-span">Gender
+                                                        : </span>
+                                        <span class="info-span">Male</span>
+                                    </li>
+                                    <li>
+                                                    <span class="title-span">DOB
+                                                        : </span>
+                                        <span class="info-span">{{ teacher.date_of_birth }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <p>Hello I am Daisy Parks. Lorem
+                                    Ipsum is simply dummy text
+                                    of the printing and
+                                    typesetting industry, simply
+                                    dummy text of the printing
+                                    and typesetting industry.</p>
+                            </div>
+                        </div>
+                        <div class="row follow-sec">
+                            <div class="col-md-4 mb-3">
+                                <div class="blue-box">
+                                    <h3>2850</h3>
+                                    <p>Followers</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="blue-box">
+                                    <h3>2050</h3>
+                                    <p>Following</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="blue-box">
+                                    <h3>2950</h3>
+                                    <p>Friends</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
 </div>
 
 {% endblock %}

@@ -48,13 +48,12 @@ class Department(TimeStampedModel):
     def save(self, *args, **kwargs):
         last_dept = Department.objects.last()
         self.code = last_dept.code + 1
-        self.code = self.code.upper()
-        self.code = self.code.capitalize()
+        self.name = self.name.capitalize()
         super().save(*args, **kwargs)
 
 
 class AcademicSession(TimeStampedModel):
-    year = models.PositiveIntegerField(unique=True, verbose_name="Année")
+    year = models.PositiveIntegerField(unique=True, verbose_name="Année académique")
     current = models.BooleanField(default=True, verbose_name="Marquer comme année courante")
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,

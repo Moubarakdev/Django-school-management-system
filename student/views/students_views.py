@@ -259,6 +259,13 @@ def renew_admission(request, pk):
             student.assign_payment = False
             student.save()
             return redirect('dashboard:student:all_student')
+        else:
+            messages.add_message(
+                request,
+                messages.ERROR,
+                'Problem'
+            )
+
     else:
         form = AdmissionForm2(instance=student.admission_student)
     context = {'form': form, 'student': student}

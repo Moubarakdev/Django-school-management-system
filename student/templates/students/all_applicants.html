@@ -17,7 +17,6 @@
                 </ul>
             </div>
             <div class="col-auto text-right float-right ml-auto">
-                <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
                 <a href="{% url 'dashboard:student:add_student' %}" class="btn btn-primary"><i
                         class="fas fa-plus"></i></a>
             </div>
@@ -35,10 +34,9 @@
                                 <th scope="col">Nom</th>
                                 <th scope="col">Prénoms</th>
                                 <th scope="col">Application Date</th>
-                                <th scope="col">Status payement</th>
-                                <th scope="col">Admission</th>
                                 <th scope="col">Contact</th>
-                                <th class="text-right">Action</th>
+                                <th scope="col">Statut du payement</th>
+                                <th scope="col">Admission</th>
 
                             </tr>
                             </thead>
@@ -66,6 +64,11 @@
                                         {{ applicant.created }}
                                     </a>
                                 </td>
+                                <td>
+                                    <a href="{% url 'dashboard:student:registration_details' pk=applicant.id %}">
+                                        {{ applicant.mobile_number }}
+                                    </a>
+                                </td>
                                 <td style="text-align: center;">
                                     <a href="{% url 'dashboard:student:registration_details' pk=applicant.id %}">
                                         {% if applicant.paid %}
@@ -83,21 +86,6 @@
                                         <img src="{% static 'images/cross.png' %}" width="16" alt="">
                                         {% endif %}
                                     </a>
-                                </td>
-                                <td>
-                                    <a href="{% url 'dashboard:student:registration_details' pk=applicant.id %}">
-                                        {{ applicant.mobile_number }}
-                                    </a>
-                                </td>
-                                <td class="text-right">
-                                    <div class="actions">
-                                        {% if not applicant.admitted %}
-                                        <a href="{% url 'dashboard:student:admit_student' pk=applicant.id %}"
-                                           class="btn btn-sm btn-success">
-                                            <i class="fas fa-check"></i>
-                                        </a>
-                                        {% endif %}
-                                    </div>
                                 </td>
                             </tr>
 

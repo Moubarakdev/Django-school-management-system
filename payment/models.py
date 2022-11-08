@@ -21,7 +21,6 @@ class Invoice(models.Model):
 
     class Meta:
         ordering = ["student", "session"]
-        unique_together = ['student', 'session']
 
     def __str__(self):
         return f"{self.student}"
@@ -61,14 +60,6 @@ class InvoiceItem(models.Model):
     term3 = models.IntegerField(verbose_name="Troisième tranche")
     term4 = models.IntegerField(verbose_name="Quatrième tranche")
 
-    def save(self, *args, **kwargs):
-        self.term1 = (self.amount * 30) / 100
-        self.term2 = (self.amount * 30) / 100
-        self.term3 = (self.amount * 20) / 100
-        self.term4 = (self.amount * 20) / 100
-
-        super().save(*args, **kwargs)
-
 
 class Receipt(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
@@ -78,29 +69,3 @@ class Receipt(models.Model):
 
     def __str__(self):
         return f"Receipt on {self.date_paid}"
-
-    def save(self, *args, **kwargs):
-        # TODO: update terms after a payment
-        item = InvoiceItem.objects.get(invoice=self.invoice)
-        #  Algo de gestion des tranches
-        if item.term1 >= self.amount_paid:
-            item.term1 -= self.amount_paid
-        elif item.term1 < self.amount_paid:
-            rest = self.amount_paid - item.term1
-            item.term1 = 0
-            if rest <= item.term2:
-                item.term2 -= rest
-            elif rest > item.term2:
-                rest2 = rest - item.term2
-                item.term2 = 0
-                if rest2 <= item.term3:
-                    item.term3 -= rest2
-                elif rest2 > item.term3:
-                    rest3 = rest2 - item.term3
-                    item.term3 = 0
-                    if rest3 <= item.term4:
-                        item.term4 -= rest3
-                    else:
-                        item.term4 = 0
-        item.save()
-        return super().save(*args, **kwargs)

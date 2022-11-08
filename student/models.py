@@ -2,6 +2,7 @@ import requests
 from django.contrib import messages
 from django.core.validators import FileExtensionValidator
 from django.db import models, IntegrityError, transaction, OperationalError
+from django.http import request
 from model_utils.models import TimeStampedModel
 from django_countries.fields import CountryField
 from phonenumber_field.modelfields import PhoneNumberField
@@ -148,6 +149,10 @@ class AdmissionStudent(StudentBase):
         default='1',
         verbose_name="Type d'application"
     )
+    ac_session = models.ForeignKey(
+        AcademicSession, on_delete=models.CASCADE,
+        blank=True, null=True, verbose_name="Session académique"
+    )
     migration_status = models.CharField(
         max_length=255,
         blank=True, null=True
@@ -162,6 +167,7 @@ class AdmissionStudent(StudentBase):
         return f"{self.last_name}"
 
     def save(self, *args, **kwargs):
+        self.ac_session = AcademicSession.objects.get(current=True)
         self.fathers_last_name = self.fathers_last_name.upper()
         self.mothers_last_name = self.mothers_last_name.upper()
         self.fathers_first_name = self.fathers_first_name.capitalize()
@@ -216,35 +222,39 @@ class Student(TimeStampedModel):
 
     def _find_last_admitted_student_serial(self):
         # What is the last temp_id for this year, dept?
-        item_serial_obj = TempSerialID.objects.filter(
-            department=self.admission_student.choosen_department,
-            year=self.ac_session,
-        ).order_by('serial').last()
+        if not self.temp_serial or not self.temporary_id:
+            item_serial_obj = TempSerialID.objects.filter(
+                department=self.admission_student.choosen_department,
+                year=self.admission_student.ac_session,
+            ).order_by('serial').last()
 
-        if item_serial_obj:
-            # Return last temp_id
-            serial_number = item_serial_obj.serial
-            return int(serial_number)
-        else:
-            # If no temp_id object for this year and department found
-            # return 0
-            return 0
+            if item_serial_obj:
+                # Return last temp_id
+                serial_number = item_serial_obj.serial
+                return int(serial_number)
+            else:
+                # If no temp_id object for this year and department found
+                # return 0
+                return 0
 
     def get_temp_id(self):
-        # Get current year (academic) last two digit
-        year_digits = str(self.ac_session.year)[-2:]
-        # Get batch of student's department
-        # batch_digits = self.batch.number
-        # Get department code
-        department_code = self.admission_student.choosen_department.code
-        # Get admission serial of student by department
-        temp_serial_key = self.temp_serial
-        # return something like: 21-15-666-15
-        temp_id = f'{year_digits}-' \
-                  f'{department_code}-{temp_serial_key}'
-        return temp_id
+        if not self.temp_serial or not self.temporary_id:
+            # Get current year (academic) last two digit
+            year_digits = str(self.admission_student.ac_session.year)[-2:]
+            # Get batch of student's department
+            # batch_digits = self.batch.number
+            # Get department code
+            department_code = self.admission_student.choosen_department.code
+            # Get admission serial of student by department
+            temp_serial_key = self.temp_serial
+            # return something like: 21-15-666-15
+            temp_id = f'{year_digits}-' \
+                      f'{department_code}-{temp_serial_key}'
+            return temp_id
 
     def save(self, *args, **kwargs):
+        if self.admission_student.ac_session.year > self.ac_session.year:
+            self.ac_session = self.admission_student.ac_session
         # Check if chosen_dept == batch.dept is same or not.
         if not self.admission_student.choosen_department.is_active:
             raise OperationalError(
@@ -292,23 +302,6 @@ class Student(TimeStampedModel):
 
             except IntegrityError:
                 pass
-        # Must review
-        if self.assign_payment:
-            old_invoice = Invoice.objects.filter(student=self).last()
-            if self.admission_student.choosen_department != old_invoice.student.admission_student.choosen_department and self.ac_session != old_invoice.student.ac_session:
-                with transaction.atomic():
-                    invoice = Invoice.objects.create(
-                        student=self,
-                        session=self.ac_session,
-                    )
-                    invoiceItem = InvoiceItem.objects.create(
-                        invoice=invoice,
-                        description="Frais de scolarité",
-                        amount=self.admission_student.choosen_department.fee
-                    )
-                    invoice.save()
-                    invoiceItem.save()
-                self.assign_payment = True
 
         super().save(*args, **kwargs)
 

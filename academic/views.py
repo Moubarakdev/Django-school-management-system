@@ -442,8 +442,7 @@ class CurrentSessionAndTermView(LoginRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            session = form.cleaned_data["current_session"].year
-            term = form.cleaned_data["current_term"]
+            session = form.cleaned_data["session_courante"].year
             AcademicSession.objects.filter(year=session).update(current=True)
             AcademicSession.objects.exclude(year=session).update(current=False)
             '''AcademicTerm.objects.filter(name=term).update(current=True)

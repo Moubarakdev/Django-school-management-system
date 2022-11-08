@@ -83,35 +83,7 @@ class AdmissionForm2(forms.ModelForm):
             'paid',
             'rejected',
         ]
-        widgets = {
-            'guardian_mobile_number': PhoneNumberPrefixWidget(initial='IN'),
-            'gender': forms.HiddenInput(),
-            'nationality': forms.HiddenInput(),
-            'religion': forms.HiddenInput(),
-            'fathers_last_name': forms.HiddenInput(),
-            'fathers_first_name': forms.HiddenInput(),
-            'fathers_mobile_number': PhoneNumberPrefixWidget(initial='IN'),
-            'mothers_last_name': forms.HiddenInput(),
-            'mothers_first_name': forms.HiddenInput(),
-            'mothers_mobile_number': PhoneNumberPrefixWidget(initial='IN'),
-            'bac_passing_year': forms.HiddenInput(),
-            'email': forms.HiddenInput(),
-            'department_choice': forms.HiddenInput(),
-            'photo': forms.HiddenInput(),
-            'bac_marksheet': forms.HiddenInput(),
-            'last_exam_marksheet': forms.HiddenInput(),
-            'admission_policy_agreement': forms.HiddenInput(),
-            'student_account': forms.HiddenInput(),
-            'admitted': forms.HiddenInput(),
-            'paid': forms.HiddenInput(),
-            'rejected': forms.HiddenInput(),
-            'date_of_birth': forms.HiddenInput(),
-            'current_address': forms.HiddenInput(),
-            'permanent_address': forms.HiddenInput(),
-            'mobile_number': PhoneNumberPrefixWidget(initial='IN'),
-
-        }
-
+       
 
 class StudentRegistrantUpdateForm(forms.ModelForm):
     class Meta:
