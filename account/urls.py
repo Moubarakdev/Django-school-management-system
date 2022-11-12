@@ -5,7 +5,7 @@ from django.urls import path, include
 from django_countries import settings
 
 from account.views import login_view, profile_complete, register, profile_picture_upload, user_approval, \
-    user_approval_with_modification, AccountListView, UserUpdateView, CreateUserView, ChangePasswordView
+    user_approval_with_modification, AccountListView, UserUpdateView, CreateUserView, ChangePasswordView, GroupListView
 from permission_handlers.basic import permission_error
 
 # app_name = 'account'
@@ -17,6 +17,7 @@ urlpatterns = [
                   path('logout/', LogoutView.as_view(), name="logout"),
                   path('verification/', include('verify_email.urls')),
                   path('accounts/', AccountListView.as_view(), name='read_accounts'),
+                  path('groups/', GroupListView.as_view(), name='groups'),
                   path('account/update/<int:pk>', UserUpdateView.as_view(), name='update_account'),
                   path('account/create/', CreateUserView.as_view(), name='create_account'),
                   path('approval/<int:pk>/<int:approved>', user_approval, name='user_approval'),

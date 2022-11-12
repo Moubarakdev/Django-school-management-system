@@ -407,7 +407,6 @@ class TermCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
                 return redirect("term")
         return super().form_valid(form)'''
 
-
 """class TermDeleteView(LoginRequiredMixin, DeleteView):
     model = AcademicTerm
     success_url = reverse_lazy("dashboard:academic:read_terms")
@@ -423,6 +422,8 @@ class TermCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return super(TermDeleteView, self).delete(request, *args, **kwargs)
 
 """
+
+
 # ####################### CURENT ##########################
 class CurrentSessionAndTermView(LoginRequiredMixin, View):
     """Current Session and Term"""

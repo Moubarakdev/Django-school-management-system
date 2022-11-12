@@ -1,143 +1,223 @@
 {% extends 'layouts/base_dash.html' %}
 {% load static %}
+{% load permission_tags %}
 {% load student_tags %}
 
-{% block content %}
-<div class="container content">
-    <section id="student-detail-section header">
-        <div id="student-detail-section--inner">
-            <div class="container">
-                <a href="{% url 'dashboard:student:students_board' %}" class="btn btn-danger">
-                    Dashboard
-                </a>
-                <a href="{% url 'dashboard:student:delete_student' pk=student.pk %}" class="btn btn-danger">
-                    <i class="fas fa-trash-alt"></i>
-                </a>
-                <a href="{% url 'dashboard:student:update_student' pk=student.pk %}" class="btn btn-secondary">
-                    <i class="fas fa-edit"></i>
-                </a>
-                {% if request.current_session.year > student.ac_session.year %}
-                <a href="{% url 'dashboard:student:new_admission' pk=student.pk %}" class="btn btn-secondary">
-                    <i class="fas fa-edit">Réinscription</i>
-                </a>
-                {% endif %}
-                <div class="row py-5">
-                    <div class="col-3">
-                        <img class="student-profile-img" src="{{ student.admission_student.photo.url }}" alt=""
-                             width="200"
-                             height="200">
-                    </div>
-                    <div class="col-8">
-                        <h2>{{ student.admission_student.name }}</h2>
-                        <h4>
-                            {{ student.admission_student.choosen_department }}
-                        </h4>
-                        <h4>
-                            Matricule : {{ student.temporary_id }}
-                        </h4>
-                        {% if student.roll %}
-                        <h4>Roll: {{ student.roll }}</h4>
-                        {% endif %}
-                        {% if student.registration_number %}
-                        <h4>Numéro d'enregistrement: {{ student.registration_number }}</h4>
-                        {% endif %}
-                        <h4>Session: {{ student.ac_session }}</h4>
-                        {% if student.mobile %}
-                        <h4>Mobile: {{ student.mobile }}</h4>
-                        {% endif %}
-                        {% if student.email %}
-                        <h4>Email: {{ student.email }}</h4>
-                        {% endif %}
-                        {% if student.guardian_mobile %}
-                        <h4>Personne à prévenir : {{ student.admission_student.guardian_mobile }}</h4>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+{% block customcss %}
+<style>
+    .isDisabled {
+      color: currentColor;
+      cursor: not-allowed;
+      opacity: 0.5;
+      text-decoration: none;
+    }
 
-    <section id="student-results">
-        <div class="container-fluid">
-            <div class="row mt-5">
-                <div class="col-sm-12">
-                    <h3>Historique des factures/paiements</h3>
-                    {% if payments %}
-                    <div class="card card-table">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-center mb-0">
-                                    <thead>
-                                    <tr>
-                                        <th>Pour</th>
-                                        <th>Montant à payer</th>
-                                        <th>Montant payé</th>
-                                        <th>Solde</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for payment in payments %}
-                                    <tr class='clickable-row' data-href="{% url 'payment:invoice_detail' payment.id %}">
-                                        <td>{{payment.session}} - {{payment.term}} - {% for semester in payment.semesters.all %}{{ semester }} {% endfor %}
-                                        </td>
-                                        <td>{{payment.total_amount_payable}}</td>
-                                        <td>{{payment.total_amount_paid}}</td>
-                                        <td>{{payment.balance}}</td>
-                                    </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                    {% else %}
-                    <p>Il n'y a pas d'historique de paiement pour {{object}}</p>
-                    {% endif %}
-
-                    <hr>
-
-                    <h3>Tableau de résultats</h3>
-                    <div class="card card-table">
-                        <div class="card-body">
-                            <div class="table-responsive">
-                                <table class="table table-hover table-center mb-0">
-                                    <thead>
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">Matière</th>
-                                        <th scope="col">Note de classe</th>
-                                        <th scope="col">Note d'examen</th>
-                                        <th scope="col">Note de rattrapage</th>
-                                        <th scope="col">Total</th>
-                                        <th scope="col">Moyenne</th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    {% for result in results %}
-                                    <tr>
-                                        <td>{{ forloop.counter }}</td>
-                                        <td>{{ result.subject }}</td>
-                                        <td>{{ result.class_marks }}</td>
-                                        <td>{{ result.exam_marks }}</td>
-                                        <td>{{ result.extra_marks }}</td>
-                                        <td>{{ result.total_marks }}</td>
-                                        <td>{{ result.average }}</td>
-                                    </tr>
-                                    {% endfor %}
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-</div>
-
+</style>
 {% endblock %}
 
+{% block content %}
+
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="page-title">Détails Professeur</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:teacher:read_teachers' %}">Professeurs</a>
+                    </li>
+                    <li class="breadcrumb-item active">Détails
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="mb-3">
+                        <a href="{% url 'dashboard:student:students_board' %}" class="btn btn-danger">
+                            Dashboard
+                        </a>
+                        <a href="{% url 'dashboard:student:delete_student' pk=student.pk %}" class="btn btn-danger">
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                        <a href="{% url 'dashboard:student:update_student' pk=student.pk %}" class="btn btn-secondary">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        {% if request.current_session.year > student.ac_session.year %}
+                        <a href="{% url 'dashboard:student:new_admission' pk=student.pk %}" class="btn btn-secondary">
+                            <i class="fas fa-edit">Réinscription</i>
+                        </a>
+                        {% endif %}
+                    </div>
+                    <div class="about-info">
+                        <div class="media mt-3">
+                            <img class="mr-3" alt="..."
+                                 {% if student.admission_student.photo %}
+                                 src="{{ student.admission_student.photo.url }}"
+                                 {% else %}
+                                 src="{% static '/assets/img/user.png' %}"
+                                 {% endif %}
+                            >
+                            <div class="media-body">
+                                <ul>
+                                    <li>
+                                        <span class="title-span">Matricule: </span>
+                                        <span class="info-span">{{ student.temporary_id }}</span>
+                                    </li>
+                                    <li>
+                                        <span class="title-span">Nom: </span>
+                                        <span class="info-span">{{ student.admission_student.last_name }} {{ student.admission_student.first_name }}</span>
+                                    </li>
+                                    <li>
+                                        <span class="title-span">Filière: </span>
+                                        <span class="info-span">{{ student.admission_student.choosen_department }}</span>
+                                    </li>
+                                    <li><span class="title-span">Mobile: </span>
+                                        <span class="info-span">{{ student.admission_student.mobile_number }}</span>
+                                    </li>
+                                    <li><span class="title-span">Email: </span>
+                                        <span class="info-span">{{ student.admission_student.email }}</span>
+                                    </li>
+                                    <li><span class="title-span">Gender : </span>
+                                        <span class="info-span">{{ student.admission_student.gender }}</span>
+                                    </li>
+                                    <li><span class="title-span">DOB : </span>
+                                        <span class="info-span">{{ student.admission_student.date_of_birth }}</span>
+                                    </li>
+                                    <li><span class="mr-1">Numéro personne à prévenir : </span>
+                                        <span class="info-span">{{ student.admission_student.guardian_mobile_number }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <section id="student-results">
+                            <div class="container-fluid">
+                                <div class="row mt-5">
+                                    <div class="col-sm-12">
+                                        <h3>Historique des factures/paiements</h3>
+                                        {% if payments %}
+                                        <div class="card card-table">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover table-center mb-0">
+                                                        <thead>
+                                                        <tr>
+                                                            <th>Pour</th>
+                                                            <th>Montant à payer</th>
+                                                            <th>Montant payé</th>
+                                                            <th>Solde</th>
+                                                            <th>Statut</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for payment in payments %}
+
+                                                        <tr>
+
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.session}}
+                                                            </a></td>
+
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.total_amount_payable}}</a>
+                                                            </td>
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.total_amount_paid}}</a>
+                                                            </td>
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.balance}}</a>
+                                                            </td>
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.statut}}</a>
+                                                            </td>
+                                                            {% if request.user|has_role:'accounts' %}
+                                                            <td>
+                                                                {% if payment.status == "active" %}
+                                                                <a class="btn btn-success btn-sm"
+                                                                   href="{% url 'payment:create_receipt' %}?invoice={{ payment.id }}"
+                                                                   role="link" aria-disabled="true">Nouveau payement
+                                                                </a>
+                                                                {% else %}
+                                                                <a class="btn btn-success btn-sm isDisabled"
+                                                                   role="link" aria-disabled="true">Nouveau payement
+                                                                </a>
+                                                                {% endif %}
+                                                            </td>
+                                                            {% endif %}
+                                                        </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% else %}
+                                        <p>Il n'y a pas encore d'historique de paiement pour {{object}}</p>
+                                        {% endif %}
+
+                                        <hr>
+
+                                        <h3>Tableau de résultats</h3>
+                                        <div class="card card-table">
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table table-hover table-center mb-0">
+                                                        <thead>
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">Matière</th>
+                                                            <th scope="col">Note de classe</th>
+                                                            <th scope="col">Note d'examen</th>
+                                                            <th scope="col">Note de rattrapage</th>
+                                                            <th scope="col">Total</th>
+                                                            <th scope="col">Moyenne</th>
+                                                        </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        {% for result in results %}
+                                                        <tr>
+                                                            <td>{{ forloop.counter }}</td>
+                                                            <td>{{ result.subject }}</td>
+                                                            <td>{{ result.class_marks }}</td>
+                                                            <td>{{ result.exam_marks }}</td>
+                                                            <td>{{ result.extra_marks }}</td>
+                                                            <td>{{ result.total_marks }}</td>
+                                                            <td>{{ result.average }}</td>
+                                                        </tr>
+                                                        {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+                        <div class="row follow-sec">
+                            <div class="col-md-4 mb-3">
+                                <div class="blue-box">
+                                    <h3>2850</h3>
+                                    <p>Followers</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="blue-box">
+                                    <h3>2050</h3>
+                                    <p>Following</p>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <div class="blue-box">
+                                    <h3>2950</h3>
+                                    <p>Friends</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
 {% block customjs %}
 <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
 {% endblock %}

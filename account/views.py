@@ -2,9 +2,10 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import Group
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.messages.views import SuccessMessageMixin
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, UpdateView, CreateView
@@ -299,6 +300,13 @@ class CreateUserView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     template_name = 'account/dashboard/account_form.html'
     success_url = reverse_lazy('read_accounts')
 
+    def form_valid(self, form):
+        self.object = form.save()
+        if self.object.approval_status == 'a':
+            assign_role(self.object, self.object.requested_role)
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context['button'] = "Créer"
@@ -321,7 +329,7 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
 
 
 class GroupListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
-    model = CustomGroup
+    model = Group
     template_name = 'academic/group_list.html'
     context_object_name = 'groups'
 

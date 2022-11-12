@@ -445,7 +445,7 @@ class StudentDetailsView(LoginRequiredMixin, UserPassesTestMixin, DetailView):
         # getting result objects
         results = student.results.all()
         context['results'] = results
-        context["payments"] = Invoice.objects.filter(student=self.object)
+        context["payments"] = Invoice.objects.filter(student=self.object).order_by('-session')
         return context
 
 

@@ -16,7 +16,6 @@
                 </ul>
             </div>
             <div class="col-auto text-right float-right ml-auto">
-                <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
                 <a href="{% url 'dashboard:student:add_student' %}" class="btn btn-primary"><i
                         class="fas fa-plus"></i></a>
             </div>
@@ -66,7 +65,7 @@
                                 </td>
                                 <td>
                                     <a href="{% url 'dashboard:student:student_details' pk=student.id %}">
-                                        {{ student.admission_student.choosen_department.level }}
+                                        {{ student.admission_student.choosen_department.level|upper }}
                                     </a>
                                 </td>
                                 <td class="text-right">

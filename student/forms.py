@@ -133,9 +133,6 @@ class StudentUpdateForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = (
-            'roll',
-            'registration_number',
-            'guardian_mobile',
             'is_alumni', 'is_dropped'
         )
 

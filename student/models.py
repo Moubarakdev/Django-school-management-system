@@ -186,17 +186,12 @@ class Student(TimeStampedModel):
         AdmissionStudent,
         on_delete=models.CASCADE, unique_for_year=True
     )
-    roll = models.CharField(max_length=6, unique=True, blank=True, null=True)
-    registration_number = models.CharField(max_length=6, unique=True, blank=True, null=True,
-                                           verbose_name="Numéro d'enregistrement")
     temp_serial = models.CharField(max_length=50, blank=True, null=True, verbose_name="Numéro de série")
     temporary_id = models.CharField(max_length=50, blank=True, null=True, verbose_name="Id")
     ac_session = models.ForeignKey(
         AcademicSession, on_delete=models.CASCADE,
         blank=True, null=True, verbose_name="Session académique"
     )
-    guardian_mobile = models.CharField(max_length=11, blank=True, null=True,
-                                       verbose_name="Numéro de personne à prévenir")
     admitted_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True
@@ -208,9 +203,6 @@ class Student(TimeStampedModel):
     # Managers
     objects = StudentManager()
     alumnus = AlumniManager()
-
-    class Meta:
-        ordering = ['roll', 'registration_number']
 
     def __str__(self):
         return '{} ({}) {} filière.{}'.format(
@@ -253,17 +245,18 @@ class Student(TimeStampedModel):
             return temp_id
 
     def save(self, *args, **kwargs):
-        if self.admission_student.ac_session.year > self.ac_session.year:
-            self.ac_session = self.admission_student.ac_session
-        # Check if chosen_dept == batch.dept is same or not.
-        if not self.admission_student.choosen_department.is_active:
-            raise OperationalError(
-                f'Impossible d\'assigner la filière {self.admission_student.choosen_department} '
-                f'à l\'étudiant, vérifier si la filière est active')
-        elif self.admission_student.choosen_department.is_active:
-            # Set AdmissionStudent assigned_as_student=True
-            self.admission_student.assigned_as_student = True
-            self.admission_student.save()
+        if self.admission_student.ac_session:
+            if self.admission_student.ac_session.year > self.ac_session.year:
+                self.ac_session = self.admission_student.ac_session
+            # Check if chosen_dept == batch.dept is same or not.
+            if not self.admission_student.choosen_department.is_active:
+                raise OperationalError(
+                    f'Impossible d\'assigner la filière {self.admission_student.choosen_department} '
+                    f'à l\'étudiant, vérifier si la filière est active')
+            elif self.admission_student.choosen_department.is_active:
+                # Set AdmissionStudent assigned_as_student=True
+                self.admission_student.assigned_as_student = True
+                self.admission_student.save()
 
         # Create temporary id for student id if temporary_id is not set yet.
         if not self.temp_serial or not self.temporary_id:

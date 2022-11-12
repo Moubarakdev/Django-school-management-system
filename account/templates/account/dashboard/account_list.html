@@ -1,5 +1,6 @@
 {% extends 'layouts/base_dash.html' %}
 {% load static %}
+{% load permission_tags %}
 {% load crispy_forms_tags %}
 
 {% block extra_header %}
@@ -26,10 +27,12 @@
                     <li class="breadcrumb-item active">Utilisateurs</li>
                 </ul>
             </div>
+             {% if request.user|can:'crud_users' %}
             <div class="col-auto text-right float-right ml-auto">
                 <a href="{% url 'create_account' %}" class="btn btn-primary"><i
                         class="fas fa-plus"></i></a>
             </div>
+            {% endif %}
         </div>
     </div>
     <div class="row">
@@ -45,7 +48,9 @@
                                 <th>Prénom</th>
                                 <th>Email</th>
                                 <th>Rôle</th>
+                                {% if request.user|can:'crud_users' %}
                                 <th class="text-right">Action</th>
+                                {% endif %}
                             </tr>
                             </thead>
                             <tbody>
@@ -64,6 +69,7 @@
                                     Utilisateur de base
                                     {% endfor %}
                                 </td>
+                                {% if request.user|can:'crud_users' %}
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="{% url 'update_account' pk=account.pk %}"
@@ -76,6 +82,7 @@
                                     </div>
                                 </td>
                             </tr>
+                            {% endif %}
                             {% endfor %}
                             </tbody>
                         </table>

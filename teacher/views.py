@@ -1,6 +1,7 @@
 from datetime import date
 
 from django.contrib.auth.decorators import user_passes_test
+from django.contrib.auth.mixins import UserPassesTestMixin, LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, ListView, DeleteView, DetailView
@@ -12,9 +13,18 @@ from teacher.models import Teacher
 
 
 # Create your views here.
-class CreateTeacherView(CreateView):
+class CreateTeacherView(CreateView, LoginRequiredMixin, UserPassesTestMixin):
     model = Teacher
     form_class = TeacherForm
+
+    def test_func(self):
+        user = self.request.user
+        return user_is_admin_su_or_ac_officer(user)
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            return redirect('profile_complete')
+        return redirect('login')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -30,10 +40,19 @@ class CreateTeacherView(CreateView):
         return super().form_valid(form)
 
 
-class UpdateTeacherView(UpdateView):
+class UpdateTeacherView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Teacher
     form_class = TeacherForm
     template_name = 'teacher/teacher_form.html'
+
+    def test_func(self):
+        user = self.request.user
+        return user_is_admin_su_or_ac_officer(user)
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            return redirect('profile_complete')
+        return redirect('login')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -43,26 +62,53 @@ class UpdateTeacherView(UpdateView):
     success_url = reverse_lazy('dashboard:teacher:read_teachers')
 
 
-class TeacherListView(ListView):
+class TeacherListView(ListView, LoginRequiredMixin, UserPassesTestMixin):
     model = Teacher
     queryset = Teacher.objects.filter(assigned_as_teacher=True)
     context_object_name = "teachers"
     template_name = 'teacher/teacher_list.html'
 
+    def test_func(self):
+        user = self.request.user
+        return user_is_admin_su_or_ac_officer(user)
 
-class DeleteTeacherView(DeleteView):
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            return redirect('profile_complete')
+        return redirect('login')
+
+
+class DeleteTeacherView(DeleteView, LoginRequiredMixin, UserPassesTestMixin):
     model = Teacher
     template_name = 'teacher/teacher_confirm_delete.html'
     success_url = reverse_lazy('dashboard:teacher:read_teachers')
 
+    def test_func(self):
+        user = self.request.user
+        return user_is_admin_su_or_ac_officer(user)
 
-class TeacherDetailView(DetailView):
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            return redirect('profile_complete')
+        return redirect('login')
+
+
+class TeacherDetailView(DetailView, LoginRequiredMixin, UserPassesTestMixin):
     model = Teacher
     template_name = 'teacher/teacher_detail.html'
     context_object_name = 'teacher'
 
+    def test_func(self):
+        user = self.request.user
+        return user_is_admin_su_or_ac_officer(user)
 
-class TeacherApplication(CreateView):
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            return redirect('profile_complete')
+        return redirect('login')
+
+
+class TeacherApplication(CreateView, LoginRequiredMixin):
     model = Teacher
     form_class = TeacherForm
 

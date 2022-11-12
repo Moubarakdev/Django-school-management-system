@@ -15,9 +15,16 @@ class Invoice(models.Model):
     balance_from_previous_session = models.IntegerField(default=0)
     status = models.CharField(
         max_length=20,
-        choices=[("active", "Active"), ("closed", "Closed")],
+        choices=[("active", "Active"), ("closed", "Clôturer")],
         default="active",
     )
+
+    @property
+    def statut(self):
+        if self.status == 'active':
+            return "Actif"
+        else:
+            return "Clôturer"
 
     class Meta:
         ordering = ["student", "session"]

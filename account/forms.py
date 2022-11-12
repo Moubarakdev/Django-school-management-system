@@ -130,7 +130,6 @@ class ProfileCompleteForm(djform.ModelForm):
     class Meta:
         model = User
         fields = [
-            'employee_or_student_id',
             'requested_role',
             'email',
             'approval_extra_note']

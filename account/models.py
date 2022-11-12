@@ -17,6 +17,7 @@ class User(AbstractUser):
         ('editor', 'Editeur'),
         ('academic_officer', 'Direction Académique'),
         ('admin', 'Administrateur'),
+        ('accounts', 'Comptabilité'),
     )
     APPROVAL_CHOICES = (
         ('n', 'Aucune demande d\'approbation'),
@@ -28,11 +29,6 @@ class User(AbstractUser):
         max_length=2,
         choices=APPROVAL_CHOICES,
         default='p',
-    )
-    employee_or_student_id = models.CharField(
-        help_text="seulement si vous êtes déjà Étudiant",
-        max_length=10,
-        blank=True, null=True, verbose_name='Matricule'
     )
     requested_role = models.CharField(
         choices=REQUESTED_ACCOUNT_TYPE_CHOICES,

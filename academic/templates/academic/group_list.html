@@ -1,0 +1,108 @@
+{% extends 'layouts/base_dash.html' %}
+
+{% block content %}
+<div class="container-fluid content">
+    {% if messages %}
+    {% for message in messages %}
+    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+        <strong>{{ message }}</strong>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    {% endfor %}
+    {% endif %}
+    <div class="page-header">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="page-title">Dashboard Étudiant</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
+                    <li class="breadcrumb-item">Administrative</li>
+                    <li class="breadcrumb-item active">Groupes</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- groupS LIST -->
+        <div class="col-sm-12">
+            <div class="card card-table">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover table-center mb-0 datatable">
+                            <thead class="thead-dark">
+                            <tr>
+                                <th scope="col">Nom du groupe</th>
+                                <th scope="col">Utilisateurs dans le groupe</th>
+                                <th scope="col">Permissions</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for group in groups %}
+                            <tr>
+                                <td>{{ group.name }}</td>
+                                <td>{{ group.user_set.all.count }}</td>
+                                <td>
+                                    <div class="group-table-perms">
+                                        {% for usperm in group.user_set.all %}
+                                        <p class="text-dark">{{ usperm.permissions.all }}</p>
+                                        {% endfor %}
+                                        <div class="table-td-show-more">
+                                            <i class="fas fa-chevron-circle-down"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- SIDEBAR -->
+                    <!-- <div class="col-md-3">
+                        <ul class="list-group">
+                            <li class="list-group-item">
+                                <a href="#">add new group</a>
+                            </li>
+                        </ul>
+                    </div>  -->
+                    <!-- /sidebar -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block customjs %}
+<script>
+    // TODO: Add show more on click
+    const permsTd = $('.table-td-show-more');
+    // console.log(permsTd);
+
+    const toggleHeight = (element) => {
+        const currentHeight = element.style.height;
+        if (currentHeight == '100%') {
+            element.style.height = '100px';
+        } else {
+            element.style.height = '100%';
+        }
+    }
+
+    permsTd.map(function(cell){
+        const cellElem = permsTd[cell];
+        cellElem.addEventListener('click', function(e){
+            element = this.parentElement
+            toggleHeight(element);
+        })
+    })
+
+
+
+
+
+
+
+</script>
+{% endblock %}

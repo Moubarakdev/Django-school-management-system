@@ -10,7 +10,6 @@ class AlumniFilter(django_filters.FilterSet):
             'admission_student__last_name',
             'admission_student__first_name',
             'admission_student__choosen_department',
-            'roll',
             'ac_session',
         ]
 
@@ -18,5 +17,5 @@ class AlumniFilter(django_filters.FilterSet):
         super(AlumniFilter, self).__init__(*args, **kwargs)
         self.filters['admission_student__last_name'].label = 'Nom'
         self.filters['admission_student__first_name'].label = 'Prénom'
-        self.filters['admission_student__choosen_department'].label = 'Département'
+        self.filters['admission_student__choosen_department'].label = 'Filière'
         self.filters['ac_session'].label = 'Session Académique'
