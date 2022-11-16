@@ -9,7 +9,8 @@
             <div class="col-sm-12">
                 <h3 class="page-title"> Details de la demande</h3>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'dashboard:student:all_applicants' %}">Liste des demandes</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:student:all_applicants' %}">Liste des
+                        demandes</a></li>
                     <li class="breadcrumb-item active">Détails de la demande
                     </li>
                 </ul>
@@ -91,21 +92,25 @@
                                 </ul>
                             </div>
                         </div>
+
+
                         <div class="row">
                             <div class="col-md-4">
 
                             </div>
                             <div class="col-md-4 mb-3">
-                                <a href="/media/{{ applicant.bac_marksheet }}">
-                                    <div class="blue-box">
-                                        <h5>Relevé du BAC</h5>
-                                    </div>
+                                <h5>Relevé du BAC</h5>
+                                <a href="{{applicant.bac_marksheet.url}}" target="_blank" rel="noopener noreferrer">
+                                    <canvas id="the-canvas" style="height:500px;">
+                                    </canvas>
+                                    {{applicant.bac_marksheet.url|json_script:'mydata'}}
                                 </a>
+
                             </div>
 
                             <div class="col-md-4 mb-3">
                                 {% if applicant.last_exam_marksheet %}
-                                <a href="/media/{{ applicant.bac_marksheet }}">
+                                <a href="{{ applicant.bac_marksheet.url }}">
                                     <div class="blue-box">
                                         <h6>Autre document</h6>
                                     </div>
@@ -153,4 +158,59 @@
 {% endblock %}
 
 {% block customjs %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.0.279/pdf.worker.min.js"
+        integrity="sha512-UiXicZonl1pXJaZk0apG3TN/yE/a52JjAyZmr1MmvjI01f7MURJD+M4UUdBxxz1Zzte1zjie37VtotaR3b1/1g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+const mydata = JSON.parse(document.getElementById('mydata').textContent);
+console.log(mydata);
+
+// The workerSrc property shall be specified.
+pdfjsLib.GlobalWorkerOptions.workerSrc = '//cdnjs.cloudflare.com/ajax/libs/pdf.js/3.0.279/pdf.worker.min.js';
+    // Asynchronous download of PDF
+
+var loadingTask = pdfjsLib.getDocument(mydata);
+loadingTask.promise.then(function (pdf) {
+    console.log('PDF loaded');
+
+    // Fetch the first page
+    var pageNumber = 1;
+    pdf.getPage(pageNumber).then(function (page) {
+        console.log('Page loaded');
+
+        var scale = 1;
+        var viewport = page.getViewport({ scale: scale });
+
+        // Prepare canvas using PDF page dimensions
+        var canvas = document.getElementById('the-canvas');
+        var context = canvas.getContext('2d');
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        // Render PDF page into canvas context
+        var renderContext = {
+            canvasContext: context,
+            viewport: viewport
+        };
+        var renderTask = page.render(renderContext);
+        renderTask.promise.then(function () {
+            console.log('Page rendered');
+        });
+    });
+}, function (reason) {
+    // PDF loading error
+    console.error(reason);
+});
+
+
+
+
+
+
+
+
+
+
+
+</script>
 {% endblock %}

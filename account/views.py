@@ -14,7 +14,7 @@ from verify_email.email_handler import send_verification_email
 
 from account.forms import CommonUserProfileForm, ProfileCompleteForm, LoginForm, \
     UserRegistrationForm, ApprovalProfileUpdateForm, UserChangeFormDashboard, UpdateUserForm
-from account.models import User, CustomGroup
+from account.models import User
 from permission_handlers.administrative import user_is_admin_or_su
 from permission_handlers.basic import user_is_verified
 
@@ -110,7 +110,6 @@ def profile_complete(request):
         profile_edit_form = CommonUserProfileForm(
             instance=user.profile
         )
-
         ctx.update({
             'profile_edit_form': profile_edit_form,
         })
@@ -120,15 +119,9 @@ def profile_complete(request):
             messages.INFO,
             "Peut-être que votre compte n’est pas encore vérifié, veuillez vérifier votre badge."
         )
-
-    verification_form = ProfileCompleteForm(instance=user)
     user_form = UpdateUserForm(instance=request.user)
     if request.method == 'POST':
-        verification_form = ProfileCompleteForm(
-            request.POST,
-            instance=user
-        )
-        user_form = UpdateUserForm(request.POST, instance=user)
+        user_form = UpdateUserForm(request.POST, instance=request.user)
         if 'user-profile-update-form' in request.POST:
             profile_edit_form = CommonUserProfileForm(
                 request.POST,
@@ -139,9 +132,6 @@ def profile_complete(request):
             if profile_edit_form.is_valid():
                 profile_edit_form.save()
 
-            if user_form.is_valid():
-                user_form.save()
-
             messages.add_message(
                 request,
                 messages.SUCCESS,
@@ -150,23 +140,17 @@ def profile_complete(request):
             return redirect('profile_complete')
 
         else:
-            if verification_form.is_valid():
-                verification_form.instance.approval_status = 'p'
-                # approval status get's pending
-                if verification_form.instance.role == verification_form.instance.requested_role:
-                    verification_form.instance.approval_status = 'a'
-                # but if request_role is for the same role approval status get's accept
-                verification_form.save()
+            if user_form.is_valid():
+                user_form.save()
                 messages.add_message(
                     request,
                     messages.SUCCESS,
-                    'Votre demande a été envoyée, veuillez patienter.'
+                    'Informations modifiées avec succès'
                 )
                 return redirect('profile_complete')
 
     user_permissions = user.user_permissions.all()
     ctx.update({
-        'verification_form': verification_form,
         'user_form': user_form,
         'user_perms': user_permissions if user_permissions else None,
     })
@@ -323,7 +307,7 @@ class CreateUserView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
 
 
 class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
-    template_name = 'account/profile_complete.html'
+    template_name = 'account/change_password.html'
     success_message = "Mot de passe changé avec succès"
     success_url = reverse_lazy('profile_complete')
 

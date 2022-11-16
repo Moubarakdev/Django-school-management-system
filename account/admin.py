@@ -8,7 +8,7 @@ from django.contrib.auth import admin as auth_admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import GroupAdmin
 
-from .models import CustomGroup, CommonUserProfile
+from .models import  CommonUserProfile
 from .forms import UserRegistrationForm, UserChangeForm
 
 User = get_user_model()
@@ -54,5 +54,4 @@ class CustomGroupAdmin(GroupAdmin):
 
 
 admin.site.register(CommonUserProfile, UserProfileAdmin)
-admin.site.register(CustomGroup, CustomGroupAdmin)
 admin.site.register(User, UserAdmin)

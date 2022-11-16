@@ -1,15 +1,15 @@
 from django.contrib import admin
 
-from .models import Result, Exam, SubjectGroup
+from .models import Result, SubjectGroup
 
 
 class ResutlAdmin(admin.ModelAdmin):
     list_display = (
-        'student', 'exam',
+        'student',
         'subject', 'class_marks',
         'exam_marks', 'extra_marks', 'total_marks', 'average', 'validated',
     )
-    list_editable = ('class_marks', 'exam_marks', 'extra_marks', 'exam')
+    list_editable = ('class_marks', 'exam_marks', 'extra_marks')
 
 
 class ExamAdmin(admin.ModelAdmin):
@@ -21,5 +21,4 @@ class SubjectGroupAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Result, ResutlAdmin)
-admin.site.register(Exam, ExamAdmin)
 admin.site.register(SubjectGroup, SubjectGroupAdmin)

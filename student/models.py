@@ -167,6 +167,7 @@ class AdmissionStudent(StudentBase):
         return f"{self.last_name}"
 
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
         self.ac_session = AcademicSession.objects.get(current=True)
         self.fathers_last_name = self.fathers_last_name.upper()
         self.mothers_last_name = self.mothers_last_name.upper()
@@ -178,7 +179,6 @@ class AdmissionStudent(StudentBase):
         if self.department_choice != self.choosen_department:
             status = f'From {self.department_choice} to {self.choosen_department}'
             self.migration_status = status
-        super().save(*args, **kwargs)
 
 
 class Student(TimeStampedModel):
@@ -306,7 +306,7 @@ class Student(TimeStampedModel):
         self.admission_student.save(*args, **kwargs)
 
 
-class RegularStudent(TimeStampedModel):
+'''class RegularStudent(TimeStampedModel):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, verbose_name="Étudiant")
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -314,4 +314,4 @@ class RegularStudent(TimeStampedModel):
     )
 
     def __str__(self):
-        return f"{self.student.admission_student.last_name} {self.student.admission_student.choosen_department.level}"
+        return f"{self.student.admission_student.last_name} {self.student.admission_student.choosen_department.level}"'''

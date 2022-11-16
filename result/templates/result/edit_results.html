@@ -1,0 +1,102 @@
+{% extends 'layouts/base_dash.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}
+Update Results
+{% endblock title %}
+
+
+{% block content %}
+<div class="container-fluid content">
+    <!-- Filter Form -->
+    <div class="container-fluid">
+        <div class="card">
+            {% if messages %}
+            <div class="row my-4">
+                <div class="col-md-12">
+                    {% for message in messages %}
+                    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12 py-3">
+                        <form action="" method="GET">
+                            <div class="form-row align-items-end">
+                                <div class="col">
+                                    {{ subject_group_filter.form.department|as_crispy_field }}
+                                </div>
+                                <div class="col">
+                                    <div class="form-group">
+                                        <div class="">
+                                            <input type="submit" value="Filter" class="btn btn-primary">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card m-2">
+        <div class="card-body col-auto" style="overflow:scroll;">
+            <form method="POST">
+                {% csrf_token %}
+                {{ formset.management_form}}
+
+                <table id="studenttable" class="table table-sm col-auto">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>UE</th>
+                        <th>Note de classe</th>
+                        <th>Note d'examen</th>
+                        <th>Total</th>
+                        <th>Supprimer</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for form in formset %}
+                    {{ form.id}}
+                    <tr>
+                        <td>{{forloop.counter }}</td>
+                        <td>{{form.instance.student.admission_student.last_name }}
+                            {{form.instance.student.admission_student.first_name }}
+                        </td>
+                        <td>{{form.instance.subject}}</td>
+                        <td style="width: 10%;">{{form.class_marks | add_class:"form-control form-control-sm"}}</td>
+                        <td style="width: 10%;">{{form.exam_marks | add_class:"form-control form-control-sm"}}</td>
+                        <td>{{form.instance.total_marks}}</td>
+                        <td>{{form.DELETE}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <input type="hidden" name="finish2" value="True">
+                <input type="submit" class="btn btn-success" value="Sauvegarder">
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block customjs %}
+<script>
+  //$('#studenttable').DataTable({
+  //  "ordering": false
+ // });
+</script>
+{% endblock %}

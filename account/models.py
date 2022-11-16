@@ -35,10 +35,6 @@ class User(AbstractUser):
         max_length=50,
         default=REQUESTED_ACCOUNT_TYPE_CHOICES[0][0], verbose_name='Type de compte demandé'
     )
-    role = models.CharField(
-        max_length=50,
-        default=REQUESTED_ACCOUNT_TYPE_CHOICES[0][0], verbose_name='Type de compte'
-    )
     approval_extra_note = models.TextField(
         blank=True, null=True, verbose_name='message'
     )
@@ -49,14 +45,14 @@ class User(AbstractUser):
         return self.username
 
     def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
         self.username = self.username.lower()
-        self.first_name = self.first_name.lower()
+        self.first_name = self.first_name.capitalize()
         self.last_name = self.first_name.upper()
-        return super(User, self).save(*args, **kwargs)
+
 
 
 User._meta.get_field('email')._unique = True
-
 
 '''
     def get_author_url(self):
@@ -66,14 +62,15 @@ User._meta.get_field('email')._unique = True
 
 '''
 
-
-class CustomGroup(Group):
+'''class CustomGroup(Group):
     group_creator = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE, verbose_name="créateur")
 
     def display_group(self):
         return f'{self.name} created by {self.group_creator}'
+
+'''
 
 
 class CommonUserProfile(models.Model):

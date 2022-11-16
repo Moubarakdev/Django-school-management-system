@@ -1,0 +1,44 @@
+{% extends 'layouts/base_dash.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+<div class="container-fluid content">
+    {% if messages %}
+    <div class="row my-4">
+        <div class="col-md-12">
+            {% for message in messages %}
+            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+    {% for subject_group in subject_group_filter.qs %}
+    <div class="card m-2">
+        <p>You selected <b>{{ count }} students</b> from the previous page.</p>
+        <div class="card-body">
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group row">
+                    {{ form.subjects.errors }}
+                    <label class="col-2" for="{{ form.subjects.id_for_label }}">{{ form.subjects.label_tag}}</label>
+                    <div class="col">{{ form.subjects | add_class:"form-check-input" }}</div>
+                </div>
+
+                <input type="hidden" name="finish" value="True">
+                <input type="hidden" name="students" value="{{ students }}">
+                <input type="submit" class="btn btn-success" value="Create">
+            </form>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock content %}

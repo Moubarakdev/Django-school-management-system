@@ -46,11 +46,15 @@
                     <div class="col ml-md-n2 profile-user-info">
                         <h4 class="user-name mb-0">{{request.user.last_name}} {{request.user.first_name}}</h4>
                         <h6 class="text-muted">{{ request.user.get_requested_role_display }}</h6>
-                        {% if request.user.address %}
-                        <div class="user-Location"><i class="fas fa-map-marker-alt"></i> {{ request.user.address }}
+                        {% if request.user.profile.address %}
+                        <div class="user-Location"><i class="fas fa-map-marker-alt mb-2"></i>
+                            {{ request.user.profile.address }}
                         </div>
                         {% endif %}
-                        <div class="about-text">Lorem ipsum dolor sit amet.</div>
+                        {% if request.user.profile.summary %}
+                        <div class="about-text">{{request.user.profile.summary}}</div>
+                        {% endif %}
+
                     </div>
                 </div>
             </div>
@@ -58,9 +62,6 @@
                 <ul class="nav nav-tabs nav-tabs-solid">
                     <li class="nav-item">
                         <a class="nav-link active" data-toggle="tab" href="#per_details_tab">A propos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" data-toggle="tab" href="#password_tab">Mot de passe</a>
                     </li>
                 </ul>
             </div>
@@ -71,7 +72,7 @@
                             <div class="card">
                                 <div class="card-body">
                                     <h5 class="card-title d-flex justify-content-between">
-                                        <span>Détails</span>
+                                        <span>Détails du compte</span>
                                         <a class="edit-link" href="#" data-toggle="modal"
                                            data-target="#account-update-modal"><i class="far fa-edit mr-1"></i> Modifier</a>
                                     </h5>
@@ -89,13 +90,19 @@
                                         <p class="col-sm-9">{{request.user.profile.country}}</p>
                                     </div>
                                     <div class="row">
+                                        <p class="col-sm-3 text-muted text-sm-right mb-0 mb-sm-3">Mot de pase</p>
+                                        <a href="{% url 'password_change' %}"><p class="col-sm-9">Modifier mot de
+                                            passe</p></a>
+                                    </div>
+                                    <div class="row">
                                         <p class="col-sm-3 text-muted text-sm-right mb-0">Adresse</p>
-                                        {% if request.user.address %}
-                                        <p class="col-sm-9 mb-0">{{request.user.address}}.</p>
+                                        {% if request.user.profile.address %}
+                                        <p class="col-sm-9 mb-0">{{request.user.profile.address}}.</p>
                                         {% else %}
                                         <p class="col-sm-9 mb-0">Aucune</p>
                                         {% endif %}
                                     </div>
+
                                 </div>
                             </div>
                         </div>
@@ -114,42 +121,10 @@
                                 <div class="card-body">
                                     <h5 class="card-title d-flex justify-content-between">
                                         <span>Type de compte </span>
-                                        <a class="edit-link" href="#" data-toggle="modal"
-                                           data-target="#request-update-modal"><i class="far fa-edit mr-1"></i> Modifier</a>
                                     </h5>
                                     <div class="skill-tags">
-                                        <span>{{ request.user.role }}</span>
+                                        <span>{{ request.user.get_requested_role_display }}</span>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div id="password_tab" class="tab-pane fade">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Changement de mot de passe</h5>
-                            <div class="row">
-                                <div class="col-md-10 col-lg-6">
-                                    <form action="" method="POST">
-                                        {% csrf_token %}
-                                        <div class="form-group">
-                                            <label for="id_old_password">Mot de passe actuel</label>
-                                            <input type="password" name="old_password" autocomplete="new-password"
-                                                   class="form-control" required id="id_old_password">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="id_new_password1">Nouveau mot de passe</label>
-                                            <input type="password" name="new_password1" autocomplete="new-password"
-                                                   class="form-control" required id="id_new_password1">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="id_new_password2"> Confirmer le mot de passe</label>
-                                            <input type="password" name="new_password2" autocomplete="new-password"
-                                                   required id="id_new_password2" class="form-control">
-                                        </div>
-                                        <a class="btn btn-primary" href="{% url 'password_change'%}">Modifier</a>
-                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -163,16 +138,6 @@
             <div class="card">
                 <div class="card-body">
                     <!-- Profile Complete Form -->
-                    {% if user.approval_status == 'd'%}
-                    <div class="alert alert-danger" role="alert">
-                        Votre demande d'approbation pour un compte <strong>{{ user.requested_role }}</strong> a été rejeté .
-                    </div>
-                    {% elif user.approval_status == 'p'%}
-                    <div class="alert alert-warning" role="alert">
-                        Votre demande d'approbation pour un compte <strong>{{ user.requested_role }}</strong> est en attente
-                        d'approbation.
-                    </div>
-                    {% endif %}
 
                     {% if messages %}
                     {% for message in messages %}
@@ -210,7 +175,7 @@
                                     {{ profile_not_found }}
                                 </div>
                                 {% endif %}
-                                <input type="submit" value="Sauvegarder"
+                                <input type="submit" value="Mettre à jour"
                                        class="btn btn-secondary float-right mt-3shadow" name="user-profile-update-form">
                             </div>
                         </form>
@@ -227,36 +192,10 @@
 <!-- section profile detail -->
 
 
-<div class="modal fade" id="request-update-modal" tabindex="-1" role="dialog" aria-hidden="true"
-     style="z-index: 1000000;">
-    <form action="{% url 'profile_complete' %}" method="post">
-        {% csrf_token %}
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h6 class="" id="">
-                        Demande de modification de type de compte
-                    </h6>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    {{ verification_form|crispy }}
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                    <button type="submit" class="btn btn-primary">Sauvegarder</button>
-                </div>
-            </div>
-        </div>
-    </form>
-</div>
-
 <!-- section user detail -->
 <div class="modal fade" id="account-update-modal" tabindex="-1" role="dialog" aria-hidden="true"
      style="z-index: 1000000;">
-    <form action="{% url 'profile_complete' %}" method="post">
+    <form action="{% url 'profile_complete' %}" method="POST">
         {% csrf_token %}
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -332,6 +271,9 @@
   $('#profile-image-upload').on('change', function() {
     $('#profile-image-form').submit();
   })
+
+
+
 
 
 

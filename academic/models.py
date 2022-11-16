@@ -129,6 +129,8 @@ class Subject(TimeStampedModel):
         Teacher, on_delete=models.CASCADE,
         blank=True, null=True, verbose_name="Instructeur"
     )
+    hourly_volume = models.IntegerField(blank=True, default=0,
+                                        null=True, verbose_name="Volume horaire")
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True)

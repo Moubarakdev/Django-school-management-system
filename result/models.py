@@ -10,8 +10,7 @@ from django.urls import reverse
 from student.models import Student
 from academic.models import Subject, Department
 
-
-class Exam(TimeStampedModel):
+'''class Exam(TimeStampedModel):
     EXAM_CHOICES = (
         ('d', 'Devoir'),
         ('e', 'Examen'),
@@ -29,6 +28,8 @@ class Exam(TimeStampedModel):
         return f'{self.get_exam_name_display()} - \
             {self.exam_date.year}'
 
+'''
+
 
 class Result(TimeStampedModel):
     student = models.ForeignKey(
@@ -39,10 +40,6 @@ class Result(TimeStampedModel):
     subject = models.ForeignKey(
         Subject,
         on_delete=models.CASCADE
-    )
-    exam = models.ForeignKey(
-        Exam, on_delete=models.CASCADE,
-        blank=True, null=True, verbose_name="Examen"
     )
     class_marks = models.FloatField(
         blank=True, default=0,
@@ -80,7 +77,7 @@ class Result(TimeStampedModel):
 
     @property
     def validated_or_not(self):
-        return "validé" if self.validated == True else "non validé"
+        return "validé" if self.validated else "non validé"
 
     def save(self, *args, **kwargs):
         if self.class_marks and self.exam_marks:
@@ -107,7 +104,7 @@ def create_resource():
 
 class SubjectGroup(TimeStampedModel):
     """ Keep track of group of subjects that belongs to a
-    department, semester
+    department
     """
     department = models.ForeignKey(
         Department,
@@ -123,6 +120,3 @@ class SubjectGroup(TimeStampedModel):
 
     def get_subjects(self):
         return " | ".join([str(sg) for sg in self.subjects.all()])
-
-    class Meta:
-        unique_together = ['department']

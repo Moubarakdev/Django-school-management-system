@@ -1,7 +1,7 @@
 from django.urls import path
 
 from result.views import result_view, result_detail_view, result_entry, create_subject_group, find_student, \
-    subject_group_list, UpdateSubjectGroup, UpdateResultView
+    subject_group_list, UpdateSubjectGroup, UpdateResultView, resultEntry2, edit_results
 
 app_name = 'result'
 
@@ -9,6 +9,8 @@ urlpatterns = [
     path('', result_view, name='index'),
     path('student/<int:student_pk>/', result_detail_view, name='result_detail_view'),
     path('entry/', result_entry, name='result_entry'),
+    path('entry2/', resultEntry2, name='result_entry2'),
+    path("edit-results/", edit_results, name="edit-results"),
     path('entry/update/<int:pk>', UpdateResultView.as_view(), name='update_result'),
     path('entry/delete/<int:pk>', UpdateResultView.as_view(), name='delete_result'),
     path('create-subject-group/', create_subject_group, name='create_subject_group'),
