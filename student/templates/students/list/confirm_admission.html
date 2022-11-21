@@ -91,7 +91,6 @@
                                                            id="toggle-uncheck" type="button"
                                                            value="tout désélectionner"/>
                                                 </th>
-                                                <th scope="col">Matricule</th>
                                                 <th scope="col">Nom</th>
                                                 <th scope="col">Prénom</th>
                                                 <th scope="col">Filière courante</th>
@@ -106,7 +105,6 @@
                                                     <input name="registrant_choice" type="checkbox"
                                                            value="{{ student.pk }}"/>
                                                 </td>
-                                                <td scope="row">{{ student.get_temp_id }}</td>
                                                 <td>{{ student.last_name }}</td>
                                                 <td>{{ student.first_name }}</td>
                                                 <td>{{ student.choosen_department }}</td>

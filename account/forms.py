@@ -22,7 +22,7 @@ class UserCreateFormDashboard(forms.UserCreationForm):
         model = User
         fields = (
             'username', 'email', 'password1', 'password2',
-            'requested_role', 'approval_status', 'is_staff')
+            'requested_role', 'approval_status')
 
 
 class UserChangeFormDashboard(forms.UserChangeForm):
@@ -34,7 +34,6 @@ class UserChangeFormDashboard(forms.UserChangeForm):
             'username', 'email',
             'first_name', 'last_name',
             'requested_role', 'approval_status',
-            'is_staff',
         )
 
 

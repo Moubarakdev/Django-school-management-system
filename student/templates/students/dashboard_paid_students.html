@@ -17,7 +17,6 @@
                 </ul>
             </div>
             <div class="col-auto text-right float-right ml-auto">
-                <a href="#" class="btn btn-outline-primary mr-2"><i class="fas fa-download"></i> Download</a>
                 <a href="{% url 'dashboard:academic:create_ac_session' %}" class="btn btn-primary"><i
                         class="fas fa-plus"></i></a>
             </div>
@@ -38,7 +37,6 @@
                                 <th scope="col">Adresse</th>
                                 <th scope="col">Filière</th>
                                 <th scope="col">Date Admission</th>
-                                <th class="text-right">Actions</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -53,6 +51,8 @@
                                 <td>{{ applicant.permanent_address }}</td>
                                 <td>{{ applicant.department_choice }}</td>
                                 <td>{{ applicant.created }}</td>
+
+                                {% comment %}
                                 <td>
                                     <a href="" class="btn btn-sm btn-primary">More</a>
                                     <a href="{% url 'dashboard:student:admit_student' pk=applicant.id %}"
@@ -64,6 +64,7 @@
                                         Update
                                     </a>
                                 </td>
+                                {% endcomment %}
                             </tr>
                             {% endfor %}
                             </tbody>

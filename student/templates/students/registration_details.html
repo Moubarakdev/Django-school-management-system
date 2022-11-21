@@ -19,6 +19,16 @@
     </div>
     <div class="card">
         <div class="card-body">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                <strong>{{ message }}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
             <div class="row">
                 <div class="col-md-8">
                     <div class="mb-3">
@@ -27,13 +37,13 @@
                         {% if not applicant.admitted %}
                         <a href="{% url 'dashboard:student:admit_student' pk=applicant.id %}"
                            class="btn btn-success">
-                            Accepter<i class="fas fa-check"></i>
+                            Valider <i class="fas fa-check"></i>
                         </a>
                         {% endif %}
                         {% if not applicant.admitted %}
                         <a href="{% url 'dashboard:student:reject_student' pk=applicant.id %}"
-                           class="btn btn-success">
-                            Rejeter<i class="fas fa-check"></i>
+                           class="btn btn-danger">
+                            Rejeter <i class="fas fa-xmark"></i>
                         </a>
                         {% endif %}
                     </div>
@@ -201,6 +211,7 @@ loadingTask.promise.then(function (pdf) {
     // PDF loading error
     console.error(reason);
 });
+
 
 
 

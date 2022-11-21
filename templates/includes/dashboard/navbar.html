@@ -3,12 +3,11 @@
 <div class="header">
     <div class="header-left">
         <a href="{% url 'dashboard:index' %}" class="logo">
-           logo
+            <img src="{% static 'assets/img/logo2.svg' %}" alt="Logo">
         </a>
-        <a href="{% url 'dashboard:index' %}" class="navbar-brand logo">My<span class="text-primary">School.</span></a>
+        <a href="{% url 'dashboard:index' %}" class="navbar-brand logo">MIABÉ<span class="text-primary">SCHOOL</span></a>
         <a href="" class="logo logo-small">
-           <!-- <img src="{% static 'assets/img/logo-small.png' %}" alt="Logo" width="30" height="30"> -->
-            logo small
+            <img src="{% static 'assets/img/logo2.svg' %}" alt="Logo" width="30" height="30">
         </a>
     </div>
     <a href="javascript:void(0);" id="toggle_btn">
@@ -21,19 +20,20 @@
         </form> -->
 
         <ul class="navbar">
-        <li class="nav-item d-none d-sm-inline-block">
-          <a href="{% url 'home:home' %} " class="nav-link"><i class="fa fa-home"></i></a>
-        </li>
-        <li class="nav-item d-none d-sm-inline-block">
-          <a href="{% url 'dashboard:academic:current_session' %}" class="nav-link">Session : {{ request.current_session }}</a>
-        </li>
-      </ul>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="{% url 'home:home' %} " class="nav-link"><i class="fa fa-home"></i></a>
+            </li>
+            <li class="nav-item d-none d-sm-inline-block">
+                <a href="{% url 'dashboard:academic:current_session' %}" class="nav-link">Session : {{ request.current_session }}</a>
+            </li>
+        </ul>
 
     </div>
     <a class="mobile_btn" id="mobile_btn">
         <i class="fas fa-bars"></i>
     </a>
     <ul class="nav user-menu">
+        <!--
         <li class="nav-item dropdown noti-dropdown">
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                 <i class="far fa-bell"></i> <span class="badge badge-pill">3</span>
@@ -113,6 +113,7 @@
                 </div>
             </div>
         </li>
+        -->
         <li class="nav-item dropdown has-arrow">
             <a href="#" class="dropdown-toggle nav-link" data-toggle="dropdown">
                 <span class="user-img"><img class="rounded-circle" {% if user.profile.profile_picture %}
@@ -136,9 +137,9 @@
                         <p class="text-muted mb-0">{{ request.user.get_requested_role_display }}</p>
                     </div>
                 </div>
-                <a class="dropdown-item" href="{% url 'profile_complete' %}">My Profile</a>
-                <a class="dropdown-item" href="inbox.html">Inbox</a>
-                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                <a class="dropdown-item" href="{% url 'profile_complete' %}">Profil</a>
+                <!-- <a class="dropdown-item" href="inbox.html">Inbox</a> -->
+                <a class="dropdown-item" href="{% url 'logout' %}">Déconnexion</a>
             </div>
         </li>
     </ul>

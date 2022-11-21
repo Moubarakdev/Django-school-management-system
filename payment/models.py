@@ -62,10 +62,10 @@ class InvoiceItem(models.Model):
     invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
     description = models.CharField(max_length=200)
     amount = models.IntegerField(verbose_name="Montant")
-    term1 = models.IntegerField(verbose_name="Première tranche")
-    term2 = models.IntegerField(verbose_name="Deuxième tranche")
-    term3 = models.IntegerField(verbose_name="Troisième tranche")
-    term4 = models.IntegerField(verbose_name="Quatrième tranche")
+    term1 = models.IntegerField(verbose_name="Première tranche", default=0)
+    term2 = models.IntegerField(verbose_name="Deuxième tranche", default=0)
+    term3 = models.IntegerField(verbose_name="Troisième tranche", default=0)
+    term4 = models.IntegerField(verbose_name="Quatrième tranche", default=0)
 
 
 class Receipt(models.Model):

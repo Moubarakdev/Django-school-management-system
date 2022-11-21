@@ -83,7 +83,29 @@ class AdmissionForm2(forms.ModelForm):
             'paid',
             'rejected',
         ]
-       
+        widgets = {
+
+            'gender': forms.HiddenInput(),
+            'nationality': forms.HiddenInput(),
+            'religion': forms.HiddenInput(),
+            'fathers_last_name': forms.HiddenInput(),
+            'fathers_first_name': forms.HiddenInput(),
+            'mothers_last_name': forms.HiddenInput(),
+            'mothers_first_name': forms.HiddenInput(),
+            'bac_passing_year': forms.HiddenInput(),
+            'email': forms.HiddenInput(),
+            'department_choice': forms.HiddenInput(),
+            'admission_policy_agreement': forms.HiddenInput(),
+            'student_account': forms.HiddenInput(),
+            'admitted': forms.HiddenInput(),
+            'paid': forms.HiddenInput(),
+            'rejected': forms.HiddenInput(),
+            'date_of_birth': forms.HiddenInput(),
+            'current_address': forms.HiddenInput(),
+            'permanent_address': forms.HiddenInput(),
+
+        }
+
 
 class StudentRegistrantUpdateForm(forms.ModelForm):
     class Meta:

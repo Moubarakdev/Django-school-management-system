@@ -52,7 +52,7 @@
                 </li>
                 -->
 
-                {% if request.user|has_role:'academic_officer' or request.user|has_role:'admin' %}
+                {% if request.user|has_role:'academic_officer' or request.user|has_role:'admin' or request.user|has_role:'accounts' %}
                 <!-- Counsel/Admission Dashboard -->
                 <li class="menu-title">
                     <span>Dashboard</span>
@@ -63,6 +63,7 @@
                 </li>
                 {% endif %}
 
+                {% if request.user|has_role:'academic_officer' or request.user|has_role:'admin' %}
                 <!-- Academic Tools -->
                 <li class="menu-title">
                     <span>Academics</span>
@@ -78,6 +79,7 @@
                         </li>
                     </ul>
                 </li>
+
 
                 <!-- Étudiant -->
 
@@ -144,6 +146,8 @@
                     <a href="{% url 'groups' %}"> <i
                             class="fas fa-users"></i><span>Groupes</span></a>
                 </li>
+                 {% endif %}
+
 
                 {% if request.user|has_role:'accounts' or request.user|has_role:'admin' %}
                 <!-- PAYMENTS (RESTRICTED) -->

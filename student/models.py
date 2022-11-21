@@ -40,11 +40,13 @@ class StudentBase(TimeStampedModel):
 
     fathers_last_name = models.CharField(verbose_name="Nom du père", max_length=100)
     fathers_first_name = models.CharField(verbose_name="Prénom du père", max_length=100)
-    fathers_mobile_number = PhoneNumberField(verbose_name="Numéro de téléphone du père", null=True, blank=True)
+    fathers_mobile_number = PhoneNumberField(verbose_name="Numéro de téléphone du père", null=True, blank=True,
+                                             help_text="Exemple +2289XXXXX")
 
     mothers_last_name = models.CharField(verbose_name="Nom de la mère", max_length=100)
     mothers_first_name = models.CharField(verbose_name="Prénom de la mère", max_length=100)
-    mothers_mobile_number = PhoneNumberField(verbose_name="Numéro de téléphone de la mère", null=True, blank=True)
+    mothers_mobile_number = PhoneNumberField(verbose_name="Numéro de téléphone de la mère", null=True, blank=True,
+                                             help_text="Exemple +2289XXXXX")
 
     date_of_birth = models.DateField(verbose_name="Date de naissance")
     email = models.EmailField(verbose_name="Email")
@@ -57,8 +59,8 @@ class StudentBase(TimeStampedModel):
 
     current_address = models.TextField(verbose_name='Adresse courante')
     permanent_address = models.TextField(verbose_name='Adresse permanente', blank=True, null=True)
-    mobile_number = PhoneNumberField('Numéro de téléphone')
-    guardian_mobile_number = PhoneNumberField('Numéro Personne à prévenir')
+    mobile_number = PhoneNumberField('Numéro de téléphone', help_text="Exemple +2289XXXXX")
+    guardian_mobile_number = PhoneNumberField('Numéro Personne à prévenir', help_text="Exemple +2289XXXXX")
 
     department_choice = models.ForeignKey(
         Department,
@@ -162,12 +164,14 @@ class AdmissionStudent(StudentBase):
     student_account = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name="student_account",
         on_delete=models.SET_NULL, null=True)
+    student_for = models.ForeignKey(
+        "Student",
+        on_delete=models.DO_NOTHING, null=True)
 
     def __str__(self):
         return f"{self.last_name}"
 
     def save(self, *args, **kwargs):
-        super().save(*args, **kwargs)
         self.ac_session = AcademicSession.objects.get(current=True)
         self.fathers_last_name = self.fathers_last_name.upper()
         self.mothers_last_name = self.mothers_last_name.upper()
@@ -179,6 +183,7 @@ class AdmissionStudent(StudentBase):
         if self.department_choice != self.choosen_department:
             status = f'From {self.department_choice} to {self.choosen_department}'
             self.migration_status = status
+        super().save(*args, **kwargs)
 
 
 class Student(TimeStampedModel):
@@ -256,6 +261,7 @@ class Student(TimeStampedModel):
             elif self.admission_student.choosen_department.is_active:
                 # Set AdmissionStudent assigned_as_student=True
                 self.admission_student.assigned_as_student = True
+                self.admission_student.student_for = self
                 self.admission_student.save()
 
         # Create temporary id for student id if temporary_id is not set yet.
@@ -294,8 +300,8 @@ class Student(TimeStampedModel):
                 self.assign_payment = True
 
             except IntegrityError:
+                print("Il y a un problème")
                 pass
-
         super().save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):

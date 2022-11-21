@@ -31,6 +31,7 @@ def login_view(request):
             username = form.cleaned_data.get("username").lower()
             password = form.cleaned_data.get("password").lower()
             user = authenticate(username=username, password=password)
+
             if user is not None:
                 login(request, user)
                 return redirect("home:home")
@@ -39,7 +40,7 @@ def login_view(request):
                 messages.add_message(
                     request,
                     messages.ERROR,
-                    'Email ou mot de passe incorrect'
+                    'Identifiant ou mot de passe incorrect'
                 )
         else:
             messages.add_message(
@@ -92,7 +93,7 @@ def register(request):
             messages.add_message(
                 request,
                 messages.ERROR,
-                'Formulaire incorrect'
+                'Erreur de validation du formulaire'
             )
             return render(request, 'account/signup.html', {'user_form': user_form})
 

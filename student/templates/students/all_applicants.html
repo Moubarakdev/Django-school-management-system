@@ -37,6 +37,7 @@
                                 <th scope="col">Contact</th>
                                 <th scope="col">Statut du payement</th>
                                 <th scope="col">Admission</th>
+                                <th scope="col">Pour</th>
 
                             </tr>
                             </thead>
@@ -72,21 +73,28 @@
                                 <td style="text-align: center;">
                                     <a href="{% url 'dashboard:student:registration_details' pk=applicant.id %}">
                                         {% if applicant.paid %}
-                                        <img src="{% static 'images/checked.png' %}" width="16" alt="">
+                                        <span hidden>V</span><img src="{% static 'images/checked.png' %}" width="16" alt="">
                                         {% else %}
-                                        <img src="{% static 'images/cross.png' %}" width="16" alt="">
+                                         <span hidden="hidden">N</span><img src="{% static 'images/cross.png' %}" width="16" alt="">
                                         {% endif %}
                                     </a>
                                 </td>
+
                                 <td style="text-align: center;">
                                     <a href="{% url 'dashboard:student:registration_details' pk=applicant.id %}">
                                         {% if applicant.admitted %}
-                                        <img src="{% static 'images/checked.png' %}" width="16" alt="">
+                                        <span hidden>V</span><img src="{% static 'images/checked.png' %}" width="16" alt="">
                                         {% else %}
-                                        <img src="{% static 'images/cross.png' %}" width="16" alt="">
+                                        <span hidden>N</span><img src="{% static 'images/cross.png' %}" width="16" alt="">
                                         {% endif %}
                                     </a>
                                 </td>
+                                <td>
+                                    {% if applicant.ac_session %}
+                                        {{ applicant.ac_session }}
+                                    {% endif %}
+                                </td>
+
                             </tr>
 
                             {% endfor %}

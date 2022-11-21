@@ -35,10 +35,11 @@ def students_board(request):
     """
     unpaid_registrants = AdmissionStudent.objects.filter(paid=False)
     all_applicants = AdmissionStudent.objects.all().order_by('-created')
-    admitted_students = AdmissionStudent.objects.filter(admitted=True, paid=True)
-    paid_registrants = AdmissionStudent.objects.filter(paid=True, admitted=False)
+    admitted_students = AdmissionStudent.objects.filter(admitted=True, assigned_as_student=False)
+    paid_registrants = AdmissionStudent.objects.filter(paid=True, admitted=False, assigned_as_student=False)
     rejected_applicants = AdmissionStudent.objects.filter(rejected=True)
     offline_applicants = AdmissionStudent.objects.filter(application_type='2')
+    waiting_for_confirmation = AdmissionStudent.objects.filter(paid=True, admitted=True, assigned_as_student=False)
 
     # List of months since first application registration date
     try:
@@ -65,6 +66,7 @@ def students_board(request):
         'rejected_applicants': rejected_applicants,
         'offline_applicants': offline_applicants,
         'month_list': month_list,
+        'waiting_for_confirmation': waiting_for_confirmation
     }
     return render(request, 'students/students_board.html', context)
 
@@ -84,7 +86,7 @@ def admitted_students_list(request):
     """
     Returns list of students admitted from online registration.
     """
-    admitted_students = AdmissionStudent.objects.filter(admitted=True, paid=True)
+    admitted_students = AdmissionStudent.objects.filter(admitted=True, assigned_as_student=False)
     context = {
         'admitted_students': admitted_students,
     }
@@ -96,7 +98,7 @@ def paid_registrants(request):
     """
     Returns list of students already paid from online registration.
     """
-    paid_students = AdmissionStudent.objects.filter(paid=True, admitted=False)
+    paid_students = AdmissionStudent.objects.filter(paid=True, admitted=True, assigned_as_student=False)
     context = {
         'paid_students': paid_students,
     }
@@ -192,13 +194,15 @@ def admission_confirmation(request):
                     ac_session=session,
                     admitted_by=request.user,
                 )
-                ac_user = User.objects.get(pk=student.admission_student.student_account.pk)
-                ac_user.approval_status = 'a'
-                ac_user.save()
-
                 students.append(student)
+                messages.add_message(
+                    request,
+                    messages.ERROR,
+                    'Inscription confirmée avec succès'
+                )
             except:
                 pass
+
         ctx['students'] = students
         return render(request, 'students/list/confirm_admission.html', ctx)
     else:
@@ -216,11 +220,12 @@ def admit_student(request, pk):
         if form.is_valid():
             student = form.save(commit=False)
             student.admitted = True
-            student.paid = True
+            # student.paid = True
             student.admission_date = date.today()
             student.save()
             # prévoir l'envoi de l'email de confirmation
             # send_admission_confirmation_email.delay(student.id)
+            messages.add_message(request, messages.SUCCESS, "Demande validée avec succès")
             return redirect('dashboard:student:admitted_student_list')
     else:
         form = AdmissionForm()
@@ -249,23 +254,24 @@ def reject_student(request, pk):
     return render(request, 'students/list/rejected_registrants.html', context)
 
 
+@user_passes_test(user_is_admin_su_or_ac_officer)
 def renew_admission(request, pk):
     student = get_object_or_404(Student, pk=pk)
     if request.method == 'POST':
-        form = AdmissionForm2(request.POST, request.FILES, instance=student.admission_student)
+        form = AdmissionForm2(request.POST, files=request.FILES, instance=student.admission_student)
         if form.is_valid():
             new = AdmissionStudent.objects.create(**form.cleaned_data)
             student.admission_student = new
             student.assign_payment = False
             student.save()
-            return redirect('dashboard:student:all_student')
+            return redirect('dashboard:student:student_details', pk=pk)
         else:
+            print(form.errors)
             messages.add_message(
                 request,
                 messages.ERROR,
-                'Problem'
+                'Problem',
             )
-
     else:
         form = AdmissionForm2(instance=student.admission_student)
     context = {'form': form, 'student': student}
@@ -304,7 +310,8 @@ def update_online_registrant(request, pk):
         if form.is_valid():
             form.save()
             # return redirect('dashboard:student:paid_registrant_list')
-            return redirect('dashboard:student:all_applicants')
+            messages.add_message(request, messages.SUCCESS, "Demande modifiée avec succès")
+            return redirect('dashboard:student:registration_details', pk=pk)
     else:
         form = StudentRegistrantUpdateForm(instance=applicant)
         counseling_form = CounselingDataForm()
@@ -504,7 +511,7 @@ class ApplicationWizard(LoginRequiredMixin, SessionWizardView):
         context['student'] = student
         return context
 
-    template_name = 'applications/application_form.html'
+    template_name = 'students/applications/application_form.html'
     file_storage = DefaultStorage()
 
     def done(self, form_list, **kwargs):
@@ -519,7 +526,7 @@ class ApplicationWizard(LoginRequiredMixin, SessionWizardView):
         except IntegrityError:
             pass
 
-        return render(self.request, 'applications/done.html', {
+        return render(self.request, 'students/applications/done.html', {
             'form_data': [form.cleaned_data for form in form_list],
         })
 
@@ -544,7 +551,6 @@ def studentSubjectView(request):
 def studentResultView(request):
     student = Student.objects.get(admission_student__student_account=request.user)
     # get student object
-    # for showing subjects in option form
     # getting result objects
     results = student.results.all()
     context = {
