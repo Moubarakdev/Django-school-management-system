@@ -75,8 +75,10 @@ def students_board(request):
 def all_applicants(request):
     """Display all registered students list"""
     registrants = AdmissionStudent.objects.all().order_by('-created')
+    f = AlumniFilter(request.GET, queryset=registrants)
     ctx = {
         'registrants': registrants,
+        'filter': f
     }
     return render(request, 'students/all_applicants.html', ctx)
 
@@ -380,8 +382,10 @@ def students_view(request):
     """
     all_students = Student.objects.select_related(
         'admission_student', 'ac_session').all()
+    f = AlumniFilter(request.GET, queryset=all_students)
     context = {
         'students': all_students,
+        'filter': f
     }
     return render(request, 'students/list/students_list.html', context)
 

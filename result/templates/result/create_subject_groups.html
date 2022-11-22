@@ -43,9 +43,9 @@
                 <div class="row" id="subjects-container">
                     {% for subject in subjects %}
                     <!-- Single Subject -->
-                    <div class="col-sm-6 col-md-2 col-lg-3 subject-col" data-subject-pk="{{ subject.pk }}">
+                    <div class="col-sm-6 col-md-12 col-lg-3 subject-col" data-subject-pk="{{ subject.pk }}">
                         <div class="subject-wrapper">
-                            <div class="card mb-3" style="cursor: pointer; background-color: white;" id="subject">
+                            <div class="card mb-3 subject" style="cursor: pointer; background-color: white;">
                                 <div class="card-body">
                                     <h5 class="card-title">{{ subject.name }}</h5>
                                     <div class="card-footer">
@@ -67,7 +67,7 @@
     <div class="row">
         <div class="col-12">
             <div id="subjectCounter" class="">
-                <span id="subjectCounterN">0</span>
+                <span id="subjectCounterN">0</span> sélection(s)
             </div>
         </div>
     </div>
@@ -79,18 +79,9 @@
 {% block customjs %}
 <script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
 <script>
-    const btn = document.getElementById('subject');
-
-    btn.addEventListener('click', function onClick(event) {
-      const backgroundColor = btn.style.backgroundColor;
-
-      if (backgroundColor === 'white') {
-        btn.style.backgroundColor = 'yellow';
-      } else if (backgroundColor === 'yellow') {
-        btn.style.backgroundColor = 'white';
-      } else {
-        btn.style.backgroundColor = 'white';
-      }
+    $('.subject').on('click', function(e) {
+      $(this).toggleClass("bg-primary"); //you can list several class names
+      e.preventDefault();
     });
 </script>
 <script>
@@ -141,6 +132,11 @@
         })
       }
     }
+
+
+
+
+
 
 
 

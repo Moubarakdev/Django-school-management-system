@@ -5,6 +5,10 @@
 {% block extra_header %}
 {% endblock %}
 
+{% block title %}
+Années académiques
+{% endblock title %}
+
 {% block content %}
 <div class="content container-fluid">
     <div class="page-header">
@@ -34,6 +38,7 @@
                                 <th>Année-Scolaire</th>
                                 <th>Status</th>
                                 <th class="text-right">Action</th>
+                                <th class=""></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -43,13 +48,20 @@
                                 <td>{{ac_session.current}}</td>
                                 <td class="text-right">
                                     <div class="actions">
-                                        <a href="{% url 'dashboard:academic:update_ac_session' pk=ac_session.pk%}" class="btn btn-sm bg-success-light mr-2">
+                                        <a href="{% url 'dashboard:academic:update_ac_session' pk=ac_session.pk%}"
+                                           class="btn btn-sm bg-success-light mr-2">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <a href="{% url 'dashboard:academic:delete_ac_session' pk=ac_session.id%}" class="btn btn-sm bg-danger-light">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
                                     </div>
+                                </td>
+                                 <td>
+                                    <form method="POST"
+                                          action="{% url 'dashboard:academic:delete_ac_session' pk=ac_session.id%}">
+                                        {% csrf_token %}
+                                        <a type="submit" class="btn btn-sm bg-danger-light show_confirm"
+                                           data-toggle="tooltip" title='Delete'><i class="fas fa-trash"></i>
+                                        </a>
+                                    </form>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -64,5 +76,30 @@
 {% endblock %}
 
 {% block customjs %}
+<script type="text/javascript">
+$('.show_confirm').click(function(event) {
+    var form =  $(this).closest("form");
+    var name = $(this).data("name");
+    event.preventDefault();
+    swal({
+        title: `Voulez-vous vraiment supprimer cet enregistrement ?`,
+        text: "Si vous le supprimez, il disparaîtra pour toujours.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            form.submit();
+        }
+    });
+});
 
+
+
+
+
+
+
+</script>
 {% endblock %}

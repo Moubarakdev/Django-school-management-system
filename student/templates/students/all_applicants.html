@@ -23,6 +23,33 @@
         </div>
     </div>
     <div class="row">
+        <div class="col-md-12 py-2">
+            <form action="" method="get">
+                <div class="form-row align-items-end">
+                    <div class="col">
+                        {{ filter.form.admission_student__last_name|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                        {{ filter.form.admission_student__first_name|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                        {{ filter.form.admission_student__choosen_department|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                        {{ filter.form.ac_session|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <div class="">
+                                <input type="submit" value="Filtrer" class="btn btn-primary">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="row">
         <div class="col-sm-12">
             <div class="card card-table">
                 <div class="card-body">
@@ -42,7 +69,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for applicant in registrants%}
+                            {% for applicant in filter.qs %}
                             <tr>
 
                                 <th scope="row">

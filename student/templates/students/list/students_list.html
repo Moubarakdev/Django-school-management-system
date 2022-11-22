@@ -5,6 +5,11 @@
 {% block extra_header %}
 {% endblock %}
 
+{% block title %}
+Listes des étudiants
+{% endblock title %}
+
+
 {% block content %}
 <div class="content container-fluid">
     <div class="page-header">
@@ -19,6 +24,33 @@
                 <a href="{% url 'dashboard:student:add_student' %}" class="btn btn-primary"><i
                         class="fas fa-plus"></i></a>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 py-2">
+            <form action="" method="get">
+                <div class="form-row align-items-end">
+                    <div class="col">
+                        {{ filter.form.admission_student__last_name|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                        {{ filter.form.admission_student__first_name|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                        {{ filter.form.admission_student__choosen_department|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                        {{ filter.form.ac_session|as_crispy_field }}
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <div class="">
+                                <input type="submit" value="Filtrer" class="btn btn-primary">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
     <div class="row">
@@ -38,7 +70,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            {% for student in students %}
+                            {% for student in filter.qs %}
                             <tr>
                                 <th scope="row">
                                     <a href="{% url 'dashboard:student:student_details' pk=student.id %}">

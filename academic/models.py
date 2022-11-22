@@ -126,7 +126,7 @@ class Subject(TimeStampedModel):
     name = models.CharField(max_length=50, verbose_name="Titre du cours")
     subject_code = models.CharField(unique=True, verbose_name="Code cours", max_length=50)
     instructor = models.ForeignKey(
-        Teacher, on_delete=models.CASCADE,
+        Teacher, on_delete=models.SET_NULL,
         blank=True, null=True, verbose_name="Instructeur"
     )
     hourly_volume = models.IntegerField(blank=True, default=0,

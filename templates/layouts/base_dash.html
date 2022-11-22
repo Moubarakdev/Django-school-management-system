@@ -43,10 +43,10 @@
 
 <body>
 <div class="main-wrapper">
-    <!-- Preloader-->
+    <!-- Preloader
     <div id="preloader">
         <div id="status">&nbsp;</div>
-    </div>
+    </div> -->
     {% include "includes/dashboard/navbar.html" %}
     {% include "includes/dashboard/sidebar.html" %}
     <div class="page-wrapper">
@@ -56,8 +56,9 @@
 </div>
 
 <!-- Specific JS goes HERE -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.0/sweetalert.min.js"></script>
 <script src="{% static 'home/js/jquery-3.2.1.min.js' %}"></script>
-<!--  <script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script> -->
+<script src="{% static 'assets/js/jquery-3.6.0.min.js' %}"></script>
 <script src="{% static 'assets/js/popper.min.js' %}"></script>
 <script src="{% static 'home/js/waypoints.min.js' %}"></script>
 <script src="{% static 'home/js/jquery.counterup.min.js' %}"></script>

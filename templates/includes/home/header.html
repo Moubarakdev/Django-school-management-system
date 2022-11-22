@@ -30,8 +30,8 @@
                                     {% else %}
                                     href="{% url 'dashboard:index' %}"
                                     {% endif %}
-                                    class="nav-link sign-in js-modal-show"
-                                    ><i class="flaticon-dashboard"></i>Dashboard</a>
+                                    class="nav-link apply_btn"
+                                  ><i class="flaticon-dashboard "></i>Tableau de bord</a>
                                 </li>
                                 {% else %}
 
@@ -54,7 +54,9 @@
                                 </li>
                                 {% endif %}
                             </ul>
-                            <a href="#" title="" class="apply_btn">POSTULER MAINTENANT</a>
+                            {% if not request.user.is_authenticated %}
+                            <a href="{% url 'dashboard:student:application' %}" title="" class="apply_btn">POSTULER MAINTENANT</a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -66,7 +68,7 @@
         <div class="container">
             <nav class="navbar navbar-expand-md navbar-light bg-faded">
                 <a class="navbar-brand" href="index-2.html"
-                ><img src="{% static 'home/images/logo2.png' %}" alt="logo"
+                ><img src="{% static 'home/images/logo_esag.png' %}" alt="logo"
                 /></a>
                 <div
                         class="collapse navbar-collapse main-menu"
@@ -253,7 +255,7 @@
                     <div class="slider-overlay"></div>
                     <!-- SLIDE'S MAIN BACKGROUND IMAGE -->
                     <img
-                            src="{% static 'home/images/banner/banner_2.jpg' %}"
+                            src="{% static 'home/images/banner/b_1.jpg' %}"
                             alt="Sky"
                             class="rev-slidebg"
                             data-bgposition="center center"
@@ -457,7 +459,7 @@
                     <div class="slider-overlay"></div>
                     <!-- SLIDE'S MAIN BACKGROUND IMAGE -->
                     <img
-                            src="{% static 'home/images/banner/banner_1.jpg' %}"
+                            src="{% static 'home/images/banner/b_2.jpg' %}"
                             alt="Sky"
                             class="rev-slidebg"
                             data-bgposition="center center"

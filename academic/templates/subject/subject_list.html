@@ -4,6 +4,11 @@
 
 {% block extra_header %}
 {% endblock %}
+
+{% block title %}
+Matières
+{% endblock title %}
+
 {% block content %}
 
 
@@ -36,6 +41,7 @@
                                 <th>Instructeur</th>
                                 <th>Créateur</th>
                                 <th class="text-right">Action</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -51,10 +57,16 @@
                                            class="btn btn-sm bg-success-light mr-2">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <a href="{% url 'dashboard:academic:delete_subject' pk=subject.pk%}" class="btn btn-sm bg-danger-light">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
                                     </div>
+                                </td>
+                                <td>
+                                    <form method="POST"
+                                          action="{% url 'dashboard:academic:delete_subject' pk=subject.pk%} ">
+                                        {% csrf_token %}
+                                        <a type="submit" class="btn btn-sm bg-danger-light show_confirm"
+                                           data-toggle="tooltip" title='Delete'><i class="fas fa-trash"></i>
+                                        </a>
+                                    </form>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -68,6 +80,30 @@
 </div>
 {% endblock %}
 
-{% block extrajs %}
+{% block customjs %}
+<script type="text/javascript">
+$('.show_confirm').click(function(event) {
+    var form =  $(this).closest("form");
+    var name = $(this).data("name");
+    event.preventDefault();
+    swal({
+        title: `Voulez-vous vraiment supprimer cet enregistrement ?`,
+        text: "Si vous le supprimez, il disparaîtra pour toujours.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            form.submit();
+        }
+    });
+});
 
+
+
+
+
+
+</script>
 {% endblock %}

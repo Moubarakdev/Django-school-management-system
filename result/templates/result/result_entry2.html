@@ -3,7 +3,13 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
-
+{% block title %}
+{% if object %}
+Modifier Facture {{ object }}
+{% else %}
+Ajouter une Facture
+{% endif %}
+{% endblock title %}
 {% block content %}
 
 <div class="container-fluid content">
@@ -89,6 +95,7 @@
       $('input[name="students"]').prop('checked', false);
     }
   });
+
 
 
 

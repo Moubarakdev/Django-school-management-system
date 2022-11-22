@@ -5,6 +5,11 @@
 {% block extra_header %}
 {% endblock %}
 
+{% block title %}
+Liste des professeurs
+{% endblock title %}
+
+
 {% block content %}
 <div class="content container-fluid">
     <div class="page-header">
@@ -17,10 +22,10 @@
                 </ul>
             </div>
             <div class="col-auto text-right float-right ml-auto">
-                <!--
+
                 <a href="{% url 'dashboard:teacher:create_teacher' %}" class="btn btn-primary"><i
                         class="fas fa-plus"></i></a>
-                 -->
+
             </div>
         </div>
     </div>
@@ -36,6 +41,7 @@
                                 <th scope="col">Prénoms</th>
                                 <th scope="col">Contact</th>
                                 <th class="text-right">Actions</th>
+                                <th class=""></th>
                             </tr>
                             </thead>
                             <tbody>
@@ -52,11 +58,16 @@
                                            class="btn btn-sm bg-success-light mr-2">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <a href="{% url 'dashboard:teacher:delete_teacher'  pk=teacher.pk %}"
-                                           class="btn btn-sm bg-danger-light">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
                                     </div>
+                                </td>
+                                <td>
+                                    <form method="POST"
+                                          action="{% url 'dashboard:teacher:delete_teacher' pk=teacher.pk %}">
+                                        {% csrf_token %}
+                                        <a type="submit" class="btn btn-sm bg-danger-light show_confirm"
+                                           data-toggle="tooltip" title='Delete'><i class="fas fa-trash"></i>
+                                        </a>
+                                    </form>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -71,5 +82,29 @@
 {% endblock %}
 
 {% block customjs %}
+<script type="text/javascript">
+$('.show_confirm').click(function(event) {
+    var form =  $(this).closest("form");
+    var name = $(this).data("name");
+    event.preventDefault();
+    swal({
+        title: `Voulez-vous vraiment supprimer cet enregistrement ?`,
+        text: "Si vous le supprimez, il disparaîtra pour toujours.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            form.submit();
+        }
+    });
+});
 
+
+
+
+
+
+</script>
 {% endblock %}
