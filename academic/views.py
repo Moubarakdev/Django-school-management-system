@@ -425,8 +425,11 @@ class TermCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
 
 
 # ####################### CURENT ##########################
-class CurrentSessionAndTermView(LoginRequiredMixin, View):
+class CurrentSessionAndTermView(LoginRequiredMixin, View, UserPassesTestMixin):
     """Current Session and Term"""
+    def test_func(self):
+        user = self.request.user
+        return user_is_admin_su_editor_or_ac_officer(user)
 
     form_class = CurrentSessionForm
     template_name = "current/current_session.html"

@@ -5,7 +5,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
-    <title>Dashboard | {% block title %} {% endblock %}</title>
+    <title>Miabé-School | {% block title %} {% endblock %}</title>
     <link rel="shortcut icon" href="{% static 'assets/img/favicon.png' %}">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;1,400&amp;display=swap">
@@ -41,12 +41,12 @@
     </style>
 </head>
 
-<body>
+<body onload=showDate();>
 <div class="main-wrapper">
-    <!-- Preloader
+    <!-- Preloader -->
     <div id="preloader">
         <div id="status">&nbsp;</div>
-    </div> -->
+    </div>
     {% include "includes/dashboard/navbar.html" %}
     {% include "includes/dashboard/sidebar.html" %}
     <div class="page-wrapper">
@@ -88,6 +88,27 @@
 
 
 
+
+
+</script>
+<script type="text/javascript">
+         function refresh(){
+             var t = 1000; // rafraîchissement en millisecondes
+             setTimeout('showDate()',t)
+         }
+
+         function showDate() {
+             var date = new Date()
+             var h = date.getHours();
+             var m = date.getMinutes();
+             var s = date.getSeconds();
+             if( h < 10 ){ h = '0' + h; }
+             if( m < 10 ){ m = '0' + m; }
+             if( s < 10 ){ s = '0' + s; }
+             var time = h + ':' + m + ':' + s
+             document.getElementById('horloge').innerHTML = time;
+             refresh();
+          }
 
 </script>
 {% block customjs %}

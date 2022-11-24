@@ -109,6 +109,8 @@ Demande d'inscription
 	background: #27AE60;
 	color: white;
 	font-size: 20px;
+	shadow: 10px;
+	font-weight: bold;
 }
 
 #progressbar li:before{
@@ -173,12 +175,12 @@ Demande d'inscription
                     </div>
                     {% endcomment %}
                     <form id="msform" action="/dashboard/students/application/" method="post"
-                          enctype="multipart/form-data">
+                          enctype="multipart/form-data" class="form-border">
                         {% csrf_token %}
                         <!-- progressbar -->
                         <ul id="progressbar" class="text-center">
                             {% if wizard.steps.step1 == 1 %}
-                            <li class="active text-warning">A propos de vous</li>
+                            <li class="active text-warning text-bold">A propos de vous</li>
                             {% else %}
                             <li class="text-warning">A propos de vous</li>
                             {% endif %}
@@ -215,9 +217,7 @@ Demande d'inscription
                         </table>
                         {% if wizard.steps.prev %}
                         <input type="submit" name="wizard_goto_step" class="previous action-button text-center"
-                               value="page {{ wizard.steps.first }}"/>
-                        <input type="submit" name="wizard_goto_step" class="previous action-button text-center"
-                               value="page {{ wizard.steps.prev }}"/>
+                               value="précédent"/>
                         {% endif %}
                         <input type="submit" name="next" class="next action-button text-center" value="suivant"/>
                     </form>

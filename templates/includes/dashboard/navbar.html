@@ -1,11 +1,11 @@
 {% load static %}
-
+{% load permission_tags %}
 <div class="header">
     <div class="header-left">
         <a href="{% url 'dashboard:index' %}" class="logo">
             <img src="{% static 'assets/img/logo2.svg' %}" alt="Logo">
         </a>
-        <a href="{% url 'dashboard:index' %}" class="navbar-brand logo">MIABÉ<span class="text-primary">SCHOOL</span></a>
+        <!-- <a href="{% url 'dashboard:index' %}" class="navbar-brand logo">MIABÉ<span class="text-primary">SCHOOL</span></a> -->
         <a href="" class="logo logo-small">
             <img src="{% static 'assets/img/logo2.svg' %}" alt="Logo" width="30" height="30">
         </a>
@@ -23,8 +23,13 @@
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="{% url 'home:home' %} " class="nav-link"><i class="fa fa-home"></i></a>
             </li>
+            {% if request.user|has_role:'academic_officer' or request.user|has_role:'admin' or request.user|has_role:'accounts' %}
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="{% url 'dashboard:academic:current_session' %}" class="nav-link">Session : {{ request.current_session }}</a>
+            </li>
+            {% endif %}
+            <li class="nav-item d-none d-sm-inline-block">
+               <span id='horloge' style=""></span>
             </li>
         </ul>
 

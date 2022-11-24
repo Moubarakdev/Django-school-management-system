@@ -1,0 +1,29 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block extra_header %}
+{% endblock %}
+
+{% block title %}
+Succès
+{% endblock title %}
+
+{% block content %}
+<div class="content container-fluid">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Demande d'inscription envoyer avec succès</h4>
+                    <a href="{% url 'dashboard:student:application' %}" class="btn btn-success">RETOURNER AU SITE</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block customjs %}
+
+{% endblock %}

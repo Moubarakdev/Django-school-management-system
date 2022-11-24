@@ -34,7 +34,10 @@ def login_view(request):
 
             if user is not None:
                 login(request, user)
-                return redirect("home:home")
+                if 'next' in request.POST:
+                    return redirect(request.POST.get('next'))
+                else:
+                    return redirect("home:home")
             else:
                 print(user)
                 messages.add_message(
