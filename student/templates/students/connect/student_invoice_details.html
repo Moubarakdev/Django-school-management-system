@@ -1,0 +1,74 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load student_tags %}
+{% load humanize %}
+
+{% block title %}
+Matières
+{% endblock title %}
+
+
+{% block content %}
+<div class="container-fluid content">
+    <section id="student-results">
+        <div class="container-fluid">
+            <div class="row mt-5">
+                <div class="col-sm-12">
+                    {% if invoices %}
+                    <h3>Mon status comptable</h3>
+                    <div class="card card-table">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-center mb-0">
+                                    <thead>
+                                    <tr>
+                                        <th>Pour</th>
+                                        <th>Solde de la dernière session</th>
+                                        <th>Montant à payer</th>
+                                        <th>Montant payé</th>
+                                        <th>Solde</th>
+                                        <th>Statut</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for invoice in invoices %}
+                                    <tr>
+                                        <td><a href="{% url 'payment:invoice_detail' invoice.id %}">{{invoice.session}}
+                                        </a>
+                                        </td>
+                                        <td><a href="{% url 'payment:invoice_detail' invoice.id %}">{{invoice.balance_from_previous_session | intcomma}}
+                                        </a>
+                                        </td>
+
+                                        <td><a href="{% url 'payment:invoice_detail' invoice.id %}">{{invoice.total_amount_payable | intcomma}}</a>
+                                        </td>
+                                        <td><a href="{% url 'payment:invoice_detail' invoice.id %}">{{invoice.total_amount_paid | intcomma }}</a>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'payment:invoice_detail' invoice.id %}">{{invoice.balance | intcomma}}</a>
+                                        </td>
+                                        <td>
+                                            <a href="{% url 'payment:invoice_detail' invoice.id %}">{{invoice.statut}}</a>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p>Il n'y a pas encore d'historique de paiement pour vous {{student.admission_student.last_name}}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+{% endblock %}
+
+{% block customjs %}
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+{% endblock %}

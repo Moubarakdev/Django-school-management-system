@@ -26,9 +26,9 @@
                     <a href="{% url 'dashboard:student:me_result' %}"><i
                             class="fas fa-tachometer-alt "></i><span>Mes notes</span></a>
                 </li>
-                <!-- Matières -->
-                <li class="{% active_link  'dashboard:student:application' 'active' strict=True%}">
-                    <a href="#"><i
+                <!-- Statut comptable -->
+                <li class="{% active_link  'dashboard:student:me_invoice' 'active' strict=True%}">
+                    <a href="{% url  'dashboard:student:me_invoice' %}"><i
                             class="fas fa-tachometer-alt "></i><span>Mon statut comptable</span></a>
                 </li>
                 {% endif %}

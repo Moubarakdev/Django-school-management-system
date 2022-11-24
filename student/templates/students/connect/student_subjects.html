@@ -41,6 +41,8 @@ Matières
                             </div>
                         </div>
                     </div>
+                    {% else %}
+                    <p>Il n'y a pas encore de matières pour votre programme {{student.admission_student.last_name}}</p>
                     {% endif %}
                 </div>
             </div>

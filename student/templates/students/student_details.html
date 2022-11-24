@@ -2,6 +2,7 @@
 {% load static %}
 {% load permission_tags %}
 {% load student_tags %}
+{% load humanize %}
 
 {% block customcss %}
 <style>
@@ -12,8 +13,13 @@
       text-decoration: none;
     }
 
+
 </style>
 {% endblock %}
+
+{% block title %}
+Détails étudiant
+{% endblock title %}
 
 {% block content %}
 
@@ -21,9 +27,9 @@
     <div class="page-header">
         <div class="row">
             <div class="col-sm-12">
-                <h3 class="page-title">Détails Professeur</h3>
+                <h3 class="page-title">Détails</h3>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'dashboard:teacher:read_teachers' %}">Professeurs</a>
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:student:all_student' %}">Liste étudiants</a>
                     </li>
                     <li class="breadcrumb-item active">Détails
                     </li>
@@ -105,6 +111,7 @@
                                                         <thead>
                                                         <tr>
                                                             <th>Pour</th>
+                                                            <th>impayé de la session précédente</th>
                                                             <th>Montant à payer</th>
                                                             <th>Montant payé</th>
                                                             <th>Solde</th>
@@ -118,12 +125,14 @@
 
                                                             <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.session}}
                                                             </a></td>
-
-                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.total_amount_payable}}</a>
+                                                             <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.balance_from_previous_session | intcomma}}
+                                                                </a>
                                                             </td>
-                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.total_amount_paid}}</a>
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.total_amount_payable | intcomma}}</a>
                                                             </td>
-                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.balance}}</a>
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.total_amount_paid | intcomma}}</a>
+                                                            </td>
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.balance | intcomma}}</a>
                                                             </td>
                                                             <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.statut}}</a>
                                                             </td>

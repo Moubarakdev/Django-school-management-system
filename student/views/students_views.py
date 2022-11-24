@@ -562,3 +562,16 @@ def studentResultView(request):
         'results': results
     }
     return render(request, 'students/connect/student_results.html', context)
+
+
+@user_passes_test(user_is_student)
+def studentFeesView(request):
+    student = Student.objects.get(admission_student__student_account=request.user)
+    # get student object
+    # getting invoices objects
+    invoices = Invoice.objects.filter(student=student)
+    context = {
+        'student': student,
+        'invoices': invoices
+    }
+    return render(request, 'students/connect/student_invoice_details.html', context)

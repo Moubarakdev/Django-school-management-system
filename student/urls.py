@@ -8,7 +8,8 @@ from student.views.students_views import all_applicants, students_board, admitte
     unpaid_registrants, rejected_registrants, admission_confirmation, admit_student, \
     mark_as_paid_or_unpaid, update_online_registrant, add_counseling_data, add_student_view, students_view, \
     StudentDetailsView, StudentUpdateView, student_delete_view, students_by_department_view, AlumnusListView, \
-    ApplicationWizard, studentResultView, studentSubjectView, renew_admission, RegistrationDetails, reject_student
+    ApplicationWizard, studentResultView, studentSubjectView, renew_admission, RegistrationDetails, reject_student, \
+    studentFeesView
 
 app_name = 'student'
 
@@ -84,5 +85,6 @@ urlpatterns = [
 
     path('me/results', studentResultView, name="me_result"),
     path('me/subjects', studentSubjectView, name="me_subject"),
+    path('me/invoices', studentFeesView, name="me_invoice"),
 
 ]

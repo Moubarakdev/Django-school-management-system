@@ -15,6 +15,7 @@ Résultats
                 <div class="col-sm-12">
                     <div class="row mt-5">
                         <div class="col-sm-12">
+                            {% if results %}
                             <h3>Tableau de résultats</h3>
                             <div class="card card-table">
                                 <div class="card-body">
@@ -48,6 +49,9 @@ Résultats
                                     </div>
                                 </div>
                             </div>
+                            {% else %}
+                            <p>Il n'y a pas encore de notes pour vous monsieur {{student.admission_student.last_name}}</p>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
