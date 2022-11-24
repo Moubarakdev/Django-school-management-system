@@ -1,0 +1,202 @@
+{% extends 'layouts/base_dash.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Entrer résultats
+{% endblock title %}
+{% block content %}
+
+<div class="container-fluid content">
+    <!-- Filter Form -->
+
+    <div class="card">
+
+        <div class="card-body">
+            {% if messages %}
+            <div class="row my-4">
+                <div class="col-md-12">
+                    {% for message in messages %}
+                    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-md-12 py-3">
+                    <form action="" method="GET">
+                        <div class="form-row align-items-end">
+                            <div class="col">
+                                {{ subject_group_filter.form.department|as_crispy_field }}
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <div class="">
+                                        <input type="submit" value="Filter" class="btn btn-primary">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if subject_group_filter.qs %}
+    <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12 py-3">
+                    <!-- Dept, Semester form -->
+
+                    <form action="" id="subjectGroupCreateForm" method="post">
+                        {% csrf_token %}
+                        <!-- Inputs -->
+                        <div id="subjectGroupInputs">
+                            <div class="form-inline col">
+                                <label class="sr-only" for="teacher">Professeur</label>
+                                <select name="teacher" class="form-control mb-2 mr-sm-2" id="teacher" required>
+                                    <option value="" selected disabled>Choisir un professeur</option>
+                                    {% for teacher in teachers %}
+                                    <option value="{{ teacher.pk }}">{{ teacher }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Subject Listing -->
+                        <br>
+                        choix des matières
+                        <div class="row" id="subjects-container">
+                            {% for subject_group in subject_group_filter.qs %}
+                            <input type="hidden" name="department" value="{{ subject_group.department.pk }}" id="department">
+                            {% for subject in subject_group.subjects.all %}
+
+                            <!-- Single Subject -->
+                            <div class="col-sm-6 col-md-12 col-lg-3 subject-col" data-subject-pk="{{ subject.pk }}">
+                                <div class="subject-wrapper">
+                                    <div class="card mb-3 subject" style="cursor: pointer; background-color: white;">
+                                        <div class="card-body">
+                                            <h5 class="card-title">{{ subject.name }}</h5>
+                                            <div class="card-footer">
+                                                <i style="font-weight: bold;">Code cours: </i> {{ subject.subject_code }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            {% endfor %}
+                        </div><!-- Subject Wrapper End  -->
+
+                        <div id="hiddenInputs"></div>
+
+                        <div class="card-footer">
+                            <input type="submit" value="CREER UN NOUVEAU GROUPE DE SUJET"
+                                   class="float-right btn btn-primary">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}
+
+
+{% block customjs %}
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+<script>
+    $('.subject').on('click', function(e) {
+      $(this).toggleClass("bg-primary"); //you can list several class names
+      e.preventDefault();
+    });
+
+
+
+
+
+
+
+
+
+
+</script>
+<script>
+    const subjectsContainer = document.getElementById('subjects-container');
+    const dept = document.getElementById('department');
+    const subjectGroupForm = document.getElementById('subjectGroupCreateForm');
+    const hiddenInputs = document.getElementById('hiddenInputs');
+    const deptPk = parseInt(dept.value);
+    const teacherPk = parseInt(teacher.value);
+    const url = `{% url 'dashboard:teacher:create_teacher_subject_group' dept_pk=${deptPk}, teacher_pk=${teacherPk}}`;
+    const selectedCounterContainer = document.getElementById('subjectCounter');
+    const selectedCounter = document.getElementById('subjectCounterN');
+
+    let selectedCards = 0;
+
+    for (let i = 0; i < subjectsContainer.childNodes.length; i++) {
+      if (subjectsContainer.childNodes[i].classList &&
+        subjectsContainer.childNodes[i].classList.contains('subject-col')) {
+
+        const subjectCol = subjectsContainer.childNodes[i];
+
+        // Conditional Code Runs from here
+        subjectCol.addEventListener('click', function(){
+          const cardItem = this.children[0].children[0] // get .card class
+          cardItem.classList.toggle('selected-item');
+
+          // get data to add new subject to a subject group
+          const subjectPk = parseInt(subjectCol.attributes[1].value);
+
+          if (cardItem.classList.contains('selected-item')) {
+            // remove border-radius from card, and card-img-top
+            cardItem.style.borderRadius = 0;
+            cardItem.children[0].style.borderRadius = 0;
+
+            let newInput = `<input type="hidden" name="subject" value="${subjectPk}" id="${subjectPk}-subject">`;
+            hiddenInputs.innerHTML += newInput;
+            selectedCards += 1;
+            selectedCounter.innerHTML = selectedCards;
+          } else {
+            // apply prev styles on deselect item.
+            cardItem.style.borderRadius = '.25rem';
+            cardItem.children[0].style.borderTopLeftRadius = 'calc(.25rem - 1px)';
+            cardItem.children[0].style.borderTopRightRadius = 'calc(.25rem - 1px)';
+            const remHiddenInput = document.getElementById(`${subjectPk}-subject`);
+            remHiddenInput.remove();
+            selectedCards -= 1
+            selectedCounter.innerHTML = selectedCards;
+          }
+        })
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+{% endblock %}

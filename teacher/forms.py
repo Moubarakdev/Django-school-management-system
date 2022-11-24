@@ -1,6 +1,6 @@
 from django import forms
 
-from teacher.models import Teacher
+from teacher.models import Teacher, TeacherSubjectGroup
 
 
 class TeacherForm(forms.ModelForm):
@@ -11,3 +11,10 @@ class TeacherForm(forms.ModelForm):
         widgets = {
             'date_of_birth': forms.TextInput({'type': 'date'}),
         }
+
+
+class TeacherSubjectsForm(forms.ModelForm):
+    class Meta:
+        model = TeacherSubjectGroup
+        fields = '__all__'
+        exclude = ['created_by', 'created', 'updated']

@@ -11,13 +11,14 @@ Liste groupes de matières
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Liste des programmes</h3>
+                <h3 class="page-title">Liste des assignations de matières</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'dashboard:index' %}">Dashboard</a></li>
-                    <li class="breadcrumb-item"><a href="{% url 'result:subject_groups' %}">Liste des programmes</a>
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:teacher:teacher_subject_groups' %}">Liste des
+                        assignations</a>
                     </li>
                     <div class="col-auto text-right float-right ml-auto">
-                        <a href="{% url 'result:create_subject_group' %}" class="btn btn-primary"><i
+                        <a href="{% url 'dashboard:teacher:create_teacher_subject_group' %}" class="btn btn-primary"><i
                                 class="fas fa-plus"></i></a>
                     </div>
                 </ul>
@@ -47,14 +48,18 @@ Liste groupes de matières
                         <table id="subjectGroupDataTable" class="table table-hover table-center mb-0 datatable">
                             <thead>
                             <tr>
+                                <th scope="col">Professeur</th>
                                 <th scope="col">Filière</th>
                                 <th scope="col">Matières</th>
+                                <th scope="col">Année académique</th>
                                 <th class="text-right">Action</th>
+                                <th></th>
                             </tr>
                             </thead>
                             <tbody>
                             {% for subject_group in subject_groups %}
                             <tr>
+                                <td>{{ subject_group.teacher.name }}</td>
                                 <td>
                                     {{ subject_group.department }}
                                 </td>
@@ -65,17 +70,25 @@ Liste groupes de matières
                                     </p>
                                     {% endfor %}
                                 </td>
+                                <td>
+                                    {{ subject_group.ac_session }}
+                                </td>
                                 <td class="text-right">
                                     <div class="actions">
-                                        <a href="{% url 'result:update_subject_groups' pk=subject_group.pk%}"
+                                        <a href="{% url 'dashboard:teacher:update_teacher_subject_groups' pk=subject_group.pk%}"
                                            class="btn btn-sm bg-success-light mr-2">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <a href=""
-                                           class="btn btn-sm bg-danger-light">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
                                     </div>
+                                </td>
+                                <td>
+                                    <form method="POST"
+                                          action="{% url 'dashboard:teacher:delete_teacher_subject_groups' pk=subject_group.id%}">
+                                        {% csrf_token %}
+                                        <a type="submit" class="btn btn-sm bg-danger-light show_confirm"
+                                           data-toggle="tooltip" title='Delete'><i class="fas fa-trash"></i>
+                                        </a>
+                                    </form>
                                 </td>
                             </tr>
                             {% endfor %}
@@ -93,5 +106,31 @@ Liste groupes de matières
 
 
 {% block customjs %}
+<script type="text/javascript">
+$('.show_confirm').click(function(event) {
+    var form =  $(this).closest("form");
+    var name = $(this).data("name");
+    event.preventDefault();
+    swal({
+        title: `Voulez-vous vraiment supprimer cet enregistrement ?`,
+        text: "Si vous le supprimez, il disparaîtra pour toujours.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            form.submit();
+        }
+    });
+});
 
+
+
+
+
+
+
+
+</script>
 {% endblock %}

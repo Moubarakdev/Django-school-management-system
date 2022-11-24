@@ -183,8 +183,8 @@ class UpdateSubjectGroup(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def handle_no_permission(self):
         if self.request.user.is_authenticated:
-            return redirect('account:profile_complete')
-        return redirect('account_login')
+            return redirect('dashboard:index')
+        return redirect('login')
 
 
 class UpdateResultView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
@@ -204,8 +204,8 @@ class UpdateResultView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def handle_no_permission(self):
         if self.request.user.is_authenticated:
-            return redirect('account:profile_complete')
-        return redirect('account_login')
+            return redirect('dashboard:index')
+        return redirect('login')
 
 
 class DeleteResultView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
@@ -225,8 +225,8 @@ class DeleteResultView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
     def handle_no_permission(self):
         if self.request.user.is_authenticated:
-            return redirect('account:profile_complete')
-        return redirect('account_login')
+            return redirect('dashboard:index')
+        return redirect('login')
 
 
 def resultEntry2(request):

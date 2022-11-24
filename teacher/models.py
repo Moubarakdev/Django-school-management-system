@@ -4,6 +4,7 @@ from model_utils.models import TimeStampedModel
 from phonenumber_field.modelfields import PhoneNumberField
 from taggit.managers import TaggableManager
 
+from academic.models import Department, AcademicSession, Subject
 from myschool import settings
 
 # Create your models here.
@@ -45,8 +46,31 @@ class Teacher(TimeStampedModel):
         ordering = ['joining_date', 'first_name']
 
     def __str__(self):
-        return '{}'.format(self.first_name)
+        return f'{self.last_name} {self.first_name}'
 
     @property
     def name(self):
         return f'{self.last_name} {self.first_name} '
+
+
+class TeacherSubjectGroup(TimeStampedModel):
+    teacher = models.ForeignKey(
+        "teacher.Teacher", on_delete=models.SET_NULL,
+        blank=True, null=True, verbose_name="Instructeur",
+    )
+    subjects = models.ManyToManyField(Subject, blank=True, verbose_name='matières')
+    department = models.ForeignKey(
+        Department,
+        related_name='teacher_subjects',
+        on_delete=models.DO_NOTHING, verbose_name='filière'
+    )
+    ac_session = models.ForeignKey(
+        AcademicSession, on_delete=models.DO_NOTHING,
+        blank=True, null=True, verbose_name="Session académique"
+    )
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.DO_NOTHING, null=True)
+
+    class Meta:
+        unique_together = ['teacher', 'department', 'ac_session']

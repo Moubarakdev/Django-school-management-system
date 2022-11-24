@@ -66,8 +66,6 @@ class Result(TimeStampedModel):
         default="False",
         verbose_name="Validé ?"
     )
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     class Meta:
         unique_together = ('student', 'subject')
@@ -109,11 +107,9 @@ class SubjectGroup(TimeStampedModel):
     department = models.ForeignKey(
         Department,
         related_name='subjects',
-        on_delete=models.DO_NOTHING, verbose_name='département'
+        on_delete=models.DO_NOTHING, verbose_name='filière'
     )
     subjects = models.ManyToManyField(Subject, blank=True, verbose_name='matières')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 
     def __str__(self):
         return f'{self.department}'

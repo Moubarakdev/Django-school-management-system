@@ -3,7 +3,6 @@ from django.urls import reverse
 from model_utils.models import TimeStampedModel
 
 from myschool import settings
-from teacher.models import Teacher
 
 
 # Create your models here.
@@ -125,10 +124,6 @@ class Semester(TimeStampedModel):
 class Subject(TimeStampedModel):
     name = models.CharField(max_length=50, verbose_name="Titre du cours")
     subject_code = models.CharField(unique=True, verbose_name="Code cours", max_length=50)
-    instructor = models.ForeignKey(
-        Teacher, on_delete=models.SET_NULL,
-        blank=True, null=True, verbose_name="Instructeur"
-    )
     hourly_volume = models.IntegerField(blank=True, default=0,
                                         null=True, verbose_name="Volume horaire")
     created_by = models.ForeignKey(
@@ -216,6 +211,4 @@ class GroupFees(TimeStampedModel):
     )
     description = models.CharField(verbose_name="Description", max_length=15)
     fees_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Montant des frais")
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name="Créer le")
-    updated_at = models.DateTimeField(auto_now=True, verbose_name="Modifier le")
 '''
