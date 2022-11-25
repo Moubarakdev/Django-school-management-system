@@ -1,0 +1,99 @@
+{% extends 'layouts/base_dash.html' %}
+{% load widget_tweaks %}
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+Etudiants
+{% endblock title %}
+{% block content %}
+
+<div class="container-fluid content">
+    <!-- Filter Form -->
+
+    <div class="card">
+
+        <div class="card-body">
+            {% if messages %}
+            <div class="row my-4">
+                <div class="col-md-12">
+                    {% for message in messages %}
+                    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        {{ message }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+            <div class="row">
+                <div class="col-md-12 py-3">
+                    <form action="" method="GET">
+                        <div class="form-row align-items-end">
+                            <div class="col">
+                                {{ subject_group_filter.form.department|as_crispy_field }}
+                            </div>
+                            <div class="col">
+                                <div class="form-group">
+                                    <div class="">
+                                        <input type="submit" value="Filter" class="btn btn-primary">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section id="student-results">
+        <div class="container-fluid">
+            <div class="row mt-5">
+                <div class="col-sm-12">
+                    {% if subject_group_filter.qs %}
+                    {% if students %}
+                    <h3>Liste des étudiants</h3>
+                    <div class="card card-table">
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover table-center mb-0 datatable">
+                                    <thead>
+                                    <tr>
+                                        <th>Nom</th>
+                                        <th>Prénom</th>
+                                    </tr>
+                                    </thead>
+                                    {% for student in students %}
+                                    <tbody>
+                                    <tr>
+                                        <td>
+                                            <i>{{ student.admission_student.last_name }}</i>
+                                        </td>
+                                        <td><i>{{ student.admission_student.first_name }}</i></td>
+                                    </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+                    <p>Il n'y a pas encore de d'étudiants inscrits à votre cours {{teacher.name}}</p>
+                    {% endif %}
+                    {% else %}
+                    <p>Vous n'intervenez pas dans la filière sélectionner</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+{% endblock %}
+
+{% block customjs %}
+<script src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+{% endblock %}

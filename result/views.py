@@ -288,7 +288,7 @@ def resultEntry2(request):
                  'subject_group_filter': subject_group_filter},
             )
         else:
-            messages.warning(request, "You didnt select any student.")
+            messages.warning(request, "Vous n'avez sélectionner aucun étudiant")
     ctx.update({
         'subject_group_filter': subject_group_filter,
         'students': students,
@@ -322,7 +322,7 @@ def edit_results(request, **kwargs):
         form = EditResults(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Results successfully updated")
+            messages.success(request, "Résultats modifiés avec succès")
     else:
         results = Result.objects.filter(
             student__in=students

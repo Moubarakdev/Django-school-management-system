@@ -6,24 +6,24 @@
 
 {% block content %}
 <div class="container-fluid content">
+    {% if messages %}
+    <div class="row my-4">
+        <div class="col-md-12">
+            {% for message in messages %}
+            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
     {% for subject_group in subject_group_filter.qs %}
     <div class="card m-2">
         <p>Vous avez sélectionner <b>{{ count }} étudiants</b> de la page précédente .</p>
         <div class="card-body">
-            {% if messages %}
-            <div class="row my-4">
-                <div class="col-md-12">
-                    {% for message in messages %}
-                    <div class="alert {{ message.tags }} alert-dismissible" role="alert">
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                        {{ message }}
-                    </div>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
             <form method="POST">
                 {% csrf_token %}
                 <div class="form-group row">

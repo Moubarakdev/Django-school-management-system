@@ -2,7 +2,8 @@ from django.urls import path
 
 from teacher.views import CreateTeacherView, TeacherListView, DeleteTeacherView, UpdateTeacherView, TeacherDetailView, \
     TeacherApplication, all_applicants, admit_teacher, create_teacher_subject_group, teacher_subject_group_list, \
-    UpdateTeacherSubjectGroup, DeleteTeacherSubjectGroup
+    UpdateTeacherSubjectGroup, DeleteTeacherSubjectGroup, teacherSubjectView, teacherStudentsView, teacherResultsView, \
+    teacher_edit_results
 
 app_name = 'teacher'
 
@@ -20,4 +21,10 @@ urlpatterns = [
     path('subject-groups/', teacher_subject_group_list, name='teacher_subject_groups'),
     path('subject-groups/update/<int:pk>', UpdateTeacherSubjectGroup.as_view(), name='update_teacher_subject_groups'),
     path('subject-groups/delete/<int:pk>', DeleteTeacherSubjectGroup.as_view(), name='delete_teacher_subject_groups'),
+
+    # path('me/results', studentResultView, name="me_result"),
+    path('teacher/subjects', teacherSubjectView, name="teacher_subjects"),
+    path('teacher/students', teacherStudentsView, name="teacher_students"),
+    path('teacher/results_entry', teacherResultsView, name="teacher_results_entry"),
+    path('teacher/results_details', teacher_edit_results, name="teacher_edit_results"),
 ]

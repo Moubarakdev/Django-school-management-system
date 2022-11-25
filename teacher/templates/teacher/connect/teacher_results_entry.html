@@ -51,6 +51,7 @@ Entrer résultats
         </div>
     </div>
 
+    {% if subject_group_filter %}
     <div class="card m-2">
         <div class="card-body">
             <form method="POST">
@@ -75,6 +76,7 @@ Entrer résultats
             </form>
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
 

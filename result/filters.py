@@ -1,6 +1,7 @@
 import django_filters
 
 from student.models import Student
+from teacher.models import TeacherSubjectGroup
 from .models import Result, SubjectGroup
 
 
@@ -27,6 +28,14 @@ class ResultFilter(django_filters.FilterSet):
 class SubjectGroupFilter(django_filters.FilterSet):
     class Meta:
         model = SubjectGroup
+        fields = [
+            'department',
+        ]
+
+
+class TeacherSubjectGroupFilter(django_filters.FilterSet):
+    class Meta:
+        model = TeacherSubjectGroup
         fields = [
             'department',
         ]

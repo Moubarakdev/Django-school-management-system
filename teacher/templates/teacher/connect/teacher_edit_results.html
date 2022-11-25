@@ -36,6 +36,7 @@ Modifier les résultats
             </div>
         </div>
     </div>
+    {% if subject_group_filter %}
     <div class="card m-2">
         <div class="card-body col-auto" style="overflow:scroll;">
             {% if messages %}
@@ -90,6 +91,7 @@ Modifier les résultats
             </form>
         </div>
     </div>
+    {% endif %}
 </div>
 {% endblock %}
 

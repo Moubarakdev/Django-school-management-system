@@ -43,6 +43,22 @@
                     <a href="{% url 'dashboard:teacher_dash' %}"><i
                             class="fas fa-tachometer-alt "></i><span>Dashboard</span></a>
                 </li>
+                <li class="{% active_link  'dashboard:teacher:teacher_subjects' 'active' strict=True%}">
+                    <a href="{% url 'dashboard:teacher:teacher_subjects' %}"><i
+                            class="fas fa-tachometer-alt "></i><span>Mes matières</span></a>
+                </li>
+                <li class="{% active_link  'dashboard:teacher:teacher_students' 'active' strict=True%}">
+                    <a href="{% url 'dashboard:teacher:teacher_students' %}"><i
+                            class="fas fa-tachometer-alt "></i><span>Mes étudiants</span></a>
+                </li>
+                <li class="{% active_link  'dashboard:teacher:teacher_results_entry' 'active' strict=True%}">
+                    <a href="{% url 'dashboard:teacher:teacher_results_entry' %}"><i
+                            class="fas fa-tachometer-alt "></i><span>Créer notes</span></a>
+                </li>
+                <li class="{% active_link  'dashboard:teacher:teacher_edit_results' 'active' strict=True%}">
+                    <a href="{% url 'dashboard:teacher:teacher_edit_results' %}"><i
+                            class="fas fa-tachometer-alt "></i><span>Editer notes</span></a>
+                </li>
                 {% endif %}
 
                 <!--
