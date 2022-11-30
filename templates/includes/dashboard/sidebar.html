@@ -13,13 +13,13 @@
                 {% if request.user.requested_role == "student" and request.user.approval_status != "a" %}
                 <li class="{% active_link  'dashboard:student:application' 'active' strict=True%}">
                     <a href="{% url 'dashboard:student:application' %}"><i
-                            class="fas fa-tachometer-alt "></i><span>Formulaire d'inscription</span></a>
+                            class="fas fa-clipboard-check "></i><span>Formulaire d'inscription</span></a>
                 </li>
                 {% elif request.user|has_role:"student" %}
                 <!-- Matières -->
                 <li class="{% active_link  'dashboard:student:me_subject' 'active' strict=True%}">
                     <a href="{% url 'dashboard:student:me_subject' %}"><i
-                            class="fas fa-clipboard-list "></i><span>Mon programme</span></a>
+                            class="fas fa-clipboard-list"></i><span>Mon programme</span></a>
                 </li>
                 <!-- Matières -->
                 <li class="{% active_link  'dashboard:student:me_result' 'active' strict=True%}">
@@ -36,24 +36,24 @@
                 {% if request.user.requested_role == "teacher" and request.user.approval_status != "a" %}
                 <li class="{% active_link  'dashboard:teacher:teacher_application' 'active' strict=True%}">
                     <a href="{% url 'dashboard:teacher:teacher_application' %}"><i
-                            class="fas fa-tachometer-alt "></i><span>Formulaire d'inscription</span></a>
+                            class="fas fa-clipboard-check"></i><span>Formulaire de demande</span></a>
                 </li>
                 {% elif request.user|has_role:'teacher' %}
                 <li class="{% active_link  'dashboard:teacher:teacher_subjects' 'active' strict=True%}">
                     <a href="{% url 'dashboard:teacher:teacher_subjects' %}"><i
-                            class="fas fa-tachometer-alt "></i><span>Mes matières</span></a>
+                            class="fas fa-book-open"></i><span>Mes cours</span></a>
                 </li>
                 <li class="{% active_link  'dashboard:teacher:teacher_students' 'active' strict=True%}">
                     <a href="{% url 'dashboard:teacher:teacher_students' %}"><i
-                            class="fas fa-tachometer-alt "></i><span>Mes étudiants</span></a>
+                            class="fas fa-user-graduate"></i><span>Mes étudiants</span></a>
                 </li>
                 <li class="{% active_link  'dashboard:teacher:teacher_results_entry' 'active' strict=True%}">
                     <a href="{% url 'dashboard:teacher:teacher_results_entry' %}"><i
-                            class="fas fa-tachometer-alt "></i><span>Créer notes</span></a>
+                            class="fas fa-book-reader"></i><span>Créer résultats</span></a>
                 </li>
                 <li class="{% active_link  'dashboard:teacher:teacher_edit_results' 'active' strict=True%}">
                     <a href="{% url 'dashboard:teacher:teacher_edit_results' %}"><i
-                            class="fas fa-tachometer-alt "></i><span>Editer notes</span></a>
+                            class="fas fa-book-reader"></i><span>Editer résultats</span></a>
                 </li>
                 {% endif %}
 

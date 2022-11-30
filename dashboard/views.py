@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.shortcuts import render
 from django.utils import timezone
 
-from academic.models import Department, AcademicSession
+from academic.models import Department, AcademicSession, Subject
 from permission_handlers.basic import user_is_verified
 from result.models import Result, SubjectGroup
 from student.models import Student, AdmissionStudent
@@ -77,11 +77,27 @@ def index(request):
         return render(request, 'dashboard/index.html', context)
     elif request.user.requested_role == "teacher":
         teacher = Teacher.objects.get(teacher_account=request.user)
-        subjects = TeacherSubjectGroup.objects.filter(
-            teacher=teacher,
+        subjects_g = TeacherSubjectGroup.objects.filter(
+            teacher=teacher, ac_session=request.current_session
         )
+        nb_depts = 0
+        nb_students = 0
+        nb_hours = 0
+        for subject_g in subjects_g:
+            subjects = subject_g.subjects.all()
+            for subject in subjects:
+                hours = Subject.objects.get(subject_code=subject.subject_code).hourly_volume
+                nb_hours += hours
+            if subject_g.department:
+                students = Student.objects.filter(admission_student__choosen_department=subject_g.department).count()
+                nb_students += students
+                nb_depts += 1
+
         ctx = {
-            'subjects': subjects,
+            'subjects': subjects_g,
+            'nb_depts': nb_depts,
+            'nb_students': nb_students,
+            'nb_hours': nb_hours,
         }
         return render(request, 'dashboard/teacher_dashboard.html', ctx)
     else:

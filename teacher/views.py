@@ -350,8 +350,6 @@ def teacherResultsView(request):
     })
     students = Student.objects.filter(admission_student__choosen_department=department)
 
-    print(subjects)
-
     if request.method == "POST":
 
         # after visiting the second page
@@ -394,7 +392,7 @@ def teacherResultsView(request):
                  'subject_group_filter': subject_group_filter},
             )
         else:
-            messages.warning(request, "You didnt select any student.")
+            messages.warning(request, "Vous n'avez encore sélectionner aucun étudiant.")
     ctx.update({
         'subject_group_filter': subject_group_filter,
         'students': students,
