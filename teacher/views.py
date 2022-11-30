@@ -220,7 +220,10 @@ def create_teacher_subject_group(request):
             subject_objects.append(subj)
             teacher_subject_group.subjects.add(subj)
 
+        teacher_subject_group.save(commit=False)
+        teacher_subject_group.created_by = request.user
         teacher_subject_group.save()
+
         return redirect('dashboard:teacher:teacher_subject_groups')
     ctx.update({
         'subject_group_filter': subject_group_filter,
@@ -429,9 +432,14 @@ def teacher_edit_results(request, **kwargs):
             form.save()
             messages.success(request, "Résultats modifiés avec succès")
     else:
-        results = Result.objects.filter(
-            student__in=students, subject__in=subjects
-        )
+        if subjects is None:
+            results = Result.objects.filter(
+                student__in=students
+            )
+        else:
+            results = Result.objects.filter(
+                student__in=students, subject__in=subjects
+            )
         form = EditResults(queryset=results)
     ctx.update({
         "formset": form,

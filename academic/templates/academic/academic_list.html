@@ -1,6 +1,7 @@
 {% extends 'layouts/base_dash.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load permission_tags %}
 
 {% block extra_header %}
 {% endblock %}
@@ -50,16 +51,25 @@ Années académiques
                             <thead>
                             <tr>
                                 <th>Année-Scolaire</th>
-                                <th>Status</th>
+                                <th>Statut</th>
+                                {% if request.user|has_role:'admin' %}
                                 <th class="text-right">Action</th>
                                 <th class=""></th>
+                                {% endif %}
                             </tr>
                             </thead>
                             <tbody>
                             {% for ac_session in ac_sessions%}
                             <tr>
                                 <td>{{ac_session.academic_year}}</td>
-                                <td>{{ac_session.current}}</td>
+                                <td>
+                                    {% if ac_session.current %}
+                                      session actuelle
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                {% if request.user|has_role:'admin' %}
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="{% url 'dashboard:academic:update_ac_session' pk=ac_session.pk%}"
@@ -77,6 +87,7 @@ Années académiques
                                         </a>
                                     </form>
                                 </td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                             </tbody>

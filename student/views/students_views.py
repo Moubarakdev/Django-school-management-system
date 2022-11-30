@@ -541,7 +541,7 @@ def studentSubjectView(request):
     # get student object
     # for showing subjects in option form
     student_subject_qs = SubjectGroup.objects.filter(
-        department=student.admission_student.choosen_department,
+        department__name=student.admission_student.choosen_department.name,
     )
     subjects = student_subject_qs
     context = {
@@ -556,7 +556,7 @@ def studentResultView(request):
     student = Student.objects.get(admission_student__student_account=request.user)
     # get student object
     # getting result objects
-    results = student.results.all()
+    results = student.results.filter(finished=True)
     context = {
         'student': student,
         'results': results

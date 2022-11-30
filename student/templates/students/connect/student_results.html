@@ -30,6 +30,7 @@ Résultats
                                                 <th scope="col">Note de rattrapage</th>
                                                 <th scope="col">Total</th>
                                                 <th scope="col">Moyenne</th>
+                                                <th scope="col">Statut</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -39,9 +40,25 @@ Résultats
                                                 <td>{{ result.subject }}</td>
                                                 <td>{{ result.class_marks }}</td>
                                                 <td>{{ result.exam_marks }}</td>
-                                                <td>{{ result.extra_marks }}</td>
+                                                <td>
+                                                    {% if result.extra_marks <= 0 %}
+                                                    -
+                                                    {% else %}
+                                                    {{ result.extra_marks }}
+                                                    {%endif %}
+                                                </td>
                                                 <td>{{ result.total_marks }}</td>
                                                 <td>{{ result.average }}</td>
+                                                <td>
+                                                    {% if result.validated %}
+                                                    <img src="{% static 'images/checked.png' %}"
+                                                         width="16" alt="">
+                                                    {% else %}
+                                                    <span hidden="hidden">N</span><img
+                                                        src="{% static 'images/cross.png' %}"
+                                                        width="16" alt="">
+                                                    {% endif %}
+                                                </td>
                                             </tr>
                                             {% endfor %}
                                             </tbody>
@@ -50,7 +67,8 @@ Résultats
                                 </div>
                             </div>
                             {% else %}
-                            <p>Il n'y a pas encore de notes pour vous monsieur {{student.admission_student.last_name}}</p>
+                            <p>Il n'y a pas encore de notes pour vous monsieur
+                                {{student.admission_student.last_name}}</p>
                             {% endif %}
                         </div>
                     </div>

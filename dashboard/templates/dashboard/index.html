@@ -4,6 +4,9 @@
 {% block extra_header %}
 
 {% endblock %}
+{% block title %}
+Dashboard
+{% endblock %}
 {% block content %}
 
 <div class="content container-fluid">
@@ -22,7 +25,7 @@
     </div>
 
     <div class="row">
-        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+        <div class="col-xl-4 col-sm-6 col-12 d-flex">
             <div class="card bg-one w-100">
                 <div class="card-body">
                     <div
@@ -39,7 +42,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+        <div class="col-xl-4 col-sm-6 col-12 d-flex">
             <div class="card bg-two w-100">
                 <div class="card-body">
                     <div
@@ -56,7 +59,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 col-12 d-flex">
+        <div class="col-xl-4 col-sm-6 col-12 d-flex">
             <div class="card bg-three w-100">
                 <div class="card-body">
                     <div
@@ -67,77 +70,41 @@
                         </div>
                         <div class="db-info single_count">
                             <h3 class="counter">{{total_departments}}</h3>
-                            <h6>Département{{ total_departments|pluralize }}</h6>
+                            <h6>Filière{{ total_departments|pluralize }}</h6>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-xl-3 col-sm-6 col-12 d-flex">
-            <div class="card bg-four w-100">
-                <div class="card-body">
-                    <div
-                            class="db-widgets d-flex justify-content-between align-items-center"
-                    >
-                        <div class="db-icon">
-                            <i class="fas fa-file-invoice-dollar"></i>
-                        </div>
-                        <div class="db-info">
-                            <h3>$505</h3>
-                            <h6>Revenue</h6>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="col-xl-4 col-sm-6 col-12 d-flex">
+            <!--
+           <div class="card bg-four w-100">
+
+               <div class="card-body">
+                   <div
+                           class="db-widgets d-flex justify-content-between align-items-center"
+                   >
+                       <div class="db-icon">
+                           <i class="fas fa-file-invoice-dollar"></i>
+                       </div>
+                       <div class="db-info">
+                           <h3>$505</h3>
+                           <h6>Revenue</h6>
+                       </div>
+                   </div>
+               </div>
+
+           </div>
+            -->
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12 col-lg-6">
+        <div class="col-md-12">
             <div class="card card-chart">
                 <div class="card-header">
                     <div class="row align-items-center">
                         <div class="col-6">
-                            <h5 class="card-title">Revenue</h5>
-                        </div>
-                        <div class="col-6">
-                            <ul class="list-inline-group text-right mb-0 pl-0">
-                                <li class="list-inline-item">
-                                    <div class="form-group mb-0 amount-spent-select">
-                                        <select class="form-control form-control-sm">
-                                            <option>Today</option>
-                                            <option>Last Week</option>
-                                            <option>Last Month</option>
-                                        </select>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-body">
-                    <div id="apexcharts-area"></div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-12 col-lg-6">
-            <div class="card card-chart">
-                <div class="card-header">
-                    <div class="row align-items-center">
-                        <div class="col-6">
-                            <h5 class="card-title">Number of Students</h5>
-                        </div>
-                        <div class="col-6">
-                            <ul class="list-inline-group text-right mb-0 pl-0">
-                                <li class="list-inline-item">
-                                    <div class="form-group mb-0 amount-spent-select">
-                                        <select class="form-control form-control-sm">
-                                            <option>Today</option>
-                                            <option>Last Week</option>
-                                            <option>Last Month</option>
-                                        </select>
-                                    </div>
-                                </li>
-                            </ul>
+                            <h5 class="card-title">Nombre d'étudiants</h5>
                         </div>
                     </div>
                 </div>
@@ -295,6 +262,14 @@
 {% endblock %}
 
 {% block customjs %}
+<script>
+
+var values = JSON.parse("[{{values.0}}, {{values.1}}, {{values.2}}]")
+var dataBoys = JSON.parse("[{{dataBoys.0}}, {{dataBoys.1}}, {{dataBoys.2}}]")
+var dataGirls = JSON.parse("[{{dataGirls.0}}, {{dataGirls.1}}, {{dataGirls.2}}]")
+
+
+</script>
 <script src="{% static 'assets/js/calander.js' %}"></script>
 <script src="{% static 'assets/plugins/apexchart/apexcharts.min.js' %}"></script>
 <script src="{% static 'assets/plugins/apexchart/chart-data.js'%}"></script>

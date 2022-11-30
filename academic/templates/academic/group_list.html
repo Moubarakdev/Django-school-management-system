@@ -51,7 +51,7 @@ Groupes
                                 <td>
                                     <div class="group-table-perms">
                                         {% for usperm in group.user_set.all %}
-                                        <p class="text-dark">{{ usperm.permissions.all }}</p>
+                                        <p class="text-dark">{{ usperm.permissions }}</p>
                                         {% endfor %}
                                         <div class="table-td-show-more">
                                             <i class="fas fa-chevron-circle-down"></i>

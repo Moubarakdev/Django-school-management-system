@@ -1,7 +1,7 @@
 {% extends 'layouts/base_dash.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
-
+{% load permission_tags %}
 {% block extra_header %}
 {% endblock %}
 
@@ -39,9 +39,10 @@ Matières
                                 <th>Titre cours</th>
                                 <th>Code cours</th>
                                 <th>volume horaire</th>
-                                <th>Créateur</th>
+                                {% if request.user|has_role:'admin' %}
                                 <th class="text-right">Action</th>
                                 <th></th>
+                                {% endif %}
                             </tr>
                             </thead>
                             <tbody>
@@ -50,7 +51,7 @@ Matières
                                 <td>{{subject.name}}</td>
                                 <td>{{subject.subject_code}}</td>
                                 <td>{{subject.hourly_volume}}</td>
-                                <td>{{subject.created_by.username}}</td>
+                                {% if request.user|has_role:'admin' %}
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="{% url 'dashboard:academic:update_subject' pk=subject.pk%}"
@@ -68,6 +69,7 @@ Matières
                                         </a>
                                     </form>
                                 </td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                             </tbody>
@@ -99,6 +101,7 @@ $('.show_confirm').click(function(event) {
         }
     });
 });
+
 
 
 

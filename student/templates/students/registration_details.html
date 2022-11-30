@@ -37,19 +37,21 @@ Détails
             <div class="row">
                 <div class="col-md-8">
                     <div class="mb-3">
-                        <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}"
-                           class="btn btn-primary">Modifier</a>
-                        {% if not applicant.admitted %}
-                        <a href="{% url 'dashboard:student:admit_student' pk=applicant.id %}"
-                           class="btn btn-success">
-                            Valider <i class="fas fa-check"></i>
-                        </a>
-                        {% endif %}
-                        {% if not applicant.admitted %}
-                        <a href="{% url 'dashboard:student:reject_student' pk=applicant.id %}"
-                           class="btn btn-danger">
-                            Rejeter <i class="fas fa-xmark"></i>
-                        </a>
+                        {% if request.user|has_role:'admin' %}
+                            <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}"
+                               class="btn btn-primary">Modifier</a>
+                            {% if not applicant.admitted %}
+                            <a href="{% url 'dashboard:student:admit_student' pk=applicant.id %}"
+                               class="btn btn-success">
+                                Valider <i class="fas fa-check"></i>
+                            </a>
+                            {% endif %}
+                            {% if not applicant.admitted %}
+                            <a href="{% url 'dashboard:student:reject_student' pk=applicant.id %}"
+                               class="btn btn-danger">
+                                Rejeter <i class="fas fa-xmark"></i>
+                            </a>
+                            {% endif %}
                         {% endif %}
                     </div>
                     <div class="about-info">
@@ -216,6 +218,7 @@ loadingTask.promise.then(function (pdf) {
     // PDF loading error
     console.error(reason);
 });
+
 
 
 

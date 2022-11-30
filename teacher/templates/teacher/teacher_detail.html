@@ -1,6 +1,6 @@
 {% extends 'layouts/base_dash.html' %}
 {% load static %}
-
+{% load permission_tags %}
 {% block title %}
 Détails professeur
 {% endblock title %}
@@ -14,7 +14,8 @@ Détails professeur
             <div class="col-sm-12">
                 <h3 class="page-title">Détails Professeur</h3>
                 <ul class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{% url 'dashboard:teacher:read_teachers' %}">Professeurs</a></li>
+                    <li class="breadcrumb-item"><a href="{% url 'dashboard:teacher:read_teachers' %}">Professeurs</a>
+                    </li>
                     <li class="breadcrumb-item active">Détails
                     </li>
                 </ul>
@@ -26,8 +27,10 @@ Détails professeur
             <div class="row">
                 <div class="col-md-12">
                     <div class="mb-3">
+                        {% if request.user|has_role:'admin' %}
                         <a href="{% url 'dashboard:teacher:delete_teacher' pk=teacher.id %}"
                            class="btn btn-danger">Supprimer le profil</a>
+                        {% endif %}
                     </div>
                     <div class="about-info">
                         <div class="media mt-3">
@@ -35,7 +38,7 @@ Détails professeur
                                  {% if teacher.photo %}
                                  src="{{ teacher.photo.url }}"
                                  {% else %}
-                                 src="{% static '/assets/img/user.png' %}"
+                                 src="{% static 'assets/img/user.png' %}"
                                  {% endif %}
                             >
                             <div class="media-body">
@@ -45,10 +48,13 @@ Détails professeur
                                         <span class="info-span">{{ teacher.last_name }} {{ teacher.first_name }}</span>
                                     </li>
                                     <li>
-                                                    <span class="title-span">Department
+                                                    <span class="title-span">Experise
                                                         : </span>
-                                        <span class="info-span">Computer
-                                                        Science</span>
+                                        <span class="info-span">
+                                            {% for tag in teacher.expertise.all %}
+                                                {{ tag }},
+                                            {% endfor %}
+                                        </span>
                                     </li>
                                     <li><span class="title-span">Mobile: </span>
                                         <span class="info-span">{{ teacher.mobile_number }}</span>
@@ -57,12 +63,7 @@ Détails professeur
                                         <span class="info-span">{{ teacher.email }}</span>
                                     </li>
                                     <li>
-                                                    <span class="title-span">Gender
-                                                        : </span>
-                                        <span class="info-span">Male</span>
-                                    </li>
-                                    <li>
-                                                    <span class="title-span">DOB
+                                                    <span class="title-span">DDN
                                                         : </span>
                                         <span class="info-span">{{ teacher.date_of_birth }}</span>
                                     </li>

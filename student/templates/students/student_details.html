@@ -14,6 +14,8 @@
     }
 
 
+
+
 </style>
 {% endblock %}
 
@@ -45,6 +47,7 @@ Détails étudiant
                         <a href="{% url 'dashboard:student:students_board' %}" class="btn btn-danger">
                             Dashboard
                         </a>
+                        {% if request.user|has_role:'admin' %}
                         <a href="{% url 'dashboard:student:delete_student' pk=student.pk %}" class="btn btn-danger">
                             <i class="fas fa-trash-alt"></i>
                         </a>
@@ -55,6 +58,7 @@ Détails étudiant
                         <a href="{% url 'dashboard:student:new_admission' pk=student.pk %}" class="btn btn-secondary">
                             <i class="fas fa-edit">Réinscription</i>
                         </a>
+                        {% endif %}
                         {% endif %}
                     </div>
                     <div class="about-info">
@@ -125,14 +129,18 @@ Détails étudiant
 
                                                             <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.session}}
                                                             </a></td>
-                                                             <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.balance_from_previous_session | intcomma}}
-                                                                </a>
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.balance_from_previous_session
+                                                                | intcomma}}
+                                                            </a>
                                                             </td>
-                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.total_amount_payable | intcomma}}</a>
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.total_amount_payable
+                                                                | intcomma}}</a>
                                                             </td>
-                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.total_amount_paid | intcomma}}</a>
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.total_amount_paid
+                                                                | intcomma}}</a>
                                                             </td>
-                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.balance | intcomma}}</a>
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.balance
+                                                                | intcomma}}</a>
                                                             </td>
                                                             <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.statut}}</a>
                                                             </td>
@@ -200,26 +208,6 @@ Détails étudiant
                                 </div>
                             </div>
                         </section>
-                        <div class="row follow-sec">
-                            <div class="col-md-4 mb-3">
-                                <div class="blue-box">
-                                    <h3>2850</h3>
-                                    <p>Followers</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <div class="blue-box">
-                                    <h3>2050</h3>
-                                    <p>Following</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <div class="blue-box">
-                                    <h3>2950</h3>
-                                    <p>Friends</p>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>

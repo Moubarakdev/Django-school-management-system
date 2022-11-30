@@ -46,7 +46,7 @@ Modifier étudiant
                             <form class="sudent-update-form" method="post" action="">
                                 {% csrf_token %}
                                 {{ form|crispy }}
-                                <a href="{% url 'dashboard:student:students_board' %}" class="btn btn-dark">
+                                <a href="{% url 'dashboard:student:student_details' pk=object.pk %}" class="btn btn-dark">
                                     <i class="fas fa-arrow-left"></i> Retour
                                 </a>
                                 <input class="btn btn-info" type="submit" value="Modifier Details">

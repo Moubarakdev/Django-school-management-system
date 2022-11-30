@@ -1,6 +1,7 @@
 {% extends 'layouts/base_dash.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load permission_tags %}
 
 {% block extra_header %}
 {% endblock %}
@@ -40,8 +41,10 @@ Liste des professeurs
                                 <th scope="col">Nom</th>
                                 <th scope="col">Prénoms</th>
                                 <th scope="col">Contact</th>
+                                {% if request.user|has_role:'admin' %}
                                 <th class="text-right">Actions</th>
                                 <th class=""></th>
+                                {% endif %}
                             </tr>
                             </thead>
                             <tbody>
@@ -52,6 +55,7 @@ Liste des professeurs
                                 <td><a href="{% url 'dashboard:teacher:teacher_detail' pk=teacher.pk %}">
                                     {{teacher.first_name}}</a></td>
                                 <td>{{ teacher.mobile_number|default_if_none:"" }}</td>
+                                {% if request.user|has_role:'admin' %}
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="{% url 'dashboard:teacher:update_teacher'  pk=teacher.pk %}"
@@ -69,6 +73,7 @@ Liste des professeurs
                                         </a>
                                     </form>
                                 </td>
+                                {% endif %}
                             </tr>
                             {% endfor %}
                             </tbody>
@@ -100,6 +105,8 @@ $('.show_confirm').click(function(event) {
         }
     });
 });
+
+
 
 
 

@@ -27,5 +27,5 @@ class CreateResults(forms.Form):
 
 
 EditResults = modelformset_factory(
-    Result, fields=("class_marks", "exam_marks"), extra=0, can_delete=True
+    Result, fields=("class_marks", "exam_marks", "extra_marks", "finished"), extra=0, can_delete=True
 )

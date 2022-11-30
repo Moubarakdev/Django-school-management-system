@@ -18,7 +18,7 @@ from teacher.models import Teacher
 class StudentBase(TimeStampedModel):
     GENDER = (
         ('M', 'Masculin'),
-        ('F', 'Feminin'),
+        ('F', 'Féminin'),
         ('N', 'Autre'),
     )
     RELIGION = (

@@ -14,12 +14,15 @@ Matières
             <div class="row mt-5">
                 <div class="col-sm-12">
                     {% if subjects %}
-                    <h3>Mes matières</h3>
+                    <h3>Mes programmes</h3>
+                    {% for subject_group in subjects %}
                     <div class="card card-table">
+                        <div class="card-header">
+                            <h5>{{ subject_group.department.level|upper }}</h5>
+                        </div>
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table class="table table-hover table-center mb-0">
-                                    {% for subject_group in subjects %}
                                     <thead>
                                     <tr>
                                         <th>Libellé</th>
@@ -35,12 +38,13 @@ Matières
                                         <td><i>{{ subject.subject_code }}</i></td>
                                     </tr>
                                     {% endfor %}
-                                    {% endfor %}
+
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
+                    {% endfor %}
                     {% else %}
                     <p>Il n'y a pas encore de matières pour votre programme {{student.admission_student.last_name}}</p>
                     {% endif %}

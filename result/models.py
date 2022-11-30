@@ -66,6 +66,11 @@ class Result(TimeStampedModel):
         default="False",
         verbose_name="Validé ?"
     )
+    finished = models.BooleanField(
+        blank=True,
+        default=False,
+        verbose_name="Terminé"
+    )
 
     class Meta:
         unique_together = ('student', 'subject')

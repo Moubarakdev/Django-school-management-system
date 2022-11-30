@@ -12,10 +12,9 @@
                     <div class="info_wrapper">
                         <div class="contact_info">
                             <ul class="list-unstyled">
-                                <li><i class="flaticon-phone-receiver"></i>+000-2356-222</li>
+                                <li><i class="flaticon-phone-receiver"></i>+228 22 70 61 50</li>
                                 <li>
-                                    <i class="flaticon-mail-black-envelope-symbol"></i
-                                    >contact@yourdomain.com
+                                    <i class="flaticon-mail-black-envelope-symbol"></i>esagnde@esagnde.org
                                 </li>
                             </ul>
                         </div>
@@ -23,15 +22,8 @@
                             <ul class="d-flex">
                                 {% if request.user.is_authenticated %}
                                 <li class="nav-item">
-                                    <a {% if request.user.requested_role == 'student' %}
-                                    href="{% url 'dashboard:student_dash' %}"
-                                    {% elif request.user.requested_role == 'teacher' %}
-                                    href="{% url 'dashboard:teacher_dash' %}"
-                                    {% else %}
-                                    href="{% url 'dashboard:index' %}"
-                                    {% endif %}
-                                    class="nav-link apply_btn"
-                                  ><i class="flaticon-dashboard "></i>Tableau de bord</a>
+                                    <a href="{% url 'dashboard:index' %}" class="nav-link apply_btn"
+                                    ><i class="flaticon-dashboard "></i>Tableau de bord</a>
                                 </li>
                                 {% else %}
 
@@ -55,7 +47,8 @@
                                 {% endif %}
                             </ul>
                             {% if not request.user.is_authenticated %}
-                            <a href="{% url 'dashboard:student:application' %}" title="" class="apply_btn">POSTULER MAINTENANT</a>
+                            <a href="{% url 'dashboard:student:application' %}" title="" class="apply_btn">POSTULER
+                                MAINTENANT</a>
                             {% endif %}
                         </div>
                     </div>
@@ -255,7 +248,7 @@
                     <div class="slider-overlay"></div>
                     <!-- SLIDE'S MAIN BACKGROUND IMAGE -->
                     <img
-                            src="{% static 'home/images/banner/b_1.jpg' %}"
+                            src="{% static 'home/images/banner/b_2.jpg' %}"
                             alt="Sky"
                             class="rev-slidebg"
                             data-bgposition="center center"
@@ -459,7 +452,7 @@
                     <div class="slider-overlay"></div>
                     <!-- SLIDE'S MAIN BACKGROUND IMAGE -->
                     <img
-                            src="{% static 'home/images/banner/b_2.jpg' %}"
+                            src="{% static 'home/images/banner/b_1.jpg' %}"
                             alt="Sky"
                             class="rev-slidebg"
                             data-bgposition="center center"

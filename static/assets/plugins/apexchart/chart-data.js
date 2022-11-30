@@ -60,15 +60,15 @@ $(document).ready(function() {
 			}
 		},
 		series: [{
-			name: "Boys",
+			name: "Garçons",
 			color: '#fdbb38',
-			data: [420, 532, 516, 575, 519, 517, 454, 392, 262, 383, 446, 551, 563, 421, 563, 254, 452],
+			data: dataBoys,
 		}, {
-			name: "Girls",
+			name: "Filles",
 			color: '#19affb',
-			data: [336, 612, 344, 647, 345, 563, 256, 344, 323, 300, 455, 456, 526, 652, 325, 425, 436],
+			data: dataGirls,
 		}],
-		labels: [2009, 2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020],
+		labels: values,
 		xaxis: {
 			labels: {
 				show: false

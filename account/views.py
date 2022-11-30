@@ -161,7 +161,7 @@ def profile_complete(request):
     return render(request, 'account/profile_complete.html', ctx)
 
 
-@user_passes_test(user_is_admin_or_su, login_url='permission_error')
+@login_required
 def profile_picture_upload(request):
     """
     Handles profile pic uploads coming through ajax.

@@ -26,10 +26,25 @@ Profil
             </div>
         </div>
     </div>
+    {% if messages %}
+    <div class="row my-4">
+        <div class="col-md-12">
+            {% for message in messages %}
+            <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
     <div class="row">
         <div class="col-md-12">
             <div class="profile-header">
                 <div class="row align-items-center">
+
                     <div class="col-auto profile-image">
                         <form action="{% url 'profile_picture_upload' %}" method="post" id="profile-image-form"
                               enctype="multipart/form-data">
@@ -140,17 +155,6 @@ Profil
             <div class="card">
                 <div class="card-body">
                     <!-- Profile Complete Form -->
-
-                    {% if messages %}
-                    {% for message in messages %}
-                    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
-                        <strong>{{ message }}</strong>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    {% endfor %}
-                    {% endif %}
 
                     <!-- Form for UnVerified User (SENDS A VERIFICATION REQUEST) -->
                     {% if user.approval_status != 'a' and user.requested_role == 'suscriber'%}
@@ -273,6 +277,9 @@ Profil
   $('#profile-image-upload').on('change', function() {
     $('#profile-image-form').submit();
   })
+
+
+
 
 
 

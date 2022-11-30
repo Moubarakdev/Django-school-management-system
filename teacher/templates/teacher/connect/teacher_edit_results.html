@@ -36,7 +36,7 @@ Modifier les résultats
             </div>
         </div>
     </div>
-    {% if subject_group_filter %}
+    {% if subject_group_filter.qs %}
     <div class="card m-2">
         <div class="card-body col-auto" style="overflow:scroll;">
             {% if messages %}
@@ -65,7 +65,9 @@ Modifier les résultats
                         <th>UE</th>
                         <th>Note de classe</th>
                         <th>Note d'examen</th>
+                        <th>Note de rattrapage</th>
                         <th>Total</th>
+                        <th>Terminer</th>
                         <th>Supprimer</th>
                     </tr>
                     </thead>
@@ -80,7 +82,9 @@ Modifier les résultats
                         <td>{{form.instance.subject}}</td>
                         <td style="width: 10%;">{{form.class_marks | add_class:"form-control form-control-sm"}}</td>
                         <td style="width: 10%;">{{form.exam_marks | add_class:"form-control form-control-sm"}}</td>
+                        <td style="width: 10%;">{{form.extra_marks | add_class:"form-control form-control-sm"}}</td>
                         <td>{{form.instance.total_marks}}</td>
+                        <th>{{form.finished}}</th>
                         <td>{{form.DELETE}}</td>
                     </tr>
                     {% endfor %}
