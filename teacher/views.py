@@ -110,6 +110,12 @@ class TeacherDetailView(DetailView, LoginRequiredMixin, UserPassesTestMixin):
         user = self.request.user
         return user_is_admin_su_or_ac_officer(user)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        subjects_groups = TeacherSubjectGroup.objects.filter(teacher=self.object)
+        context['subjects_groups'] = subjects_groups
+        return context
+
     def handle_no_permission(self):
         if self.request.user.is_authenticated:
             return redirect('profile_complete')

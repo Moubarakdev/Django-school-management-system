@@ -185,6 +185,9 @@ class AdmissionStudent(StudentBase):
             self.migration_status = status
         super().save(*args, **kwargs)
 
+    class Meta:
+        unique_together = ['last_name', 'first_name', 'ac_session', 'date_of_birth', 'email']
+
 
 class Student(TimeStampedModel):
     admission_student = models.ForeignKey(

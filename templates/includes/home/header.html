@@ -63,6 +63,7 @@
                 <a class="navbar-brand" href="{% url 'home:home' %}"
                 ><img src="{% static 'home/images/logo2.png' %}" alt="logo"
                 /></a>
+                {% comment %}
                 <div
                         class="collapse navbar-collapse main-menu"
                         id="navbarSupportedContent"
@@ -191,6 +192,7 @@
                         </li>
                     </ul>
                 </div>
+
                 <div class="mr-auto search_area">
                     <ul class="navbar-nav mx-auto">
                         <li class="nav-item">
@@ -209,6 +211,7 @@
                         </li>
                     </ul>
                 </div>
+                {% endcomment %}
             </nav>
             <!-- END NAVBAR -->
         </div>

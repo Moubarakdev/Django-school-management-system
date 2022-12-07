@@ -71,33 +71,42 @@ Détails professeur
                             </div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-md-12">
-                                <p>Hello I am Daisy Parks. Lorem
-                                    Ipsum is simply dummy text
-                                    of the printing and
-                                    typesetting industry, simply
-                                    dummy text of the printing
-                                    and typesetting industry.</p>
-                            </div>
-                        </div>
-                        <div class="row follow-sec">
-                            <div class="col-md-4 mb-3">
-                                <div class="blue-box">
-                                    <h3>2850</h3>
-                                    <p>Followers</p>
+                            <div class="col-sm-12">
+
+                                <hr>
+                                <h3>Filières</h3>
+                                {% if subjects_groups %}
+                                <div class="card card-table">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover table-center mb-0">
+                                                <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Filière</th>
+                                                    <th scope="col">Matières</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for subjects_group in subjects_groups %}
+                                                <tr>
+                                                    <td>{{ forloop.counter }}</td>
+                                                    <td>{{ subjects_group.department }}</td>
+                                                    <td>
+                                                        {% for subject in subjects_group.subjects.all %}
+                                                        {{ subject }},
+                                                        {% endfor %}
+                                                    </td>
+                                                </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <div class="blue-box">
-                                    <h3>2050</h3>
-                                    <p>Following</p>
-                                </div>
-                            </div>
-                            <div class="col-md-4 mb-3">
-                                <div class="blue-box">
-                                    <h3>2950</h3>
-                                    <p>Friends</p>
-                                </div>
+                                {% else %}
+                                <p>Il n'y a pas encore de filière pour {{object}}</p>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
