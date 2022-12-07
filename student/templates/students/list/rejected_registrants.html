@@ -15,7 +15,7 @@ Demandes rejetées
     <div class="page-header">
         <div class="row align-items-center">
             <div class="col">
-                <h3 class="page-title">Inscriptions rejetés</h3>
+                <h3 class="page-title">Inscriptions rejetées</h3>
                 <ul class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{% url 'dashboard:student:students_board' %}">Dashboard</a>
                     </li>
@@ -33,6 +33,20 @@ Demandes rejetées
     <div class="row">
         <div class="col-sm-12">
             <div class="card card-table">
+                {% if messages %}
+                <div class="row my-4">
+                    <div class="col-md-12">
+                        {% for message in messages %}
+                        <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            {{ message }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
                 <div class="card-body">
                     <!-- Online Applicants Table -->
                     <div class="table-responsive">
@@ -50,7 +64,7 @@ Demandes rejetées
                             </thead>
                             <tbody class="bg-light">
 
-                            {% for applicant in unpaid_applicants %}
+                            {% for applicant in rejected_registrants %}
                             <tr>
                                 <th scope="row">{{ forloop.counter }}</th>
                                 <td>

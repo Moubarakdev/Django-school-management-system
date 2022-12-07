@@ -55,7 +55,7 @@ Liste des professeurs
                                 <td><a href="{% url 'dashboard:teacher:teacher_detail' pk=teacher.pk %}">
                                     {{teacher.first_name}}</a></td>
                                 <td>{{ teacher.mobile_number|default_if_none:"" }}</td>
-                                {% if request.user|has_role:'admin' %}
+                                {% if request.user|has_role:'admin' or request.user|has_role:'academic_officer'%}
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="{% url 'dashboard:teacher:update_teacher'  pk=teacher.pk %}"

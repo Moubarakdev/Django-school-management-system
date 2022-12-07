@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from .models import AcademicSession
 
 
@@ -6,7 +8,11 @@ class SiteWideConfigs:
         self.get_response = get_response
 
     def __call__(self, request):
-        current_session = AcademicSession.objects.get(current=True)
+        try:
+            current_session = AcademicSession.objects.get(current=True)
+        except:
+            year = timezone.localtime(timezone.now()).year
+            current_session = AcademicSession.objects.create(year=year)
 
         request.current_session = current_session
 

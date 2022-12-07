@@ -1,6 +1,7 @@
 {% extends 'layouts/base_dash.html' %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load permission_tags %}
 
 {% block title %}
 Détails
@@ -37,21 +38,21 @@ Détails
             <div class="row">
                 <div class="col-md-8">
                     <div class="mb-3">
-                        {% if request.user|has_role:'admin' %}
-                            <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}"
-                               class="btn btn-primary">Modifier</a>
-                            {% if not applicant.admitted %}
-                            <a href="{% url 'dashboard:student:admit_student' pk=applicant.id %}"
-                               class="btn btn-success">
-                                Valider <i class="fas fa-check"></i>
-                            </a>
-                            {% endif %}
-                            {% if not applicant.admitted %}
-                            <a href="{% url 'dashboard:student:reject_student' pk=applicant.id %}"
-                               class="btn btn-danger">
-                                Rejeter <i class="fas fa-xmark"></i>
-                            </a>
-                            {% endif %}
+                        {% if request.user|has_role:'admin' or request.user|has_role:'academic_officer'  %}
+                        <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}"
+                           class="btn btn-primary">Modifier</a>
+                        {% if not applicant.admitted %}
+                        <a href="{% url 'dashboard:student:admit_student' pk=applicant.pk %}"
+                           class="btn btn-success">
+                            Valider <i class="fas fa-check"></i>
+                        </a>
+                        {% endif %}
+                        {% if not applicant.admitted %}
+                        <a href="{% url 'dashboard:student:reject_student' pk=applicant.pk %}"
+                           class="btn btn-danger">
+                            Rejeter <i class="fas fa-xmark"></i>
+                        </a>
+                        {% endif %}
                         {% endif %}
                     </div>
                     <div class="about-info">
@@ -128,9 +129,9 @@ Détails
                             <div class="col-md-4 mb-3">
                                 {% if applicant.last_exam_marksheet %}
                                 <a href="{{ applicant.bac_marksheet.url }}">
-                                    <div class="blue-box">
-                                        <h6>Autre document</h6>
-                                    </div>
+                                    <canvas id="the-canvas2" style="height:500px;">
+                                    </canvas>
+                                    {{applicant.last_exam_marksheet.url|json_script:'mydata'}}
                                 </a>
                                 {% endif %}
                             </div>
@@ -200,16 +201,32 @@ loadingTask.promise.then(function (pdf) {
 
         // Prepare canvas using PDF page dimensions
         var canvas = document.getElementById('the-canvas');
+        var canvas2 = document.getElementById('the-canvas2');
+
         var context = canvas.getContext('2d');
+        var context2 = canvas2.getContext('2d');
+
         canvas.height = viewport.height;
         canvas.width = viewport.width;
+
+        canvas2.height = viewport.height;
+        canvas2.width = viewport.width;
 
         // Render PDF page into canvas context
         var renderContext = {
             canvasContext: context,
             viewport: viewport
         };
+
+        var renderContext2 = {
+            canvasContext2: context2,
+            viewport: viewport
+        };
+
         var renderTask = page.render(renderContext);
+
+        var renderTask2 = page.render(renderContext2);
+
         renderTask.promise.then(function () {
             console.log('Page rendered');
         });
@@ -218,6 +235,7 @@ loadingTask.promise.then(function (pdf) {
     // PDF loading error
     console.error(reason);
 });
+
 
 
 

@@ -37,7 +37,7 @@ def students_board(request):
     all_applicants = AdmissionStudent.objects.all().order_by('-created')
     admitted_students = AdmissionStudent.objects.filter(admitted=True, assigned_as_student=False)
     paid_registrants = AdmissionStudent.objects.filter(paid=True, admitted=False, assigned_as_student=False)
-    rejected_applicants = AdmissionStudent.objects.filter(rejected=True)
+    rejected_applicants = AdmissionStudent.objects.filter(rejected=True, assigned_as_student=False)
     offline_applicants = AdmissionStudent.objects.filter(application_type='2')
     waiting_for_confirmation = AdmissionStudent.objects.filter(paid=True, admitted=True, assigned_as_student=False)
 
@@ -74,7 +74,7 @@ def students_board(request):
 @user_passes_test(user_is_admin_su_or_ac_officer)
 def all_applicants(request):
     """Display all registered students list"""
-    registrants = AdmissionStudent.objects.all().order_by('-created')
+    registrants = AdmissionStudent.objects.filter(rejected=False).order_by('-created')
     f = AlumniFilter(request.GET, queryset=registrants)
     ctx = {
         'registrants': registrants,
@@ -231,7 +231,7 @@ def admit_student(request, pk):
             return redirect('dashboard:student:admitted_student_list')
     else:
         form = AdmissionForm()
-        context = {'form': form, 'applicant': applicant}
+    context = {'form': form, 'applicant': applicant}
     return render(request, 'students/dashboard_admit_student.html', context)
 
 
@@ -240,20 +240,11 @@ def reject_student(request, pk):
     """
     reject applicant found by id/pk into chosen department
     """
-    applicant = get_object_or_404(AdmissionStudent, pk=pk)
-    if request.method == 'POST':
-        form = AdmissionForm(request.POST, instance=applicant)
-        if form.is_valid():
-            student = form.save(commit=False)
-            student.rejected = True
-            student.save()
-            # prévoir l'envoi de l'email de confirmation
-            # send_admission_confirmation_email.delay(student.id)
-            return redirect('dashboard:student:rejected_registrant_list')
-    else:
-        form = AdmissionForm()
-        context = {'form': form, 'applicant': applicant}
-    return render(request, 'students/list/rejected_registrants.html', context)
+    applicant = AdmissionStudent.objects.get(pk=pk)
+    applicant.rejected = True
+    applicant.save()
+    messages.add_message(request, messages.SUCCESS, "Demande rejetée avec succès")
+    return redirect('dashboard:student:rejected_registrant_list')
 
 
 @user_passes_test(user_is_admin_su_or_ac_officer)

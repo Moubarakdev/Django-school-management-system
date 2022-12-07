@@ -76,41 +76,54 @@ def index(request):
     if request.user.requested_role == "admin" or request.user.requested_role == "academic_officer" or request.user.requested_role == 'accounts':
         return render(request, 'dashboard/index.html', context)
     elif request.user.requested_role == "teacher":
-        teacher = Teacher.objects.get(teacher_account=request.user)
-        subjects_g = TeacherSubjectGroup.objects.filter(
-            teacher=teacher, ac_session=request.current_session
-        )
-        nb_depts = 0
-        nb_students = 0
-        nb_hours = 0
-        for subject_g in subjects_g:
-            subjects = subject_g.subjects.all()
-            for subject in subjects:
-                hours = Subject.objects.get(subject_code=subject.subject_code).hourly_volume
-                nb_hours += hours
-            if subject_g.department:
-                students = Student.objects.filter(admission_student__choosen_department=subject_g.department).count()
-                nb_students += students
-                nb_depts += 1
-
         ctx = {
-            'subjects': subjects_g,
-            'nb_depts': nb_depts,
-            'nb_students': nb_students,
-            'nb_hours': nb_hours,
+
         }
+        try:
+            teacher = Teacher.objects.get(teacher_account=request.user)
+            subjects_g = TeacherSubjectGroup.objects.filter(
+                teacher=teacher, ac_session=request.current_session
+            )
+            nb_depts = 0
+            nb_students = 0
+            nb_hours = 0
+            for subject_g in subjects_g:
+                subjects = subject_g.subjects.all()
+                for subject in subjects:
+                    hours = Subject.objects.get(subject_code=subject.subject_code).hourly_volume
+                    nb_hours += hours
+                if subject_g.department:
+                    students = Student.objects.filter(
+                        admission_student__choosen_department=subject_g.department).count()
+                    nb_students += students
+                    nb_depts += 1
+
+            ctx = {
+                'subjects': subjects_g,
+                'nb_depts': nb_depts,
+                'nb_students': nb_students,
+                'nb_hours': nb_hours,
+            }
+        except:
+            pass
         return render(request, 'dashboard/teacher_dashboard.html', ctx)
     else:
-        student = Student.objects.get(admission_student__student_account=request.user)
-        vresults = Result.objects.filter(validated=True, finished=True, student=student)
-        nresults = Result.objects.filter(validated=False, finished=True, student=student)
-        subjects = SubjectGroup.objects.get(department=student.admission_student.choosen_department).subjects
-
         ctx = {
-            'vresults': vresults,
-            'nresults': nresults,
-            'subjects': subjects,
+
         }
+        try:
+            student = Student.objects.get(admission_student__student_account=request.user)
+            vresults = Result.objects.filter(validated=True, finished=True, student=student)
+            nresults = Result.objects.filter(validated=False, finished=True, student=student)
+            subjects = SubjectGroup.objects.get(department=student.admission_student.choosen_department).subjects
+
+            ctx = {
+                'vresults': vresults,
+                'nresults': nresults,
+                'subjects': subjects,
+            }
+        except:
+            pass
 
         return render(request, 'dashboard/student_dashboard.html', ctx)
 

@@ -69,7 +69,7 @@ Années académiques
                                         -
                                     {% endif %}
                                 </td>
-                                {% if request.user|has_role:'admin' %}
+                                {% if request.user|has_role:'admin' or request.user|has_role:'academic_officer' %}
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="{% url 'dashboard:academic:update_ac_session' pk=ac_session.pk%}"

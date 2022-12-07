@@ -329,3 +329,7 @@ class GroupListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
         if self.request.user.is_authenticated:
             return redirect('profile_complete')
         return redirect('login')
+
+
+def entry_not_found(request, exception, template_name='errors/404.html'):
+    return render(request, template_name)

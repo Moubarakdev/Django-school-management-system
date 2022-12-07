@@ -53,7 +53,7 @@ Filières
                                 <td>{{department.level|upper}}</td>
                                 <td>{{department.description}}</td>
                                 <td>{{department.establish_date}}</td>
-                                {% if request.user|has_role:'admin' %}
+                                {% if request.user|has_role:'admin' or request.user|has_role:'academic_officer' %}
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="{% url 'dashboard:academic:update_department' pk=department.pk%}"

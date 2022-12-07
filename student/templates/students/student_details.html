@@ -93,7 +93,7 @@ Détails étudiant
                                     <li><span class="title-span">Gender : </span>
                                         <span class="info-span">{{ student.admission_student.gender }}</span>
                                     </li>
-                                    <li><span class="title-span">DOB : </span>
+                                    <li><span class="title-span">DDN : </span>
                                         <span class="info-span">{{ student.admission_student.date_of_birth }}</span>
                                     </li>
                                     <li><span class="mr-1">Numéro personne à prévenir : </span>
@@ -129,18 +129,14 @@ Détails étudiant
 
                                                             <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.session}}
                                                             </a></td>
-                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.balance_from_previous_session
-                                                                | intcomma}}
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.balance_from_previous_session | intcomma}}
                                                             </a>
                                                             </td>
-                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.total_amount_payable
-                                                                | intcomma}}</a>
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.total_amount_payable | intcomma}}</a>
                                                             </td>
-                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.total_amount_paid
-                                                                | intcomma}}</a>
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.total_amount_paid | intcomma}}</a>
                                                             </td>
-                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.balance
-                                                                | intcomma}}</a>
+                                                            <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.balance | intcomma}}</a>
                                                             </td>
                                                             <td><a href="{% url 'payment:invoice_detail' payment.id %}">{{payment.statut}}</a>
                                                             </td>
@@ -172,6 +168,7 @@ Détails étudiant
                                         <hr>
 
                                         <h3>Tableau de résultats</h3>
+                                        {% if results %}
                                         <div class="card card-table">
                                             <div class="card-body">
                                                 <div class="table-responsive">
@@ -204,6 +201,9 @@ Détails étudiant
                                                 </div>
                                             </div>
                                         </div>
+                                         {% else %}
+                                        <p>Il n'y a pas encore de résultats pour {{object}}</p>
+                                        {% endif %}
                                     </div>
                                 </div>
                             </div>

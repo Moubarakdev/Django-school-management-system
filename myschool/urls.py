@@ -19,6 +19,7 @@ from django.urls import path, include
 
 from myschool import settings
 
+handler404 = "account.views.entry_not_found"
 urlpatterns = [
                   path('admin/', admin.site.urls),
                   path('', include('account.urls')),

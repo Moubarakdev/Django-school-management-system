@@ -51,7 +51,7 @@ Matières
                                 <td>{{subject.name}}</td>
                                 <td>{{subject.subject_code}}</td>
                                 <td>{{subject.hourly_volume}}</td>
-                                {% if request.user|has_role:'admin' %}
+                                {% if request.user|has_role:'admin' or request.user|has_role:'academic_officer'%}
                                 <td class="text-right">
                                     <div class="actions">
                                         <a href="{% url 'dashboard:academic:update_subject' pk=subject.pk%}"
