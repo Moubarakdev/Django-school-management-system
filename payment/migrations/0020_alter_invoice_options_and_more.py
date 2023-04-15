@@ -14,12 +14,4 @@ class Migration(migrations.Migration):
             name='invoice',
             options={'ordering': ['student', 'session']},
         ),
-        migrations.RemoveField(
-            model_name='invoice',
-            name='balance_from_previous_term',
-        ),
-        migrations.RemoveField(
-            model_name='invoice',
-            name='term',
-        ),
     ]

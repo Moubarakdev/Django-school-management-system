@@ -8,7 +8,7 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, UpdateView, CreateView
+from django.views.generic import ListView, UpdateView, CreateView, DeleteView
 from rolepermissions.roles import assign_role
 from verify_email.email_handler import send_verification_email
 
@@ -29,7 +29,7 @@ def login_view(request):
 
         if form.is_valid():
             username = form.cleaned_data.get("username").lower()
-            password = form.cleaned_data.get("password").lower()
+            password = form.cleaned_data.get("password")
             user = authenticate(username=username, password=password)
 
             if user is not None:
@@ -77,6 +77,8 @@ def register(request):
                 email=email,
                 requested_role=requested
             )
+
+            print(raw_password)
 
             if auth_user is not None:
                 login(request, auth_user)
@@ -253,7 +255,7 @@ class AccountListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
     def test_func(self):
         user = self.request.user
-        return user_is_verified(user)
+        return user_is_admin_or_su(user)
 
     def handle_no_permission(self):
         if self.request.user.is_authenticated:
@@ -274,7 +276,7 @@ class UserUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
 
     def test_func(self):
         user = self.request.user
-        return user_is_verified(user)
+        return user_is_admin_or_su(user)
 
     def handle_no_permission(self):
         if self.request.user.is_authenticated:
@@ -333,3 +335,13 @@ class GroupListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
 
 def entry_not_found(request, exception, template_name='errors/404.html'):
     return render(request, template_name)
+
+
+class DeleteUser(LoginRequiredMixin, DeleteView, UserPassesTestMixin):
+    success_url = reverse_lazy('read_accounts')
+    model = User
+    success_message = "Utilisateur supprimé avec succès"
+
+    def test_func(self):
+        user = self.request.user
+        return user_is_admin_or_su(user)

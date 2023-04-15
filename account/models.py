@@ -51,7 +51,6 @@ class User(AbstractUser):
         self.last_name = self.first_name.upper()
 
 
-
 User._meta.get_field('email')._unique = True
 
 '''
@@ -61,6 +60,7 @@ User._meta.get_field('email')._unique = True
         args=[self.username, ])
 
 '''
+
 
 '''class CustomGroup(Group):
     group_creator = models.ForeignKey(

@@ -38,7 +38,10 @@ class Invoice(models.Model):
     def balance(self):
         payable = self.total_amount_payable()
         paid = self.total_amount_paid()
-        return payable - paid
+        if payable - paid < 0:
+            return 0
+        else:
+            return payable - paid
 
     def amount_payable(self):
         items = InvoiceItem.objects.filter(invoice=self)

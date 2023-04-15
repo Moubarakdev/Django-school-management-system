@@ -7,6 +7,7 @@ from taggit.managers import TaggableManager
 from academic.models import Department, AcademicSession, Subject
 from myschool import settings
 
+
 # Create your models here.
 '''
 class Designation(TimeStampedModel):
@@ -38,6 +39,7 @@ class Teacher(TimeStampedModel):
     )
     assigned_as_teacher = models.BooleanField(default=False, verbose_name="Assigné comme professeur")
     admission_date = models.DateField(auto_now=True)
+    rejected = models.BooleanField(default=False)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.DO_NOTHING, null=True)

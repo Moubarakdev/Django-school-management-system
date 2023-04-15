@@ -5,7 +5,8 @@ from django.urls import path, include
 from django_countries import settings
 
 from account.views import login_view, profile_complete, register, profile_picture_upload, user_approval, \
-    user_approval_with_modification, AccountListView, UserUpdateView, CreateUserView, ChangePasswordView, GroupListView
+    user_approval_with_modification, AccountListView, UserUpdateView, CreateUserView, ChangePasswordView, GroupListView, \
+    DeleteUser
 from permission_handlers.basic import permission_error
 
 # app_name = 'account'
@@ -39,4 +40,5 @@ urlpatterns = [
                        name="password_reset_complete"),
 
                   path('password-change/', ChangePasswordView.as_view(), name='password_change'),
+                  path('delete-user/<int:pk>/', DeleteUser.as_view(), name='delete_user'),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

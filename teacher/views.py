@@ -128,7 +128,7 @@ class TeacherApplication(CreateView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        # check if the student have an account
+        # check if the teacher have an account
         try:
             teacher = Teacher.objects.get(teacher_account=self.request.user)
         except:
@@ -450,3 +450,27 @@ def teacher_edit_results(request, **kwargs):
         "subject_group_filter": subject_group_filter,
     })
     return render(request, "teacher/connect/teacher_edit_results.html", ctx)
+
+
+class TeacherRegistrationDetails(DetailView):
+    model = Teacher
+    template_name = 'teacher/teacher_admission_details.html'
+    context_object_name = 'applicant'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        applicant_id = self.kwargs['pk']
+        applicant = get_object_or_404(Teacher, pk=applicant_id)
+        return context
+
+
+@user_passes_test(user_is_admin_su_or_ac_officer)
+def reject_teacher(request, pk):
+    """
+    reject applicant found by id/pk into chosen department
+    """
+    applicant = Teacher.objects.get(pk=pk)
+    applicant.rejected = True
+    applicant.save()
+    messages.add_message(request, messages.SUCCESS, "Demande rejetée avec succès")
+    return redirect('dashboard:teacher:teacher_application')

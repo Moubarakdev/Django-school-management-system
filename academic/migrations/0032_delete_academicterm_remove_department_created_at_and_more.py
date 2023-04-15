@@ -10,9 +10,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.DeleteModel(
-            name='AcademicTerm',
-        ),
         migrations.RemoveField(
             model_name='department',
             name='created_at',

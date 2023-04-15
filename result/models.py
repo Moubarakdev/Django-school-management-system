@@ -31,6 +31,7 @@ from academic.models import Subject, Department
 '''
 
 
+
 class Result(TimeStampedModel):
     student = models.ForeignKey(
         Student,

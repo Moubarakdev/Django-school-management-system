@@ -183,6 +183,8 @@ class AdmissionStudent(StudentBase):
         if self.department_choice != self.choosen_department:
             status = f'From {self.department_choice} to {self.choosen_department}'
             self.migration_status = status
+        if not self.student_for:
+            self.student_for = None
         super().save(*args, **kwargs)
 
     class Meta:

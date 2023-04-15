@@ -46,8 +46,11 @@ class Department(TimeStampedModel):
 
     def save(self, *args, **kwargs):
         last_dept = Department.objects.last()
-        self.code = last_dept.code + 1
-        self.name = self.name.capitalize()
+        if last_dept is None:
+            self.code = 1
+        else:
+            self.code = last_dept.code + 1
+            self.name = self.name.capitalize()
         super().save(*args, **kwargs)
 
 
@@ -212,3 +215,5 @@ class GroupFees(TimeStampedModel):
     description = models.CharField(verbose_name="Description", max_length=15)
     fees_amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Montant des frais")
 '''
+
+

@@ -1,0 +1,193 @@
+{% extends 'layouts/base_dash.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load permission_tags %}
+
+{% block title %}
+Détails
+{% endblock title %}
+
+
+{% block content %}
+<div class="content container-fluid">
+    <div class="page-header">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="page-title"> Details de la demande</h3>
+                <ul class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="#">Liste des
+                        demandes</a></li>
+                    <li class="breadcrumb-item active">Détails de la demande
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="card-body">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+                <strong>{{ message }}</strong>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="mb-3">
+                        {% if request.user|has_role:'admin' or request.user|has_role:'academic_officer'  %}
+                        <a href="{% url 'dashboard:teacher:update_teacher' pk=applicant.id %}"
+                           class="btn btn-primary">Modifier</a>
+                        {% if not applicant.admitted %}
+                        <a href="{% url 'dashboard:teacher:admit_teacher' pk=applicant.pk %}"
+                           class="btn btn-success">
+                            Valider <i class="fas fa-check"></i>
+                        </a>
+                        {% endif %}
+                        {% if not applicant.admitted %}
+                        <a href="{% url 'dashboard:teacher:reject_teacher' pk=applicant.pk %}"
+                           class="btn btn-danger">
+                            Rejeter <i class="fas fa-xmark"></i>
+                        </a>
+                        {% endif %}
+                        {% endif %}
+                    </div>
+                    <div class="about-info">
+                        <div class="media mt-3">
+                            <img src="{{ applicant.photo.url }}" class="mr-3" alt="...">
+                            <div class="media-body">
+                                <ul>
+                                    <li>
+                                        <span class="title-span">Nom: </span>
+                                        <span class="info-span">{{ applicant.last_name }} {{ applicant.first_name }}</span>
+                                    </li>
+                                    <li>
+                                                    <span class="title-span">Experise
+                                                        : </span>
+                                        <span class="info-span">
+                                            {% for tag in applicant.expertise.all %}
+                                                {{ tag }},
+                                            {% endfor %}
+                                        </span>
+                                    </li>
+                                    <li><span class="title-span">Mobile: </span>
+                                        <span class="info-span">{{ applicant.mobile_number }}</span>
+                                    </li>
+                                    <li><span class="title-span">Email: </span>
+                                        <span class="info-span">{{ applicant.email }}</span>
+                                    </li>
+                                    <li>
+                                                    <span class="title-span">DDN
+                                                        : </span>
+                                        <span class="info-span">{{ applicant.date_of_birth }}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <div class="col-md-4">
+
+                            </div>
+                            {% if applicant.marksheet %}
+                            <div class="col-md-4 mb-3">
+                                <h5>Dossier</h5>
+                                <a href="{{applicant.bac_marksheet.url}}" target="_blank" rel="noopener noreferrer">
+                                    <canvas id="the-canvas" style="height:500px;">
+                                    </canvas>
+                                    {{applicant.marksheet.url|json_script:'mydata'}}
+                                </a>
+
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block customjs %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.0.279/pdf.worker.min.js"
+        integrity="sha512-UiXicZonl1pXJaZk0apG3TN/yE/a52JjAyZmr1MmvjI01f7MURJD+M4UUdBxxz1Zzte1zjie37VtotaR3b1/1g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script>
+const mydata = JSON.parse(document.getElementById('mydata').textContent);
+console.log(mydata);
+
+// The workerSrc property shall be specified.
+pdfjsLib.GlobalWorkerOptions.workerSrc = '//cdnjs.cloudflare.com/ajax/libs/pdf.js/3.0.279/pdf.worker.min.js';
+    // Asynchronous download of PDF
+
+var loadingTask = pdfjsLib.getDocument(mydata);
+loadingTask.promise.then(function (pdf) {
+    console.log('PDF loaded');
+
+    // Fetch the first page
+    var pageNumber = 1;
+    pdf.getPage(pageNumber).then(function (page) {
+        console.log('Page loaded');
+
+        var scale = 1;
+        var viewport = page.getViewport({ scale: scale });
+
+        // Prepare canvas using PDF page dimensions
+        var canvas = document.getElementById('the-canvas');
+        var canvas2 = document.getElementById('the-canvas2');
+
+        var context = canvas.getContext('2d');
+        var context2 = canvas2.getContext('2d');
+
+        canvas.height = viewport.height;
+        canvas.width = viewport.width;
+
+        canvas2.height = viewport.height;
+        canvas2.width = viewport.width;
+
+        // Render PDF page into canvas context
+        var renderContext = {
+            canvasContext: context,
+            viewport: viewport
+        };
+
+        var renderContext2 = {
+            canvasContext2: context2,
+            viewport: viewport
+        };
+
+        var renderTask = page.render(renderContext);
+
+        var renderTask2 = page.render(renderContext2);
+
+        renderTask.promise.then(function () {
+            console.log('Page rendered');
+        });
+    });
+}, function (reason) {
+    // PDF loading error
+    console.error(reason);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
+{% endblock %}

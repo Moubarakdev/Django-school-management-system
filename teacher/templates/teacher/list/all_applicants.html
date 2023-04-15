@@ -50,27 +50,27 @@ Liste des demandes
                             <tr>
 
                                 <th scope="row">
-                                    <a href="{% url 'dashboard:teacher:teacher_detail' pk=applicant.id %}">
+                                    <a href="{% url 'dashboard:teacher:teacher_application_details' pk=applicant.id %}">
                                         {{ forloop.counter }}
                                     </a>
                                 </th>
                                 <td>
-                                    <a href="{% url 'dashboard:teacher:teacher_detail' pk=applicant.id %}">
+                                    <a href="{% url 'dashboard:teacher:teacher_application_details' pk=applicant.id %}">
                                         {{ applicant.last_name|upper }}
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'dashboard:teacher:teacher_detail' pk=applicant.id %}">
+                                    <a href="{% url 'dashboard:teacher:teacher_application_details' pk=applicant.id %}">
                                         {{ applicant.first_name|capfirst }}
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'dashboard:teacher:teacher_detail' pk=applicant.id %}">
+                                    <a href="{% url 'dashboard:teacher:teacher_application_details' pk=applicant.id %}">
                                         {{ applicant.created }}
                                     </a>
                                 </td>
                                 <td style="text-align: center;">
-                                    <a href="{% url 'dashboard:teacher:teacher_detail' pk=applicant.id %}">
+                                    <a href="{% url 'dashboard:teacher:teacher_application_details' pk=applicant.id %}">
                                         {% if applicant.assigned_as_teacher %}
                                         <img src="{% static 'images/checked.png' %}" width="16" alt="">
                                         {% else %}
@@ -79,7 +79,7 @@ Liste des demandes
                                     </a>
                                 </td>
                                 <td>
-                                    <a href="{% url 'dashboard:student:update_online_registrant' pk=applicant.id %}">
+                                    <a href="{% url 'dashboard:teacher:teacher_application_details' pk=applicant.id %}">
                                         {{ applicant.mobile_number }}
                                     </a>
                                 </td>

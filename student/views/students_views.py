@@ -162,6 +162,7 @@ def admission_confirmation(request):
         # If confirmation processes is followed by checkmarks,
         # then we confirm admission for only selected candidates.
         checked_registrant_ids = request.POST.getlist('registrant_choice')
+
         try:
             to_be_admitted = selected_registrants.filter(
                 choosen_department__code=int(dept_code)
@@ -196,6 +197,7 @@ def admission_confirmation(request):
                     ac_session=session,
                     admitted_by=request.user,
                 )
+                print("student :", student)
                 students.append(student)
                 messages.add_message(
                     request,
@@ -203,7 +205,7 @@ def admission_confirmation(request):
                     'Inscription confirmée avec succès'
                 )
             except:
-                pass
+                messages.add_message(request, messages.ERROR, 'ERR')
 
         ctx['students'] = students
         return render(request, 'students/list/confirm_admission.html', ctx)

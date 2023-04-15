@@ -7,7 +7,6 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('academic', '0022_academicterm_siteconfig_academicsession_current'),
         ('student', '0014_alter_admissionstudent_religion_and_more'),
         ('payment', '0015_alter_studentfeesinfo_student'),
     ]
@@ -16,13 +15,12 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Invoice',
             fields=[
+                #('balance_from_previous_term', models.IntegerField(default=0)),
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('balance_from_previous_term', models.IntegerField(default=0)),
                 ('status', models.CharField(choices=[('active', 'Active'), ('closed', 'Closed')], default='active', max_length=20)),
                 ('semesters', models.ManyToManyField(blank=True, null=True, related_name='semesters', to='academic.semester')),
                 ('session', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='academic.academicsession', verbose_name='Année académique')),
                 ('student', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='student.student', verbose_name='Étudiant')),
-                ('term', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='academic.academicterm', verbose_name='Tranche')),
             ],
             options={
                 'ordering': ['student', 'term'],

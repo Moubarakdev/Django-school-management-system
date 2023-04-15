@@ -15,7 +15,7 @@ from teacher.models import Teacher, TeacherSubjectGroup
 # @user_passes_test(user_is_verified, login_url='permission_error')
 @login_required
 def index(request):
-    total_teachers = Teacher.objects.count()
+    total_teachers = Teacher.objects.filter(assigned_as_teacher=True).count()
     total_departments = Department.objects.count()
     total_students = AdmissionStudent.objects.filter(assigned_as_student=True).values('last_name',
                                                                                       'first_name').distinct().count()

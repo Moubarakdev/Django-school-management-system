@@ -31,7 +31,7 @@ Listes des utilisateurs
                     <li class="breadcrumb-item active">Utilisateurs</li>
                 </ul>
             </div>
-             {% if request.user|can:'crud_users' %}
+            {% if request.user|can:'crud_users' %}
             <div class="col-auto text-right float-right ml-auto">
                 <a href="{% url 'create_account' %}" class="btn btn-primary"><i
                         class="fas fa-plus"></i></a>
@@ -54,7 +54,9 @@ Listes des utilisateurs
                                 <th>Rôle</th>
                                 {% if request.user|can:'crud_users' %}
                                 <th class="text-right">Action</th>
+                                <th></th>
                                 {% endif %}
+
                             </tr>
                             </thead>
                             <tbody>
@@ -70,7 +72,9 @@ Listes des utilisateurs
                                     {{ group|capfirst }}
                                 </span>
                                     {% empty %}
+                                    <span class="badge badge-dark">
                                     Utilisateur de base
+                                     </span>
                                     {% endfor %}
                                 </td>
                                 {% if request.user|can:'crud_users' %}
@@ -80,10 +84,16 @@ Listes des utilisateurs
                                            class="btn btn-sm bg-success-light mr-2">
                                             <i class="fas fa-pen"></i>
                                         </a>
-                                        <a href="#" class="btn btn-sm bg-danger-light">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
                                     </div>
+                                </td>
+                                <td>
+                                    <form method="POST"
+                                          action="{% url 'delete_user' pk=account.pk%}">
+                                        {% csrf_token %}
+                                        <a type="submit" class="btn btn-sm bg-danger-light show_confirm"
+                                           data-toggle="tooltip" title='Delete'><i class="fas fa-trash"></i>
+                                        </a>
+                                    </form>
                                 </td>
                             </tr>
                             {% endif %}
@@ -98,6 +108,32 @@ Listes des utilisateurs
 </div>
 {% endblock %}
 
-{% block extrajs %}
+{% block customjs %}
+<script type="text/javascript">
+$('.show_confirm').click(function(event) {
+    var form =  $(this).closest("form");
+    var name = $(this).data("name");
+    event.preventDefault();
+    swal({
+        title: `Voulez-vous vraiment supprimer cet enregistrement ?`,
+        text: "Si vous le supprimez, il disparaîtra pour toujours.",
+        icon: "warning",
+        buttons: true,
+        dangerMode: true,
+    })
+    .then((willDelete) => {
+        if (willDelete) {
+            form.submit();
+        }
+    });
+});
 
+
+
+
+
+
+
+
+</script>
 {% endblock %}

@@ -54,7 +54,7 @@ INSTALLED_APPS = [
     # APP TIERS
     'ckeditor',  # ckeditor for blog content
     'crispy_forms',  # crispy
-    'crispy_bootstrap5',  # crispy
+
     'ckeditor_uploader',
     'taggit',
     'widget_tweaks',
@@ -127,6 +127,9 @@ ROLEPERMISSIONS_MODULE = 'myschool.roles'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
+        'OPTIONS': {
+            'sql_mode': 'STRICT_TRANS_TABLES',
+        },
         'NAME': os.getenv('DB_NAME'),
         'USER': os.getenv('DB_USERNAME'),
         'PASSWORD': os.getenv('DB_PASS'),
@@ -199,7 +202,7 @@ EMAIL_PORT = os.environ.get('EMAIL_PORT')
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-DEFAULT_FROM_EMAIL = 'MbkSite<staff@opentransport.org>'
+DEFAULT_FROM_EMAIL = 'ESAG-NDE<contact@esagnde.org>'
 
 # ##############################################
 # Email verify settings
